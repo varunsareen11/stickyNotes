@@ -1,3 +1,8 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
@@ -111,16 +116,67 @@ textarea:focus {
 .search input:focus {
   outline: none;
 }
-/* #Resizable {
+.card-note {
   position: absolute;
-  top: 50px;
-  left: 50px;
+  top: 100px;
+  left: 190px;
   width: 200px;
-} */
+}
 button.addBtn {
   background: #000;
   color: #fff;
   padding: 14px 30px;
   border-radius: 50px;
   margin: 30px 20px 30px 0;
+}
+.sidebar {
+  display: flex;
+}
+
+.sidebar .notesList {
+  flex: 0 0 70%;
+}
+
+.sidebar .taskList {
+  background-color: #fff;
+  height: 100%;
+  padding: 25px;
+  box-shadow: 0 0 20px 0 rgb(0 0 0 / 10%);
+  border-radius: 10px;
+  margin-top: 30px;
+}
+
+.tackListInpuArea input[type="text"] {
+  border: none;
+  font-size: 16px;
+  border-bottom: 1px solid #eee;
+  padding: 10px;
+  max-width: 75%;
+  margin-right: 20px;
+}
+
+.tackListInpuArea {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.tackListInpuArea button {
+  border: none;
+  background-color: #fef68a;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.1);
+  flex: 0 0 40px;
+  height: 40px;
+  line-height: 40px;
+  border-radius: 50%;
+  font-size: 25px;
+  color: #000;
+}
+ul.tackListUl {
+  list-style: none;
+}
+ul.tackListUl li.tackListTask:not(:last-child) {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
 }

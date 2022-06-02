@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { nanoid } from "nanoid";
 import NotesList from "./components/NotesList";
+import TaskList from "./components/TaskList";
 
 const App = () => {
   const [notes, setNotes] = useState([]);
@@ -38,13 +39,20 @@ const App = () => {
   return (
     <div>
       <div className="container">
-        <NotesList
-          notes={notes.filter((note) =>
-            note.text.toLowerCase().includes(searchText)
-          )}
-          handleAddNote={addNote}
-          handleDeleteNote={deleteNote}
-        />
+        <div className="sidebar">
+          <div className="notesList">
+            <NotesList
+              notes={notes.filter((note) =>
+                note.text.toLowerCase().includes(searchText)
+              )}
+              handleAddNote={addNote}
+              handleDeleteNote={deleteNote}
+            />
+          </div>
+          <div className="taskList">
+            <TaskList />
+          </div>
+        </div>
       </div>
     </div>
   );
