@@ -17,6 +17,10 @@ code {
     monospace;
 }
 
+.wrapper {
+  padding: 70px 0;
+}
+
 .header {
   display: flex;
   align-items: center;
@@ -32,7 +36,7 @@ code {
 }
 
 .container {
-  max-width: 960px;
+  max-width: 1200px;
   margin-right: auto;
   margin-left: auto;
   padding-right: 15px;
@@ -135,8 +139,33 @@ button.addBtn {
 
 .sidebar .notesList {
   flex: 0 0 70%;
+  position: relative;
+  padding-right: 40px;
 }
-
+/* .notesList .OverlayContainer-container {
+  position: fixed;
+  left: 0;
+  height: 100%;
+  right: 0;
+  z-index: 99;
+} */
+.notesList .css-gs5oe7-MuiButtonBase-root-MuiFab-root.Demo-addButton {
+  top: 9px;
+  left: 15px;
+  bottom: auto;
+  right: auto;
+  width: auto;
+  border-radius: 10px;
+  padding: 10px 20px;
+  height: auto;
+  background: #fef68a;
+  color: #000;
+  font-weight: bold;
+  box-shadow: none;
+}
+.notesList .css-vr9er9-MuiModal-root-MuiDrawer-root.Overlay-root {
+  position: fixed;
+}
 .sidebar .taskList {
   background-color: #fff;
   height: 100%;
