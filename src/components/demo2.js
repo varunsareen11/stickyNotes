@@ -458,7 +458,7 @@ const TooltipContent = ({
   );
 };
 
-export default class Demo2 extends React.PureComponent {
+export default class Demo extends React.PureComponent {
   constructor(props) {
     super(props);
 
@@ -542,7 +542,7 @@ export default class Demo2 extends React.PureComponent {
           <IntegratedGrouping />
 
           <GroupingPanel cellComponent={GroupingPanelCell} />
-          <Toolbar flexibleSpaceComponent={this.flexibleSpace} />
+          <Toolbar />
           <DateNavigator />
           <ViewSwitcher />
           <AppointmentTooltip

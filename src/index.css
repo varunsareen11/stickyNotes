@@ -150,10 +150,9 @@ button.addBtn {
   z-index: 99;
 } */
 .notesList .css-gs5oe7-MuiButtonBase-root-MuiFab-root.Demo-addButton {
-  top: 9px;
-  left: 15px;
-  bottom: auto;
-  right: auto;
+  position: relative;
+  left: 0;
+  right: 0;
   width: auto;
   border-radius: 10px;
   padding: 10px 20px;
@@ -161,6 +160,12 @@ button.addBtn {
   background: #fef68a;
   color: #000;
   font-weight: bold;
+  box-shadow: none;
+  margin-bottom: 20px;
+}
+.notesList .MuiPaper-root {
+  display: flex;
+  flex-direction: column-reverse;
   box-shadow: none;
 }
 .notesList .css-vr9er9-MuiModal-root-MuiDrawer-root.Overlay-root {
@@ -173,6 +178,9 @@ button.addBtn {
   box-shadow: 0 0 20px 0 rgb(0 0 0 / 10%);
   border-radius: 10px;
   margin-top: 30px;
+  position: absolute;
+  left: 950px;
+  z-index: 9;
 }
 
 .tackListInpuArea input[type="text"] {
@@ -208,4 +216,24 @@ ul.tackListUl li.tackListTask:not(:last-child) {
   border-bottom: 1px solid #eee;
   padding-bottom: 20px;
   margin-bottom: 20px;
+  line-break: anywhere;
+}
+
+.dragable-header img {
+  width: 20px;
+}
+
+.dragable-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+.dragable-header .listMove {
+  margin-right: 21px;
+}
+
+.dragable-header div {
+  cursor: pointer;
 }

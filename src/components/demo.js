@@ -35,7 +35,6 @@ import Fab from "@mui/material/Fab";
 import IconButton from "@mui/material/IconButton";
 import AddIcon from "@mui/icons-material/Add";
 import TextField from "@mui/material/TextField";
-import LocationOn from "@mui/icons-material/LocationOn";
 import Notes from "@mui/icons-material/Notes";
 import Close from "@mui/icons-material/Close";
 import CalendarToday from "@mui/icons-material/CalendarToday";
@@ -45,6 +44,7 @@ import { appointments } from "../demo-data/appointment";
 
 const PREFIX = "Demo";
 const classes = {
+  flexibleSpace: `${PREFIX}-flexibleSpace`,
   content: `${PREFIX}-content`,
   header: `${PREFIX}-header`,
   closeButton: `${PREFIX}-closeButton`,
@@ -97,6 +97,11 @@ const StyledDiv = styled("div")(({ theme }) => ({
     marginLeft: theme.spacing(2),
   },
 }));
+const StyledToolbarFlexibleSpace = styled(Toolbar.FlexibleSpace)(() => ({
+  [`&.${classes.flexibleSpace}`]: {
+    margin: "0 auto 0 0",
+  },
+}));
 const StyledFab = styled(Fab)(({ theme }) => ({
   [`&.${classes.addButton}`]: {
     position: "absolute",
@@ -104,6 +109,7 @@ const StyledFab = styled(Fab)(({ theme }) => ({
     right: theme.spacing(4),
   },
 }));
+
 class AppointmentFormContainerBasic extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -253,10 +259,6 @@ class AppointmentFormContainerBasic extends React.PureComponent {
               </LocalizationProvider>
             </div>
             <div className={classes.wrapper}>
-              <LocationOn className={classes.icon} color="action" />
-              <TextField {...textEditorProps("location")} />
-            </div>
-            <div className={classes.wrapper}>
               <Notes className={classes.icon} color="action" />
               <TextField {...textEditorProps("notes")} multiline rows="6" />
             </div>
@@ -301,6 +303,8 @@ export default class Demo extends React.PureComponent {
     this.state = {
       data: appointments,
       currentDate: "2018-06-27",
+      // currentDateNew: new Date(),
+      currentViewName: "Day",
       confirmationVisible: false,
       editingFormVisible: false,
       deletedAppointmentId: undefined,
@@ -311,7 +315,10 @@ export default class Demo extends React.PureComponent {
       endDayHour: 19,
       isNewAppointment: false,
     };
-
+    // console.log((this.currentDateNew = new Date()));
+    this.currentDateChange = (currentDate) => {
+      this.setState({ currentDate });
+    };
     this.toggleConfirmationVisible = this.toggleConfirmationVisible.bind(this);
     this.commitDeletedAppointment = this.commitDeletedAppointment.bind(this);
     this.toggleEditingFormVisibility =
@@ -429,6 +436,7 @@ export default class Demo extends React.PureComponent {
   render() {
     const {
       currentDate,
+      currentDateNew,
       data,
       confirmationVisible,
       editingFormVisible,
@@ -439,7 +447,10 @@ export default class Demo extends React.PureComponent {
     return (
       <Paper>
         <Scheduler data={data} height={660}>
-          <ViewState currentDate={currentDate} />
+          <ViewState
+            currentDate={currentDate}
+            onCurrentDateChange={this.currentDateChange}
+          />
           <EditingState
             onCommitChanges={this.commitChanges}
             onEditingAppointmentChange={this.onEditingAppointmentChange}
@@ -447,7 +458,7 @@ export default class Demo extends React.PureComponent {
           />
           <WeekView startDayHour={startDayHour} endDayHour={endDayHour} />
           <MonthView />
-          <AllDayPanel />
+          {/* <AllDayPanel /> */}
           <EditRecurrenceMenu />
           <Appointments />
           <AppointmentTooltip showOpenButton showCloseButton showDeleteButton />
