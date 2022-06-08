@@ -1,0 +1,63 @@
+header.main-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #ffffff;
+  padding: 40px 34px;
+}
+header.main-header .header-left,
+header.main-header .header-right,
+header.main-header .cmn_change-hover {
+  display: flex;
+  align-items: center;
+}
+header.main-header svg.icon {
+  width: 20px;
+  height: 20px;
+}
+header.main-header img {
+  width: 20px;
+}
+header.main-header .cmn-style {
+  cursor: pointer;
+}
+header.main-header .cmn-style:not(:last-child) {
+  margin-right: 50px;
+}
+header.main-header .header-left .colorTheme .colorThemeImages {
+  margin-right: 14px;
+  display: flex;
+  align-items: center;
+}
+header.main-header img.hover-img {
+  display: none;
+}
+header.main-header .cmn_change-hover:hover img.hover-img {
+  display: block;
+}
+header.main-header .cmn_change-hover:hover img.main-img {
+  display: none;
+}
+
+header.main-header .cmn_change-hover:hover p {
+  color: #ffaa10;
+}
+header.main-header .menu-icon svg:hover {
+  fill: #ffaa10;
+}
+header.main-header .searchIcon svg,
+header.main-header .bellIcom svg {
+  stroke: #000;
+}
+header.main-header .searchIcon svg:hover,
+header.main-header .bellIcom svg:hover {
+  stroke: #ffaa10;
+}
+header.main-header .profileDropdown {
+  display: flex;
+  align-items: center;
+}
+header.main-header .profileDropdown img {
+  width: 50px;
+  margin-right: 14px;
+}
