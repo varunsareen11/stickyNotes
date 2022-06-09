@@ -42,6 +42,8 @@ import Create from "@mui/icons-material/Create";
 
 import { appointments } from "../demo-data/appointment";
 
+const API = "http://54.87.14.216";
+
 const PREFIX = "Demo";
 const classes = {
   flexibleSpace: `${PREFIX}-flexibleSpace`,
@@ -192,6 +194,24 @@ class AppointmentFormContainerBasic extends React.PureComponent {
       className: classes.textField,
     });
 
+    const createCalender = (data) => {
+      return fetch(`${API}/api/create-calender`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+        .then((res) => res.json())
+        .then((json) => {
+          console.log("json", json);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+
     const pickerEditorProps = (field) => ({
       // keyboard: true,
       value: displayAppointmentData[field],
@@ -207,6 +227,7 @@ class AppointmentFormContainerBasic extends React.PureComponent {
       onError: () => null,
     });
     console.log(displayAppointmentData);
+    displayAppointmentData && createCalender(displayAppointmentData);
     const startDatePickerProps = pickerEditorProps("startDate");
     const endDatePickerProps = pickerEditorProps("endDate");
     const cancelChanges = () => {
@@ -301,7 +322,7 @@ export default class Demo extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      data: appointments,
+      data: [],
       currentDate: "2018-06-27",
       // currentDateNew: new Date(),
       currentViewName: "Day",
@@ -363,9 +384,34 @@ export default class Demo extends React.PureComponent {
     });
   }
 
+  componentDidMount() {
+    this.getCalender();
+  }
   componentDidUpdate() {
     this.appointmentForm.update();
   }
+
+      // api functions
+      
+      getCalender = () => {
+        return fetch(`${API}/api/get-calender`, {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({}),
+        })
+          .then((res) => res.json())
+          .then((json) => {
+            console.log("json", json);
+            this.data = json
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      };
+      // api functions end
 
   onEditingAppointmentChange(editingAppointment) {
     this.setState({ editingAppointment });
@@ -446,7 +492,7 @@ export default class Demo extends React.PureComponent {
 
     return (
       <Paper>
-        <Scheduler data={data} height={660}>
+        <Scheduler data={data}>
           <ViewState
             currentDate={currentDate}
             onCurrentDateChange={this.currentDateChange}

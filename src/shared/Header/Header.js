@@ -1,15 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./style.css";
 
-const Header = () => {
-    const [isActive, setIsActive] = useState(false);
+const Header = (props) => {
+    const [openDropdrown, setOpenDropdrown] = useState(false);
     return (
         <header className="main-header">
             <div className="header-left">
-                <div className={`menu-icon cmn-style ${isActive ? "remove-icon" : ""}`} onClick={() => setIsActive(!isActive)}>
+                <div className={`menu-icon cmn-style ${props.addClass}`} onClick={props.clickfunc}>
                     <svg className="icon" aria-labelledby="Hamburger Menu">
                         <title id="hamburgerMenu">Hamburger Menu</title>
                         <use xlinkHref="/assets/svg-icons/icons.svg#hamburgerMenu" xlinkTitle="Hamburger Menu"></use>
+                    </svg>
+                    <svg className="icon" aria-labelledby="Hamburger close">
+                        <title id="close">Hamburger close</title>
+                        <use xlinkHref="/assets/svg-icons/icons.svg#close" xlinkTitle="Hamburger close"></use>
                     </svg>
                 </div>
                 <div className="colorTheme cmn_change-hover cmn-style">
@@ -41,15 +45,15 @@ const Header = () => {
                         <use xlinkHref="/assets/svg-icons/icons.svg#bell" xlinkTitle="Bell Icon"></use>
                     </svg>
                 </div>
-                <div className="profileDropdown cmn-style">
+                <div className="profileDropdown cmn-style" onClick={() => setOpenDropdrown(!openDropdrown)}>
                     <img src="/assets/images/user.png" alt="User" />
                     <svg className="icon" aria-labelledby="Dropdown Icon">
                         <title id="dropdownButton">Dropdown Icon</title>
                         <use xlinkHref="/assets/svg-icons/icons.svg#dropdownButton" xlinkTitle="Dropdown Icon"></use>
                     </svg>
-                    <div className="dropdownBox">
+                    <div className={`dropdownBox ${openDropdrown ? "dropdownActive" : ""}`}>
                         <p>Currently in</p>
-                        <div className="dropProfileInfo">
+                        <div className="dropProfileCard">
                             <img src="/assets/images/user.png" alt="User" />
                             <div className="dropProfileInfoCont">
                                 <h4>Nick</h4>

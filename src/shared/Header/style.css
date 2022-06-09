@@ -2,8 +2,8 @@ header.main-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #ffffff;
-  padding: 40px 34px;
+  background: hsl(0, 0%, 100%);
+  padding: 25px 30px;
 }
 header.main-header .header-left,
 header.main-header .header-right,
@@ -56,8 +56,81 @@ header.main-header .bellIcom svg:hover {
 header.main-header .profileDropdown {
   display: flex;
   align-items: center;
+  position: relative;
 }
 header.main-header .profileDropdown img {
   width: 50px;
   margin-right: 14px;
+}
+header.main-header .profileDropdown .dropdownBox {
+  position: absolute;
+  top: 60px;
+  right: 0;
+  background: #fff;
+  box-shadow: 0 0 20px 0 rgba(0,0,0,0.1);
+  padding: 25px;
+  border-radius: 10px;
+  z-index: 99;
+  min-width: 350px;
+  opacity: 0;
+  visibility: hidden;
+  transition: .5s;
+}
+
+header.main-header .profileDropdown .dropdownBox.dropdownActive{
+  opacity: 1;
+  visibility: visible;
+  transition: .5s;
+}
+
+header.main-header .profileDropdown .dropdownBox p {
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 25px;
+  letter-spacing: 0em;
+  margin-bottom: 20px;
+}
+
+header.main-header .profileDropdown .dropdownBox .dropProfileInfo {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+header.main-header .profileDropdown .dropdownBox .dropProfileCard {
+  display: flex;
+  align-items: flex-start;
+}
+
+header.main-header .profileDropdown .dropdownBox .dropProfileCard img {
+  flex: 0 0 75px;
+}
+
+header.main-header .profileDropdown .dropdownBox .dropProfileInfoCont h4 {
+  font-weight: bold;
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+
+header.main-header .profileDropdown .dropdownBox .dropProfileInfoCont p {
+  font-size: 16px;
+  margin-bottom: 0;
+}
+
+header.main-header .profileDropdown .dropdownBox .dropProfileInfo a {
+  text-decoration: none;
+  margin-bottom: 17px;
+  display: block;
+  font-weight: 700;
+  color: #000;
+  font-size: 19px;
+}
+header.main-header .menu-icon.remove-icon svg[aria-labelledby="Hamburger close"] {
+    display: block;
+}
+header.main-header .menu-icon svg[aria-labelledby="Hamburger close"] {
+    display: none;
+}
+header.main-header .menu-icon.remove-icon svg[aria-labelledby="Hamburger Menu"] {
+    display: none;
 }

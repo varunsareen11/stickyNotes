@@ -32,6 +32,10 @@ function ManagementSystem() {
     resizable.style.left = `${
       parseInt(resizable.offsetLeft) + parseInt(e.clientX - initialPos[0])
     }px`;
+    resizable.style.position = `absolute`;
+    resizable.style.left = `${
+      parseInt(resizable.offsetLeft) + parseInt(e.clientX - initialPos[0])
+    }px`;
     resizable.style.top = `${
       parseInt(resizable.offsetTop) + parseInt(e.clientY - initialPos[1])
     }px`;
@@ -62,6 +66,7 @@ function ManagementSystem() {
       parseInt(resizableNotes.offsetLeft) +
       parseInt(e.clientX - initialPosNotes[0])
     }px`;
+    resizableNotes.style.position = `absolute`;
     resizableNotes.style.top = `${
       parseInt(resizableNotes.offsetTop) +
       parseInt(e.clientY - initialPosNotes[1])
@@ -99,8 +104,7 @@ function ManagementSystem() {
   //   setNotes(newNotes);
   // };
   return (
-    <div className="wrapper">
-      <div className="container">
+    <div className="main-body">
         <div className="sidebar">
           <div className="notesList" id="notesListId">
             <div className="dragable-header">
@@ -152,7 +156,6 @@ function ManagementSystem() {
             </div>
             <TaskList />
           </div>
-        </div>
       </div>
     </div>
   );

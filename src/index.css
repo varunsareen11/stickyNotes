@@ -5,11 +5,8 @@
 }
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-family: 'Manrope', sans-serif;
+  background-color: #F5F7FB;
 }
 
 code {
@@ -33,15 +30,6 @@ code {
 
 .dark-mode h1 {
   color: white;
-}
-
-.container {
-  max-width: 1200px;
-  margin-right: auto;
-  margin-left: auto;
-  padding-right: 15px;
-  padding-left: 15px;
-  min-height: 100vh;
 }
 
 .notes-list {
@@ -139,8 +127,11 @@ button.addBtn {
 
 .sidebar .notesList {
   flex: 0 0 70%;
-  position: relative;
+  width: 70%;
   padding-right: 40px;
+}
+.MuiPaper-root .Table-table{
+  min-width: auto !important;
 }
 /* .notesList .OverlayContainer-container {
   position: fixed;
@@ -149,7 +140,7 @@ button.addBtn {
   right: 0;
   z-index: 99;
 } */
-.notesList .css-gs5oe7-MuiButtonBase-root-MuiFab-root.Demo-addButton {
+.notesList .MuiButtonBase-root.Demo-addButton {
   position: relative;
   left: 0;
   right: 0;
@@ -168,7 +159,7 @@ button.addBtn {
   flex-direction: column-reverse;
   box-shadow: none;
 }
-.notesList .css-vr9er9-MuiModal-root-MuiDrawer-root.Overlay-root {
+.notesList .MuiDrawer-modal.Overlay-root  {
   position: fixed;
 }
 .sidebar .taskList {
@@ -178,8 +169,6 @@ button.addBtn {
   box-shadow: 0 0 20px 0 rgb(0 0 0 / 10%);
   border-radius: 10px;
   margin-top: 30px;
-  position: absolute;
-  left: 950px;
   z-index: 9;
 }
 
@@ -236,4 +225,24 @@ ul.tackListUl li.tackListTask:not(:last-child) {
 
 .dragable-header div {
   cursor: pointer;
+}
+/* Common design */
+
+.main-wrapper {
+  display: flex;
+}
+
+.main-wrapper .main-aside {
+  flex: 0 0 20%;
+  background: #FFFFFF;
+  border: 1px solid #F0F0F0;
+  padding: 30px;
+}
+
+.main-wrapper .main-aside.main-aside-active {
+  padding: 20px;
+  flex: 0 0 20px;
+}
+.main-wrapper .main-content {
+  flex-grow: 1;
 }
