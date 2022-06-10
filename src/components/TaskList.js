@@ -19,11 +19,12 @@ function TaskList() {
         });
         
         setinputVal("");
+        getSidebar();
     };
     
     useEffect(()=>{
         getSidebar();
-    })
+    }, [])
     // Post Slidebar
     const createSlidebar = (data) => {
         return fetch(`${API}/api/create-sidebar`, {

@@ -7,7 +7,6 @@ import Paper from "@mui/material/Paper";
 import { ViewState, EditingState } from "@devexpress/dx-react-scheduler";
 import {
   Scheduler,
-  DayView,
   Toolbar,
   MonthView,
   WeekView,
@@ -19,7 +18,6 @@ import {
   AppointmentForm,
   DragDropProvider,
   EditRecurrenceMenu,
-  AllDayPanel,
 } from "@devexpress/dx-react-scheduler-material-ui";
 import { connectProps } from "@devexpress/dx-react-core";
 import DateTimePicker from "@mui/lab/DateTimePicker";
@@ -33,14 +31,13 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import Fab from "@mui/material/Fab";
 import IconButton from "@mui/material/IconButton";
-import AddIcon from "@mui/icons-material/Add";
 import TextField from "@mui/material/TextField";
 import Notes from "@mui/icons-material/Notes";
 import Close from "@mui/icons-material/Close";
 import CalendarToday from "@mui/icons-material/CalendarToday";
 import Create from "@mui/icons-material/Create";
 
-import { appointments } from "../demo-data/appointment";
+// import { appointments } from "../demo-data/appointment";
 
 const API = "http://54.87.14.216";
 
@@ -143,6 +140,24 @@ class AppointmentFormContainerBasic extends React.PureComponent {
     });
   }
 
+  createCalender(data) {
+    return fetch(`${API}/api/create-calender`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        console.log("json", json);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   commitAppointment(type) {
     const { commitChanges } = this.props;
     const appointment = {
@@ -154,6 +169,8 @@ class AppointmentFormContainerBasic extends React.PureComponent {
     } else if (type === "changed") {
       commitChanges({ [type]: { [appointment.id]: appointment } });
     } else {
+      console.log("appointment", appointment);
+      this.createCalender(appointment);
       commitChanges({ [type]: appointment });
     }
     this.setState({
@@ -194,24 +211,6 @@ class AppointmentFormContainerBasic extends React.PureComponent {
       className: classes.textField,
     });
 
-    const createCalender = (data) => {
-      return fetch(`${API}/api/create-calender`, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      })
-        .then((res) => res.json())
-        .then((json) => {
-          console.log("json", json);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    };
-
     const pickerEditorProps = (field) => ({
       // keyboard: true,
       value: displayAppointmentData[field],
@@ -226,8 +225,6 @@ class AppointmentFormContainerBasic extends React.PureComponent {
       inputFormat: "DD/MM/YYYY HH:mm",
       onError: () => null,
     });
-    console.log(displayAppointmentData);
-    displayAppointmentData && createCalender(displayAppointmentData);
     const startDatePickerProps = pickerEditorProps("startDate");
     const endDatePickerProps = pickerEditorProps("endDate");
     const cancelChanges = () => {
@@ -323,7 +320,7 @@ export default class Demo extends React.PureComponent {
     super(props);
     this.state = {
       data: [],
-      currentDate: "2018-06-27",
+      currentDate: new Date(),
       // currentDateNew: new Date(),
       currentViewName: "Day",
       confirmationVisible: false,
@@ -391,27 +388,37 @@ export default class Demo extends React.PureComponent {
     this.appointmentForm.update();
   }
 
-      // api functions
-      
-      getCalender = () => {
-        return fetch(`${API}/api/get-calender`, {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({}),
-        })
-          .then((res) => res.json())
-          .then((json) => {
-            console.log("json", json);
-            this.data = json
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      };
-      // api functions end
+  // api functions
+
+  getCalender = () => {
+    return fetch(`${API}/api/get-calender`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({}),
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        console.log("json", json);
+        this.setState({
+          data: json.map((item) => {
+            return {
+              title: item.title,
+              startDate: new Date(item.startDate),
+              endDate: new Date(item.endDate),
+              id: item._id,
+              notes: item.notes,
+            };
+          }),
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  // api functions end
 
   onEditingAppointmentChange(editingAppointment) {
     this.setState({ editingAppointment });
@@ -502,8 +509,8 @@ export default class Demo extends React.PureComponent {
             onEditingAppointmentChange={this.onEditingAppointmentChange}
             onAddedAppointmentChange={this.onAddedAppointmentChange}
           />
-          <WeekView startDayHour={startDayHour} endDayHour={endDayHour} />
           <MonthView />
+          <WeekView startDayHour={startDayHour} endDayHour={endDayHour} />
           {/* <AllDayPanel /> */}
           <EditRecurrenceMenu />
           <Appointments />
