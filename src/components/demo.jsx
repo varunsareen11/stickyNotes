@@ -1,12 +1,10 @@
-// https://devexpress.github.io/devextreme-reactive/react/scheduler/demos/featured/appearance-customization/
-/* eslint-disable max-classes-per-file */
-/* eslint-disable react/no-unused-state */
 import * as React from "react";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import { ViewState, EditingState } from "@devexpress/dx-react-scheduler";
 import {
   Scheduler,
+  DayView,
   Toolbar,
   MonthView,
   WeekView,
@@ -18,6 +16,7 @@ import {
   AppointmentForm,
   DragDropProvider,
   EditRecurrenceMenu,
+  AllDayPanel,
 } from "@devexpress/dx-react-scheduler-material-ui";
 import { connectProps } from "@devexpress/dx-react-core";
 import DateTimePicker from "@mui/lab/DateTimePicker";
@@ -31,13 +30,14 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import Fab from "@mui/material/Fab";
 import IconButton from "@mui/material/IconButton";
+import AddIcon from "@mui/icons-material/Add";
 import TextField from "@mui/material/TextField";
 import Notes from "@mui/icons-material/Notes";
 import Close from "@mui/icons-material/Close";
 import CalendarToday from "@mui/icons-material/CalendarToday";
 import Create from "@mui/icons-material/Create";
 
-// import { appointments } from "../demo-data/appointment";
+import { appointments } from "../demo-data/appointment";
 
 const API = "http://54.87.14.216";
 
@@ -158,6 +158,24 @@ class AppointmentFormContainerBasic extends React.PureComponent {
       });
   }
 
+  updateCalender(id, data) {
+    return fetch(`${API}/api/update-calender/${id}`, {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        console.log("json", json);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   commitAppointment(type) {
     const { commitChanges } = this.props;
     const appointment = {
@@ -168,10 +186,10 @@ class AppointmentFormContainerBasic extends React.PureComponent {
       commitChanges({ [type]: appointment.id });
     } else if (type === "changed") {
       commitChanges({ [type]: { [appointment.id]: appointment } });
+      this.updateCalender(appointment.id, appointment);
     } else {
-      console.log("appointment", appointment);
-      this.createCalender(appointment);
       commitChanges({ [type]: appointment });
+      this.createCalender(appointment);
     }
     this.setState({
       appointmentChanges: {},
@@ -401,7 +419,7 @@ export default class Demo extends React.PureComponent {
     })
       .then((res) => res.json())
       .then((json) => {
-        console.log("json", json);
+        // console.log("json", json);
         this.setState({
           data: json.map((item) => {
             return {
@@ -451,15 +469,32 @@ export default class Demo extends React.PureComponent {
     this.setState({ confirmationVisible: !confirmationVisible });
   }
 
+  deleteCalender(id) {
+    return fetch(`${API}/api/delete-calender/${id}`, {
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        console.log("json", json);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   commitDeletedAppointment() {
     this.setState((state) => {
       const { data, deletedAppointmentId } = state;
       const nextData = data.filter(
         (appointment) => appointment.id !== deletedAppointmentId
       );
-
       return { data: nextData, deletedAppointmentId: null };
     });
+    this.deleteCalender(this.state.deletedAppointmentId);
     this.toggleConfirmationVisible();
   }
 
@@ -511,7 +546,7 @@ export default class Demo extends React.PureComponent {
           />
           <MonthView />
           <WeekView startDayHour={startDayHour} endDayHour={endDayHour} />
-          {/* <AllDayPanel /> */}
+          <AllDayPanel />
           <EditRecurrenceMenu />
           <Appointments />
           <AppointmentTooltip showOpenButton showCloseButton showDeleteButton />

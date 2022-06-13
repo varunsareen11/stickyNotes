@@ -23,7 +23,7 @@ ul.navbar-menu a {
     letter-spacing: 0em;
     text-align: left;
     color: #878787;
-    padding: 15px 0;
+    padding: 8px 0;
 }
 
 ul.navbar-menu a:hover, ul.navbar-menu a.active {
@@ -34,10 +34,12 @@ ul.navbar-menu a:hover, ul.navbar-menu a.active {
 ul.navbar-menu a:hover svg.icon, ul.navbar-menu a.active svg.icon {
     stroke: #EC1C24;
 }
-
+.copyright {
+    margin-top: 20px;
+}
 .sidebarCont .copyright p {
     background: #fff;
-    padding: 20px;
+    padding: 18px;
     border-radius: 6px;
     outline: 18px solid rgb(105 86 229 / 10%);
     margin: 18px;
@@ -62,7 +64,7 @@ ul.navbar-menu a:hover svg.icon, ul.navbar-menu a.active svg.icon {
     color: #A6A6A6;
     border-bottom: 1px solid #C4C4C4;
     padding-bottom: 2px;
-    margin: 30px 0 25px;
+    margin: 22px 0 18px;
 }
 
 .logo {

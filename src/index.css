@@ -7,6 +7,7 @@ body {
   margin: 0;
   font-family: 'Manrope', sans-serif;
   background-color: #F5F7FB;
+  overflow-x: hidden;
 }
 
 code {
@@ -121,25 +122,9 @@ button.addBtn {
   border-radius: 50px;
   margin: 30px 20px 30px 0;
 }
-.sidebar {
-  display: flex;
-}
-
-.sidebar .notesList {
-  flex: 0 0 70%;
-  width: 70%;
-  padding-right: 40px;
-}
 .MuiPaper-root .Table-table{
   min-width: auto !important;
 }
-/* .notesList .OverlayContainer-container {
-  position: fixed;
-  left: 0;
-  height: 100%;
-  right: 0;
-  z-index: 99;
-} */
 .notesList .MuiButtonBase-root.Demo-addButton {
   position: relative;
   left: 0;
@@ -148,28 +133,21 @@ button.addBtn {
   border-radius: 10px;
   padding: 10px 20px;
   height: auto;
-  background: #fef68a;
-  color: #000;
+  background: #ffac14;
+  color: #fff;
   font-weight: bold;
   box-shadow: none;
-  margin-bottom: 20px;
+  margin: 20px;
+  bottom: 0;
+  z-index: 1;
 }
 .notesList .MuiPaper-root {
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
   box-shadow: none;
 }
 .notesList .MuiDrawer-modal.Overlay-root  {
   position: fixed;
-}
-.sidebar .taskList {
-  background-color: #fff;
-  height: 100%;
-  padding: 25px;
-  box-shadow: 0 0 20px 0 rgb(0 0 0 / 10%);
-  border-radius: 10px;
-  margin-top: 30px;
-  z-index: 9;
 }
 
 .tackListInpuArea input[type="text"] {
@@ -177,7 +155,7 @@ button.addBtn {
   font-size: 16px;
   border-bottom: 1px solid #eee;
   padding: 10px;
-  max-width: 75%;
+  flex-grow: 1;
   margin-right: 20px;
 }
 
@@ -201,22 +179,56 @@ button.addBtn {
 ul.tackListUl {
   list-style: none;
 }
+ul.tackListUl li.tackListTask{
+  display: flex;
+  align-items: center;
+}
+ul.tackListUl li.tackListTask span{
+  flex-grow: 1;
+}
+ul.tackListUl li.tackListTask input[type="text"] {
+  border: none;
+  flex-grow: 1;
+  outline: none;
+}
+ul.tackListUl li.tackListTask svg{
+  cursor: pointer;
+}
 ul.tackListUl li.tackListTask:not(:last-child) {
   border-bottom: 1px solid #eee;
   padding-bottom: 20px;
   margin-bottom: 20px;
   line-break: anywhere;
 }
-
+.sidebar .taskList {
+  background-color: #fff;
+  height: 455px;
+  box-shadow: 0 0 20px 0 rgb(0 0 0 / 10%);
+  border-radius: 10px;
+  z-index: 9;
+  overflow-y: auto;
+  min-height: 455px;
+  min-width: 320px;
+  position: absolute;
+}
+.sidebar .resizeable-body{
+  position: relative;
+}
+.sidebar .taskList .taskListWrap{
+  padding: 25px;
+}
 .dragable-header img {
   width: 20px;
 }
 
 .dragable-header {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  margin-bottom: 20px;
+  text-align: center;
+  padding: 12px;
+  background: #ec1f27;
+  color: #fff;
+  font-size: 20px;
+  letter-spacing: 2px;
+  cursor: move;
 }
 
 .dragable-header .listMove {
@@ -236,7 +248,8 @@ ul.tackListUl li.tackListTask:not(:last-child) {
   flex: 0 0 20%;
   background: #FFFFFF;
   border: 1px solid #F0F0F0;
-  padding: 30px;
+  padding: 25px;
+  min-height: 100vh;
 }
 
 .main-wrapper .main-aside.main-aside-active {
@@ -245,4 +258,65 @@ ul.tackListUl li.tackListTask:not(:last-child) {
 }
 .main-wrapper .main-content {
   flex-grow: 1;
+}
+
+/* resize cursor design */
+.container {
+  border-radius: 5px;
+  width: 100vw;
+  height: 100vh;
+  background: #FFBC97;
+  position: relative;
+}
+
+.resizeable {
+  position: absolute;
+  border: 2px solid #533535;
+  width: 100px;
+  height: 100px;
+  border-radius: 3px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 15px;
+  min-height: 15px;
+}
+
+.resizer {
+  position: absolute;
+  background: transparent;
+  z-index: 1;
+}
+
+.resizer-r {
+  cursor: col-resize;
+  height: 100%;
+  right: 0;
+  top: 0;
+  width: 5px;
+}
+
+.resizer-t {
+  cursor: row-resize;
+  height: 5px;
+  left: 0;
+  top: 0;
+  width: 100%;
+}
+
+.resizer-b {
+  cursor: row-resize;
+  height: 5px;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  position: sticky;
+}
+
+.resizer-l {
+  cursor: col-resize;
+  height: 100%;
+  left: 0;
+  top: 0;
+  width: 5px;
 }
