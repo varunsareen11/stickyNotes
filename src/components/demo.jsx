@@ -4,7 +4,6 @@ import Paper from "@mui/material/Paper";
 import { ViewState, EditingState } from "@devexpress/dx-react-scheduler";
 import {
   Scheduler,
-  DayView,
   Toolbar,
   MonthView,
   WeekView,
@@ -30,16 +29,16 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import Fab from "@mui/material/Fab";
 import IconButton from "@mui/material/IconButton";
-import AddIcon from "@mui/icons-material/Add";
 import TextField from "@mui/material/TextField";
 import Notes from "@mui/icons-material/Notes";
 import Close from "@mui/icons-material/Close";
 import CalendarToday from "@mui/icons-material/CalendarToday";
 import Create from "@mui/icons-material/Create";
 
-import { appointments } from "../demo-data/appointment";
-
 const API = "http://54.87.14.216";
+
+const user = JSON.parse(localStorage.getItem("user-info"));
+const token = user.token;
 
 const PREFIX = "Demo";
 const classes = {
@@ -96,11 +95,6 @@ const StyledDiv = styled("div")(({ theme }) => ({
     marginLeft: theme.spacing(2),
   },
 }));
-const StyledToolbarFlexibleSpace = styled(Toolbar.FlexibleSpace)(() => ({
-  [`&.${classes.flexibleSpace}`]: {
-    margin: "0 auto 0 0",
-  },
-}));
 const StyledFab = styled(Fab)(({ theme }) => ({
   [`&.${classes.addButton}`]: {
     position: "absolute",
@@ -144,6 +138,7 @@ class AppointmentFormContainerBasic extends React.PureComponent {
     return fetch(`${API}/api/create-calender`, {
       method: "POST",
       headers: {
+        "x-access-token": token,
         Accept: "application/json",
         "Content-Type": "application/json",
       },
@@ -162,6 +157,7 @@ class AppointmentFormContainerBasic extends React.PureComponent {
     return fetch(`${API}/api/update-calender/${id}`, {
       method: "PUT",
       headers: {
+        "x-access-token": token,
         Accept: "application/json",
         "Content-Type": "application/json",
       },
@@ -186,6 +182,7 @@ class AppointmentFormContainerBasic extends React.PureComponent {
       commitChanges({ [type]: appointment.id });
     } else if (type === "changed") {
       commitChanges({ [type]: { [appointment.id]: appointment } });
+      console.log("appointment", this.appointment);
       this.updateCalender(appointment.id, appointment);
     } else {
       commitChanges({ [type]: appointment });
@@ -339,7 +336,6 @@ export default class Demo extends React.PureComponent {
     this.state = {
       data: [],
       currentDate: new Date(),
-      // currentDateNew: new Date(),
       currentViewName: "Day",
       confirmationVisible: false,
       editingFormVisible: false,
@@ -351,7 +347,6 @@ export default class Demo extends React.PureComponent {
       endDayHour: 19,
       isNewAppointment: false,
     };
-    // console.log((this.currentDateNew = new Date()));
     this.currentDateChange = (currentDate) => {
       this.setState({ currentDate });
     };
@@ -412,6 +407,7 @@ export default class Demo extends React.PureComponent {
     return fetch(`${API}/api/get-calender`, {
       method: "POST",
       headers: {
+        "x-access-token": token,
         Accept: "application/json",
         "Content-Type": "application/json",
       },
@@ -473,6 +469,7 @@ export default class Demo extends React.PureComponent {
     return fetch(`${API}/api/delete-calender/${id}`, {
       method: "DELETE",
       headers: {
+        "x-access-token": token,
         Accept: "application/json",
         "Content-Type": "application/json",
       },
@@ -524,7 +521,6 @@ export default class Demo extends React.PureComponent {
   render() {
     const {
       currentDate,
-      currentDateNew,
       data,
       confirmationVisible,
       editingFormVisible,
@@ -599,7 +595,7 @@ export default class Demo extends React.PureComponent {
             });
           }}
         >
-          Add Events
+          +
         </StyledFab>
       </Paper>
     );

@@ -5,14 +5,22 @@
 }
 body {
   margin: 0;
-  font-family: 'Manrope', sans-serif;
-  background-color: #F5F7FB;
+  font-family: "Manrope", sans-serif;
+  background-color: #f5f7fb;
   overflow-x: hidden;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+ul {
+  list-style: none;
+  padding: 0%;
+  margin: 0%;
+}
+button {
+  cursor: pointer;
 }
 
 .wrapper {
@@ -122,31 +130,29 @@ button.addBtn {
   border-radius: 50px;
   margin: 30px 20px 30px 0;
 }
-.MuiPaper-root .Table-table{
+.MuiPaper-root .Table-table {
   min-width: auto !important;
 }
 .notesList .MuiButtonBase-root.Demo-addButton {
-  position: relative;
-  left: 0;
-  right: 0;
-  width: auto;
-  border-radius: 10px;
-  padding: 10px 20px;
-  height: auto;
-  background: #ffac14;
-  color: #fff;
-  font-weight: bold;
+  position: absolute;
+  top: -61px;
+  right: -15px;
+  background: #fff;
+  color: #ffac14;
   box-shadow: none;
   margin: 20px;
-  bottom: 0;
   z-index: 1;
+  border-radius: 0;
+  height: 36px;
+  width: 36px;
+  font-size: 25px;
 }
 .notesList .MuiPaper-root {
   display: flex;
   flex-direction: column;
   box-shadow: none;
 }
-.notesList .MuiDrawer-modal.Overlay-root  {
+.notesList .MuiDrawer-modal.Overlay-root {
   position: fixed;
 }
 
@@ -179,19 +185,17 @@ button.addBtn {
 ul.tackListUl {
   list-style: none;
 }
-ul.tackListUl li.tackListTask{
+ul.tackListUl li.tackListTask {
   display: flex;
   align-items: center;
-}
-ul.tackListUl li.tackListTask span{
-  flex-grow: 1;
+  font-size: 14px;
 }
 ul.tackListUl li.tackListTask input[type="text"] {
   border: none;
   flex-grow: 1;
   outline: none;
 }
-ul.tackListUl li.tackListTask svg{
+ul.tackListUl li.tackListTask svg {
   cursor: pointer;
 }
 ul.tackListUl li.tackListTask:not(:last-child) {
@@ -207,14 +211,14 @@ ul.tackListUl li.tackListTask:not(:last-child) {
   border-radius: 10px;
   z-index: 9;
   overflow-y: auto;
-  min-height: 455px;
   min-width: 320px;
+  left: 476px;
   position: absolute;
 }
-.sidebar .resizeable-body{
+.sidebar .resizeable-body {
   position: relative;
 }
-.sidebar .taskList .taskListWrap{
+.sidebar .taskList .taskListWrap {
   padding: 25px;
 }
 .dragable-header img {
@@ -226,7 +230,7 @@ ul.tackListUl li.tackListTask:not(:last-child) {
   padding: 12px;
   background: #ec1f27;
   color: #fff;
-  font-size: 20px;
+  font-size: 16px;
   letter-spacing: 2px;
   cursor: move;
 }
@@ -246,8 +250,8 @@ ul.tackListUl li.tackListTask:not(:last-child) {
 
 .main-wrapper .main-aside {
   flex: 0 0 20%;
-  background: #FFFFFF;
-  border: 1px solid #F0F0F0;
+  background: #ffffff;
+  border: 1px solid #f0f0f0;
   padding: 25px;
   min-height: 100vh;
 }
@@ -265,7 +269,7 @@ ul.tackListUl li.tackListTask:not(:last-child) {
   border-radius: 5px;
   width: 100vw;
   height: 100vh;
-  background: #FFBC97;
+  background: #ffbc97;
   position: relative;
 }
 
@@ -319,4 +323,74 @@ ul.tackListUl li.tackListTask:not(:last-child) {
   left: 0;
   top: 0;
   width: 5px;
+}
+
+/* taskbar list custom checkbox */
+
+ul.tackListUl li.tackListTask .ctm-checkbox-tasklist {
+  position: relative;
+  flex-grow: 1;
+}
+.ctm-checkbox-tasklist .ctm-checkbox-cont {
+  padding-left: 10px;
+}
+.ctm-checkbox-tasklist .ctm-checkbox-cont input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.ctm-checkbox-tasklist .checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 24px;
+  width: 24px;
+  border-radius: 50%;
+  border: 1px solid #eee;
+}
+
+.ctm-checkbox-tasklist .ctm-checkbox-cont input:checked ~ .checkmark {
+  border: 1px solid #ffa500;
+}
+
+.ctm-checkbox-tasklist .checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.ctm-checkbox-tasklist .ctm-checkbox-cont input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.ctm-checkbox-tasklist .ctm-checkbox-cont .checkmark:after {
+  left: 50%;
+  top: 50%;
+  width: 16px;
+  height: 16px;
+  background: #ffa500;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+ul.tackListUl.taskCompleted {
+  margin-top: 50px;
+}
+
+ul.tackListUl.taskCompleted li.listCompleted {
+  background: #eee;
+  padding: 12px 20px;
+  margin: 0 -25px 20px;
+  font-size: 14px;
+}
+
+ul.tackListUl.taskCompleted li:not(:first-child) {
+  font-size: 14px;
+  padding-bottom: 13px;
+}
+.dragable-header h4 {
+  font-size: 15px;
+  margin: 0;
 }

@@ -1,13 +1,25 @@
 import { useState, useRef, useEffect } from "react";
 import "./style.css";
-import TaskList from "../../components/TaskList";
-import Demo from "../../components/demo";
+import TaskList from "../../../components/TaskList";
+import Demo from "../../../components/demo";
+import { useNavigate } from "react-router-dom";
+import { useTranslation, Trans } from "react-i18next";
+const API = "http://54.87.14.216";
 
 function ManagementSystem() {
+  const { t, i18n } = useTranslation();
+  const user = JSON.parse(localStorage.getItem("user-info"));
+  const token = user.token;
+  console.log(token);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!localStorage.getItem("user-info")) {
+      navigate("/login");
+    }
+  })
   // TaskBar Script
   const dragEl = useRef(null);
-  console.log(dragEl);
-  const [pos, setPos] = useState([0, 0]);
+  const [pos, setPos] = useState([476, 0]);
   const [mov, setMov] = useState([0, 0]);
   const [initial, setInitial] = useState([0, 0]);
   const [down, setDown] = useState(false);
@@ -35,6 +47,7 @@ function ManagementSystem() {
       left: `${x}px`,
       top: `${y}px`
     });
+    createDrag(style);
   };
 
   const handlePointerUp = (e) => {
@@ -92,6 +105,7 @@ function ManagementSystem() {
   // resize taskbar
   const taskRef = useRef(null);
   const taskRefLeft = useRef(null);
+  const taskRefTop = useRef(null);
   const taskRefRight = useRef(null);
   const taskRefBottom = useRef(null);
   useEffect(() => {
@@ -99,9 +113,8 @@ function ManagementSystem() {
     const styles = window.getComputedStyle(resizeableEle);
     let width = parseInt(styles.width, 10);
     let height = parseInt(styles.height, 10);
-    console.log(height);
     let x = 0;
-    let y = "455px" ;
+    let y = 0;
 
     // resizeableEle.style.top = "0";
     // resizeableEle.style.left = "0";
@@ -110,9 +123,9 @@ function ManagementSystem() {
     const onMouseMoveRightResize = (event) => {
       const dx = event.clientX - x;
       x = event.clientX;
-      if((width + dx) < 320){
+      if ((width + dx) < 320) {
         width = 320;
-      }else{
+      } else {
         width = width + dx;
       }
       resizeableEle.style.width = `${width}px`;
@@ -130,15 +143,31 @@ function ManagementSystem() {
       document.addEventListener("mouseup", onMouseUpRightResize);
     };
 
+    // Top resize
+    const onMouseMoveTopResize = (event) => {
+      const dy = event.clientY - y;
+      height = height - dy;
+      y = event.clientY;
+      resizeableEle.style.height = `${height}px`;
+    };
+
+    const onMouseUpTopResize = (event) => {
+      document.removeEventListener("mousemove", onMouseMoveTopResize);
+    };
+
+    const onMouseDownTopResize = (event) => {
+      y = event.clientY;
+      const styles = window.getComputedStyle(resizeableEle);
+      resizeableEle.style.bottom = styles.bottom;
+      resizeableEle.style.top = null;
+      document.addEventListener("mousemove", onMouseMoveTopResize);
+      document.addEventListener("mouseup", onMouseUpTopResize);
+    };
+
     // Bottom resize
     const onMouseMoveBottomResize = (event) => {
       const dy = event.clientY - y;
-      if(event.clientY < 455){
-        height = 455;
-      }
-      else{
-        height = height + dy;
-      }
+      height = height + dy;
       y = event.clientY;
       resizeableEle.style.height = `${height}px`;
     };
@@ -160,9 +189,9 @@ function ManagementSystem() {
     const onMouseMoveLeftResize = (event) => {
       const dx = event.clientX - x;
       x = event.clientX;
-      if((width - dx) < 320){
+      if ((width - dx) < 320) {
         width = 320;
-      }else{
+      } else {
         width = width - dx;
       }
       resizeableEle.style.width = `${width}px`;
@@ -184,11 +213,14 @@ function ManagementSystem() {
     const resizerRight = taskRefRight.current;
     resizerRight.addEventListener("mousedown", onMouseDownRightResize);
     const resizerBottom = taskRefBottom.current;
+    const resizerTop = taskRefTop.current;
+    resizerTop.addEventListener("mousedown", onMouseDownTopResize);
     resizerBottom.addEventListener("mousedown", onMouseDownBottomResize);
     const resizerLeft = taskRefLeft.current;
     resizerLeft.addEventListener("mousedown", onMouseDownLeftResize);
 
     return () => {
+      resizerTop.removeEventListener("mousedown", onMouseDownTopResize);
       resizerRight.removeEventListener("mousedown", onMouseDownRightResize);
       resizerBottom.removeEventListener("mousedown", onMouseDownBottomResize);
       resizerLeft.removeEventListener("mousedown", onMouseDownLeftResize);
@@ -205,17 +237,16 @@ function ManagementSystem() {
     const styles = window.getComputedStyle(resizeableEle);
     let width = parseInt(styles.width, 10);
     let height = parseInt(styles.height, 10);
-    console.log(height);
     let x = 0;
-    let y = "455px" ;
+    let y = 0;
 
     // Right resize
     const onMouseMoveRightResize = (event) => {
       const dx = event.clientX - x;
       x = event.clientX;
-      if((width + dx) < 500){
+      if ((width + dx) < 500) {
         width = 500;
-      }else{
+      } else {
         width = width + dx;
       }
       resizeableEle.style.width = `${width}px`;
@@ -237,18 +268,20 @@ function ManagementSystem() {
     // Bottom resize
     const onMouseMoveBottomResize = (event) => {
       const dy = event.clientY - y;
-      if(event.clientY < 455){
-        height = 455;
-      }
-      else{
-        height = height + dy;
-      }
+      height = height + dy;
       y = event.clientY;
       let calenderMainWrap = document.querySelector("#notesListId .MuiPaper-elevation");
-      let eventTableCell =  document.querySelectorAll("#notesListId .Cell-cell.MuiTableCell-body");
-      for(var i=0; i<eventTableCell.length; i++){
-        eventTableCell[i].style.height = `${height / 10}px`;
+      let eventTableCell = document.querySelectorAll("#notesListId .Cell-cell.MuiTableCell-body");
+      let eventModule = document.querySelectorAll("#notesListId .css-ljfojm > div");
+      for (var i = 0; i < eventTableCell.length; i++) {
+        eventTableCell[i].style.height = `${height / 8.5}px`;
+        console.log(eventModule);
       }
+      for (var modl = 0; modl < eventModule.length; modl++) {
+        eventModule[modl].style.top = `${height / 10}px`;
+        console.log(eventModule);
+      }
+      // eventModule.style.top = `${height / 7.5625}px`;
       calenderMainWrap.style.height = `${height}px`;
       resizeableEle.style.height = `${height}px`;
     };
@@ -270,9 +303,9 @@ function ManagementSystem() {
     const onMouseMoveLeftResize = (event) => {
       const dx = event.clientX - x;
       x = event.clientX;
-      if((width - dx) < 500){
+      if ((width - dx) < 500) {
         width = 500;
-      }else{
+      } else {
         width = width - dx;
       }
       resizeableEle.style.width = `${width}px`;
@@ -305,42 +338,87 @@ function ManagementSystem() {
       resizerLeft.removeEventListener("mousedown", onMouseDownLeftResize);
     };
   }, []);
+  // const getStyle = document.getElementById("taskListId").getAttribute("style");
+  useEffect(() => {
+    getDrag();
+  }, []);
+
+  // Post Slidebar
+  const createDrag = (data) => {
+    return fetch(`${API}/api/create-drag`, {
+      method: "POST",
+      headers: {
+        "x-access-token": token,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        console.log("create-drag", json[0].data_content.note);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  // get Taskbar
+  const getDrag = (data) => {
+    return fetch(`${API}/api/get-drag`, {
+      method: "POST",
+      headers: {
+        "x-access-token": token,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        console.log("get-drag.data_content", json[0].data_content.note);
+        setStyle(json[0].data_content.note);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <div className="main-body">
-        <div className="sidebar">
-          <div className="notesList" id="notesListId" ref={eventRef} style={style2}>
-            <div className="dragable-header"
-                ref={dragEl2}
-                onPointerDown={eventHandlePointerDown}
-                onPointerMove={eventHandlePointerMove}
-                onPointerUp={eventHandlePointerUp}
-              >
-              <h4>Event Calender</h4>
-            </div>
-            <div className="resizeable-body">
-              <div ref={eventRefLeft} className="resizer resizer-l"></div>
-              <Demo />
-              <div ref={eventRefRight} className="resizer resizer-r"></div>
-            </div>
-            <div ref={eventRefBottom} className="resizer resizer-b"></div>
+      <div className="sidebar">
+        <div className="notesList" id="notesListId" ref={eventRef} style={style2}>
+          <div className="dragable-header"
+            ref={dragEl2}
+            onPointerDown={eventHandlePointerDown}
+            onPointerMove={eventHandlePointerMove}
+            onPointerUp={eventHandlePointerUp}
+          >
+            <h4><Trans>Kalender</Trans></h4>
           </div>
-          {/* task list card */}
-          <div className="taskList" id="taskListId" ref={taskRef}  style={style}>
-            <div className="dragable-header"
-              ref={dragEl}
-              onPointerDown={handlePointerDown}
-              onPointerMove={handlePointerMove}
-              onPointerUp={handlePointerUp}
-            >
-            <h4>TaskBar</h4>
-            </div>
-            <div className="resizeable-body">
-              <div ref={taskRefLeft} className="resizer resizer-l"></div>
-              <TaskList />
-              <div ref={taskRefRight} className="resizer resizer-r"></div>
-            </div>
-            <div ref={taskRefBottom} className="resizer resizer-b"></div>
+          <div className="resizeable-body">
+            <div ref={eventRefLeft} className="resizer resizer-l"></div>
+            <Demo />
+            <div ref={eventRefRight} className="resizer resizer-r"></div>
           </div>
+          <div ref={eventRefBottom} className="resizer resizer-b"></div>
+        </div>
+        {/* task list card */}
+        <div className="taskList" id="taskListId" ref={taskRef} style={style}>
+          <div ref={taskRefTop} className="resizer resizer-t"></div>
+          <div className="dragable-header"
+            ref={dragEl}
+            onPointerDown={handlePointerDown}
+            onPointerMove={handlePointerMove}
+            onPointerUp={handlePointerUp}
+          >
+            <h4><Trans>Aufgaben</Trans></h4>
+          </div>
+          <div className="resizeable-body">
+            <div ref={taskRefLeft} className="resizer resizer-l"></div>
+            <TaskList />
+            <div ref={taskRefRight} className="resizer resizer-r"></div>
+          </div>
+          <div ref={taskRefBottom} className="resizer resizer-b"></div>
+        </div>
       </div>
     </div>
   );
