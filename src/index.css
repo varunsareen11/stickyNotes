@@ -135,7 +135,7 @@ button.addBtn {
 }
 .notesList .MuiButtonBase-root.Demo-addButton {
   position: absolute;
-  top: -61px;
+  top: -17px;
   right: -15px;
   background: #fff;
   color: #ffac14;
@@ -163,14 +163,15 @@ button.addBtn {
   padding: 10px;
   flex-grow: 1;
   margin-right: 20px;
+  outline: none;
 }
 
 .tackListInpuArea {
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
+  padding: 0 10px;
 }
-
 .tackListInpuArea button {
   border: none;
   background-color: transparent;
@@ -204,26 +205,6 @@ ul.tackListUl li.tackListTask:not(:last-child) {
   margin-bottom: 20px;
   line-break: anywhere;
 }
-.sidebar .taskList {
-  background-color: #fff;
-  height: 455px;
-  box-shadow: 0 0 20px 0 rgb(0 0 0 / 10%);
-  border-radius: 10px;
-  z-index: 9;
-  overflow-y: auto;
-  min-width: 320px;
-  left: 476px;
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-}
-.sidebar .resizeable-body {
-  position: relative;
-  flex-grow: 1;
-}
-.sidebar .taskList .taskListWrap {
-  padding: 25px;
-}
 .dragable-header img {
   width: 20px;
 }
@@ -236,6 +217,7 @@ ul.tackListUl li.tackListTask:not(:last-child) {
   font-size: 16px;
   letter-spacing: 2px;
   cursor: move;
+  margin-bottom: 15px;
 }
 
 .dragable-header .listMove {
@@ -426,8 +408,8 @@ ul.tackListUl.taskCompleted {
 ul.tackListUl.taskCompleted li.listCompleted {
   background: #eee;
   padding: 12px 20px;
-  margin: 0 -25px 20px;
   font-size: 14px;
+  margin-bottom: 20px;
 }
 
 ul.tackListUl.taskCompleted li:not(:first-child) {

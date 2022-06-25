@@ -1,139 +1,138 @@
-import React, { useRef, useEffect } from "react";
+// import React, { useRef, useEffect } from "react";
 
-function Demo2() {
-  const ref = useRef(null);
-  const refLeft = useRef(null);
-  const refTop = useRef(null);
-  const refRight = useRef(null);
-  const refBottom = useRef(null);
+// function Demo2() {
+//   const ref = useRef(null);
+//   const refLeft = useRef(null);
+//   const refTop = useRef(null);
+//   const refRight = useRef(null);
+//   const refBottom = useRef(null);
 
-  useEffect(() => {
-    const resizeableEle = ref.current;
-    const styles = window.getComputedStyle(resizeableEle);
-    let width = parseInt(styles.width, 10);
-    console.log(styles.width);
-    let height = parseInt(styles.height, 10);
-    let x = 0;
-    let y = 0;
+//   useEffect(() => {
+//     const resizeableEle = ref.current;
+//     const styles = window.getComputedStyle(resizeableEle);
+//     let width = parseInt(styles.width, 10);
+//     console.log(styles.width);
+//     let height = parseInt(styles.height, 10);
+//     let x = 0;
+//     let y = 0;
 
-    resizeableEle.style.top = "50px";
-    resizeableEle.style.left = "50px";
+//     resizeableEle.style.top = "50px";
+//     resizeableEle.style.left = "50px";
 
-    // Right resize
-    const onMouseMoveRightResize = (event) => {
-      const dx = event.clientX - x;
-      x = event.clientX;
-      console.log(dx);
-      width = width + dx;
-      resizeableEle.style.width = `${width}px`;
-    };
+//     // Right resize
+//     const onMouseMoveRightResize = (event) => {
+//       const dx = event.clientX - x;
+//       x = event.clientX;
+//       console.log(dx);
+//       width = width + dx;
+//       resizeableEle.style.width = `${width}px`;
+//     };
 
-    const onMouseUpRightResize = (event) => {
-      document.removeEventListener("mousemove", onMouseMoveRightResize);
-    };
+//     const onMouseUpRightResize = (event) => {
+//       document.removeEventListener("mousemove", onMouseMoveRightResize);
+//     };
 
-    const onMouseDownRightResize = (event) => {
-      x = event.clientX;
-      resizeableEle.style.left = styles.left;
-      resizeableEle.style.right = null;
-      document.addEventListener("mousemove", onMouseMoveRightResize);
-      document.addEventListener("mouseup", onMouseUpRightResize);
-    };
+//     const onMouseDownRightResize = (event) => {
+//       x = event.clientX;
+//       resizeableEle.style.left = styles.left;
+//       resizeableEle.style.right = null;
+//       document.addEventListener("mousemove", onMouseMoveRightResize);
+//       document.addEventListener("mouseup", onMouseUpRightResize);
+//     };
 
-    // Top resize
-    const onMouseMoveTopResize = (event) => {
-      const dy = event.clientY - y;
-      height = height - dy;
-      y = event.clientY;
-      resizeableEle.style.height = `${height}px`;
-    };
+//     // Top resize
+//     const onMouseMoveTopResize = (event) => {
+//       const dy = event.clientY - y;
+//       height = height - dy;
+//       y = event.clientY;
+//       resizeableEle.style.height = `${height}px`;
+//     };
 
-    const onMouseUpTopResize = (event) => {
-      document.removeEventListener("mousemove", onMouseMoveTopResize);
-    };
+//     const onMouseUpTopResize = (event) => {
+//       document.removeEventListener("mousemove", onMouseMoveTopResize);
+//     };
 
-    const onMouseDownTopResize = (event) => {
-      y = event.clientY;
-      const styles = window.getComputedStyle(resizeableEle);
-      resizeableEle.style.bottom = styles.bottom;
-      resizeableEle.style.top = null;
-      document.addEventListener("mousemove", onMouseMoveTopResize);
-      document.addEventListener("mouseup", onMouseUpTopResize);
-    };
+//     const onMouseDownTopResize = (event) => {
+//       y = event.clientY;
+//       const styles = window.getComputedStyle(resizeableEle);
+//       resizeableEle.style.bottom = styles.bottom;
+//       resizeableEle.style.top = null;
+//       document.addEventListener("mousemove", onMouseMoveTopResize);
+//       document.addEventListener("mouseup", onMouseUpTopResize);
+//     };
 
-    // Bottom resize
-    const onMouseMoveBottomResize = (event) => {
-      const dy = event.clientY - y;
-      height = height + dy;
-      y = event.clientY;
-      resizeableEle.style.height = `${height}px`;
-    };
+//     // Bottom resize
+//     const onMouseMoveBottomResize = (event) => {
+//       const dy = event.clientY - y;
+//       height = height + dy;
+//       y = event.clientY;
+//       resizeableEle.style.height = `${height}px`;
+//     };
 
-    const onMouseUpBottomResize = (event) => {
-      document.removeEventListener("mousemove", onMouseMoveBottomResize);
-    };
+//     const onMouseUpBottomResize = (event) => {
+//       document.removeEventListener("mousemove", onMouseMoveBottomResize);
+//     };
 
-    const onMouseDownBottomResize = (event) => {
-      y = event.clientY;
-      const styles = window.getComputedStyle(resizeableEle);
-      resizeableEle.style.top = styles.top;
-      resizeableEle.style.bottom = null;
-      document.addEventListener("mousemove", onMouseMoveBottomResize);
-      document.addEventListener("mouseup", onMouseUpBottomResize);
-    };
+//     const onMouseDownBottomResize = (event) => {
+//       y = event.clientY;
+//       const styles = window.getComputedStyle(resizeableEle);
+//       resizeableEle.style.top = styles.top;
+//       resizeableEle.style.bottom = null;
+//       document.addEventListener("mousemove", onMouseMoveBottomResize);
+//       document.addEventListener("mouseup", onMouseUpBottomResize);
+//     };
 
-    // Left resize
-    const onMouseMoveLeftResize = (event) => {
-      const dx = event.clientX - x;
-      x = event.clientX;
-      width = width - dx;
-      resizeableEle.style.width = `${width}px`;
-    };
+//     // Left resize
+//     const onMouseMoveLeftResize = (event) => {
+//       const dx = event.clientX - x;
+//       x = event.clientX;
+//       width = width - dx;
+//       resizeableEle.style.width = `${width}px`;
+//     };
 
-    const onMouseUpLeftResize = (event) => {
-      document.removeEventListener("mousemove", onMouseMoveLeftResize);
-    };
+//     const onMouseUpLeftResize = (event) => {
+//       document.removeEventListener("mousemove", onMouseMoveLeftResize);
+//     };
 
-    const onMouseDownLeftResize = (event) => {
-      x = event.clientX;
-      resizeableEle.style.right = styles.right;
-      resizeableEle.style.left = null;
-      document.addEventListener("mousemove", onMouseMoveLeftResize);
-      document.addEventListener("mouseup", onMouseUpLeftResize);
-    };
+//     const onMouseDownLeftResize = (event) => {
+//       x = event.clientX;
+//       resizeableEle.style.right = styles.right;
+//       resizeableEle.style.left = null;
+//       document.addEventListener("mousemove", onMouseMoveLeftResize);
+//       document.addEventListener("mouseup", onMouseUpLeftResize);
+//     };
 
-    // Add mouse down event listener
-    const resizerRight = refRight.current;
-    resizerRight.addEventListener("mousedown", onMouseDownRightResize);
-    const resizerTop = refTop.current;
-    resizerTop.addEventListener("mousedown", onMouseDownTopResize);
-    const resizerBottom = refBottom.current;
-    resizerBottom.addEventListener("mousedown", onMouseDownBottomResize);
-    const resizerLeft = refLeft.current;
-    resizerLeft.addEventListener("mousedown", onMouseDownLeftResize);
+//     // Add mouse down event listener
+//     const resizerRight = refRight.current;
+//     resizerRight.addEventListener("mousedown", onMouseDownRightResize);
+//     const resizerTop = refTop.current;
+//     resizerTop.addEventListener("mousedown", onMouseDownTopResize);
+//     const resizerBottom = refBottom.current;
+//     resizerBottom.addEventListener("mousedown", onMouseDownBottomResize);
+//     const resizerLeft = refLeft.current;
+//     resizerLeft.addEventListener("mousedown", onMouseDownLeftResize);
 
-    return () => {
-      resizerRight.removeEventListener("mousedown", onMouseDownRightResize);
-      resizerTop.removeEventListener("mousedown", onMouseDownTopResize);
-      resizerBottom.removeEventListener("mousedown", onMouseDownBottomResize);
-      resizerLeft.removeEventListener("mousedown", onMouseDownLeftResize);
-    };
-  }, []);
+//     return () => {
+//       resizerRight.removeEventListener("mousedown", onMouseDownRightResize);
+//       resizerTop.removeEventListener("mousedown", onMouseDownTopResize);
+//       resizerBottom.removeEventListener("mousedown", onMouseDownBottomResize);
+//       resizerLeft.removeEventListener("mousedown", onMouseDownLeftResize);
+//     };
+//   }, []);
 
-  return (
-    <div className="container">
-      <div ref={ref} className="resizeable">
-        <div ref={refLeft} className="resizer resizer-l"></div>
-        <div ref={refTop} className="resizer resizer-t"></div>
-        <div ref={refRight} className="resizer resizer-r"></div>
-        <div ref={refBottom} className="resizer resizer-b"></div>
-      </div>
-    </div>
-  );
-}
+//   return (
+//     <div className="container">
+//       <div ref={ref} className="resizeable">
+//         <div ref={refLeft} className="resizer resizer-l"></div>
+//         <div ref={refTop} className="resizer resizer-t"></div>
+//         <div ref={refRight} className="resizer resizer-r"></div>
+//         <div ref={refBottom} className="resizer resizer-b"></div>
+//       </div>
+//     </div>
+//   );
+// }
 
-export default Demo2;
-
+// export default Demo2;
 
 // import { useState, useRef, useEffect } from "react";
 // import "./style.css";
@@ -146,7 +145,7 @@ export default Demo2;
 // function ManagementSystem() {
 //   const { t, i18n } = useTranslation();
 //   const user = JSON.parse(localStorage.getItem("user-info"));
-//   const token = user.token;
+//   const token = user?.token;
 //   console.log(token);
 //   const navigate = useNavigate();
 //   useEffect(() => {
@@ -562,3 +561,46 @@ export default Demo2;
 // }
 
 // export default ManagementSystem;
+import React, { useState } from "react";
+import { Rnd } from "react-rnd";
+
+const style = {
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  border: "solid 1px #ddd",
+  background: "#f0f0f0",
+};
+const Demo2 = () => {
+  const [size, setSize] = useState({
+    width: "",
+    height: "",
+  });
+  const [position, setPosition] = useState({
+    x: "",
+    y: "",
+  });
+  return (
+    <div>
+      <Rnd
+        style={style}
+        size={{ width: size.width, height: size.height }}
+        position={{ x: position.x, y: position.y }}
+        onDragStop={(e, d) => {
+          setPosition({ x: d.x, y: d.y });
+        }}
+        onResizeStop={(e, direction, ref, delta, position) => {
+          setSize({
+            width: ref.style.width,
+            height: ref.style.height,
+            ...position,
+          });
+        }}
+      >
+        <TaskList />
+      </Rnd>
+    </div>
+  );
+};
+
+export default Demo2;

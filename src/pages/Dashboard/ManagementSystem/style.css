@@ -51,3 +51,30 @@ label.xy {
 #notesListId .Appointment-appointment {
   min-height: 21px;
 }
+/* package css */
+.taskListWrap {
+  flex-grow: 1;
+}
+.taskList .react-draggable {
+  display: block !important;
+  min-width: 280px;
+  min-height: 150px;
+  overflow: auto;
+  overflow-x: hidden;
+  background-color: #fff !important;
+}
+.notesList .react-draggable {
+  display: block !important;
+  background-color: #fff !important;
+  min-width: 450px;
+  min-height: 403px;
+  overflow: auto;
+  overflow-x: hidden;
+}
+.taskList .react-draggable li.tackListTask {
+  padding: 0 20px;
+}
+ul.tackListUl li.tackListTask .ctm-checkbox-tasklist span {
+  padding-left: 24px;
+  cursor: pointer;
+}

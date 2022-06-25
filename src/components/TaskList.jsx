@@ -8,7 +8,7 @@ const API = "http://54.87.14.216";
 function TaskList() {
   const { t, i18n } = useTranslation();
   const user = JSON.parse(localStorage.getItem("user-info"));
-  const token = user.token;
+  const token = user?.token;
   const [inputVal, setinputVal] = useState("");
   const [taskListInput, setTaskListInput] = useState("");
   const [Items, setItems] = useState([]);
@@ -87,7 +87,7 @@ function TaskList() {
     })
       .then((res) => res.json())
       .then((json) => {
-        let reverseTaskList = json.reverse();
+        let reverseTaskList = json?.reverse();
         console.log(reverseTaskList);
         setItems(reverseTaskList);
       })
@@ -185,7 +185,7 @@ function TaskList() {
         <li className="listCompleted"><Trans>completedTask</Trans></li>
         {compList.map((getMap) => {
           return (
-            <li>
+            <li className="tackListTask">
               <CheckCircleOutlineIcon className="checkIcon" color="action" /> {getMap.title}
             </li>
           )

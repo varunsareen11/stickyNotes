@@ -38,7 +38,7 @@ import Create from "@mui/icons-material/Create";
 const API = "http://54.87.14.216";
 
 const user = JSON.parse(localStorage.getItem("user-info"));
-const token = user.token;
+const token = user?.token;
 
 const PREFIX = "Demo";
 const classes = {
@@ -417,7 +417,7 @@ export default class Demo extends React.PureComponent {
       .then((json) => {
         // console.log("json", json);
         this.setState({
-          data: json.map((item) => {
+          data: json?.map((item) => {
             return {
               title: item.title,
               startDate: new Date(item.startDate),
