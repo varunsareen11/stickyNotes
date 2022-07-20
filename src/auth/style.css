@@ -6,14 +6,14 @@
 
 .auth-page-heading {
   font-family: Poppins;
-  font-size: 42px;
+  font-size: 34px;
   font-weight: 700;
-  line-height: 52px;
+  line-height: 40px;
   text-align: center;
   margin-bottom: 25px;
 }
 .big-card {
-  padding: 50px;
+  padding: 40px;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.1);
   background: #fff;
 }
@@ -124,9 +124,10 @@
   border: none;
 }
 
-.auth-page .login-page-forget a {
+.auth-page .login-page-forget button {
   color: #000;
-  text-decoration: none;
+  background-color: transparent;
+  border: none;
 }
 
 .auth-page .auth-page-form button[type="submit"]:hover {
@@ -181,8 +182,8 @@
 }
 
 .auth-page .ctm-checkbox-container .ctm-checkbox-checkmark:after {
-  left: 4px;
-  top: 2px;
+  left: 5px;
+  top: 3px;
   width: 3px;
   height: 6px;
   border: solid white;
@@ -191,10 +192,10 @@
 }
 /* register style */
 .register-header img {
-  max-width: 100px;
+  max-width: 70px;
   margin: 0 auto;
   display: table;
-  margin-bottom: 20px;
+  /* margin-bottom: 20px; */
 }
 .auth-page.register-page .auth-page-wrap {
   align-items: flex-start;
@@ -223,4 +224,12 @@
 }
 .register-page.auth-page .ctm-container {
   max-width: 1140px;
+}
+.login-page .apiError {
+  background: #ec1c2424;
+  text-align: center;
+  border: 1px solid #ec1c24;
+  color: #ec1c24;
+  font-size: 12px;
+  padding: 8px;
 }

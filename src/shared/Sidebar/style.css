@@ -35,7 +35,13 @@ ul.navbar-menu a {
   letter-spacing: 0em;
   text-align: left;
   color: #878787;
-  padding: 12px 0;
+  padding: 7px 0;
+}
+.main-aside-active .logo {
+  margin-bottom: 15px;
+}
+.main-aside-active ul.navbar-menu a {
+  padding: 17px 0;
 }
 
 ul.navbar-menu a:hover,
@@ -55,8 +61,8 @@ ul.navbar-menu a.active svg.icon {
   background: #fff;
   padding: 10px;
   border-radius: 6px;
-  outline: 10px solid rgb(105 86 229 / 10%);
-  margin: 18px;
+  outline: 6px solid rgb(105 86 229 / 10%);
+  margin: 8px 8px 20px;
   text-align: center;
   font-family: Manrope;
   font-size: 10px;
@@ -81,9 +87,10 @@ ul.navbar-menu a.active svg.icon {
   margin: 22px 0 18px;
 }
 
-.logo {
+.logo a {
   display: flex;
   align-items: center;
+  text-decoration: none;
 }
 
 .logo h4 {
@@ -97,10 +104,16 @@ ul.navbar-menu a.active svg.icon {
 }
 
 .sidebarCont {
-  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  position: fixed;
+  top: 0;
+  background: #fff;
+  padding: 25px;
+  border: 1px solid #f0f0f0;
+  bottom: 0;
+  width: 20%;
 }
 
 .sidebarCont .ctm-navbar {
@@ -112,4 +125,12 @@ ul.navbar-menu a.active svg.icon {
 }
 .main-wrapper .main-aside.main-aside-active ul.navbar-menu a {
   justify-content: center;
+}
+.main-wrapper .main-aside {
+  flex: 0 0 20%;
+}
+.main-wrapper .main-aside.main-aside-active,
+.main-wrapper .main-aside.main-aside-active .sidebarCont {
+  flex: 0 0 96px;
+  width: 96px;
 }

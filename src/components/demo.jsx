@@ -17,6 +17,7 @@ import {
   EditRecurrenceMenu,
   AllDayPanel,
 } from "@devexpress/dx-react-scheduler-material-ui";
+
 import { connectProps } from "@devexpress/dx-react-core";
 import DateTimePicker from "@mui/lab/DateTimePicker";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
@@ -34,6 +35,7 @@ import Notes from "@mui/icons-material/Notes";
 import Close from "@mui/icons-material/Close";
 import CalendarToday from "@mui/icons-material/CalendarToday";
 import Create from "@mui/icons-material/Create";
+import "./style.css";
 
 const API = "http://54.87.14.216";
 
@@ -41,6 +43,12 @@ const user = JSON.parse(localStorage.getItem("user-info"));
 const token = user?.token;
 
 const PREFIX = "Demo";
+const allDayLocalizationMessages = {
+  "de-GR": {
+    allDay: "Ganztägig",
+  },
+};
+const getAllDayMessages = (locale) => allDayLocalizationMessages[locale];
 const classes = {
   flexibleSpace: `${PREFIX}-flexibleSpace`,
   content: `${PREFIX}-content`,
@@ -96,11 +104,11 @@ const StyledDiv = styled("div")(({ theme }) => ({
   },
 }));
 const StyledFab = styled(Fab)(({ theme }) => ({
-  [`&.${classes.addButton}`]: {
-    position: "absolute",
-    bottom: theme.spacing(3),
-    right: theme.spacing(4),
-  },
+  // [`&.${classes.addButton}`]: {
+  //   position: "absolute",
+  //   bottom: theme.spacing(3),
+  //   right: theme.spacing(4),
+  // },
 }));
 
 class AppointmentFormContainerBasic extends React.PureComponent {
@@ -346,7 +354,9 @@ export default class Demo extends React.PureComponent {
       startDayHour: 9,
       endDayHour: 19,
       isNewAppointment: false,
+      locale: "de-GR",
     };
+    console.log("propsDemo", props);
     this.currentDateChange = (currentDate) => {
       this.setState({ currentDate });
     };
@@ -381,6 +391,11 @@ export default class Demo extends React.PureComponent {
             isNewAppointment: false,
           });
         }
+        this.props.setFormState(false);
+        setTimeout(() => {
+          let OverlayForm = document.querySelector("#notesListId");
+          OverlayForm.classList.remove("test");
+        }, 2000);
       };
 
       return {
@@ -390,15 +405,29 @@ export default class Demo extends React.PureComponent {
         visibleChange: this.toggleEditingFormVisibility,
         onEditingAppointmentChange: this.onEditingAppointmentChange,
         cancelAppointment,
+
       };
     });
+
   }
 
   componentDidMount() {
     this.getCalender();
-  }
+    // console.log("this.props", this.props)
+    // console.log("this.props.formOpen", this.props.formOpen);
+  };
   componentDidUpdate() {
     this.appointmentForm.update();
+    if (this.props.formOpen) {
+      let OverlayForm = document.querySelector("#notesListId");
+      OverlayForm.classList.add("test");
+      this.setState({ editingFormVisible: true });
+      this.onEditingAppointmentChange(undefined);
+      // this.onAddedAppointmentChange({
+      //   startDate: new Date(currentDate).setHours(startDayHour),
+      //   endDate: new Date(currentDate).setHours(startDayHour + 1),
+      // })
+    }
   }
 
   // api functions
@@ -435,10 +464,14 @@ export default class Demo extends React.PureComponent {
   // api functions end
 
   onEditingAppointmentChange(editingAppointment) {
+    // let OverlayForm = document.querySelector("#notesListId");
+    // OverlayForm.classList.add("test");
     this.setState({ editingAppointment });
   }
 
   onAddedAppointmentChange(addedAppointment) {
+    let OverlayForm = document.querySelector("#notesListId");
+    OverlayForm.classList.add("test");
     this.setState({ addedAppointment });
     const { editingAppointment } = this.state;
     if (editingAppointment !== undefined) {
@@ -523,81 +556,91 @@ export default class Demo extends React.PureComponent {
       currentDate,
       data,
       confirmationVisible,
+      locale,
       editingFormVisible,
       startDayHour,
       endDayHour,
     } = this.state;
 
     return (
-      <Paper>
-        <Scheduler data={data}>
-          <ViewState
-            currentDate={currentDate}
-            onCurrentDateChange={this.currentDateChange}
-          />
-          <EditingState
-            onCommitChanges={this.commitChanges}
-            onEditingAppointmentChange={this.onEditingAppointmentChange}
-            onAddedAppointmentChange={this.onAddedAppointmentChange}
-          />
-          <MonthView />
-          <WeekView startDayHour={startDayHour} endDayHour={endDayHour} />
-          <AllDayPanel />
-          <EditRecurrenceMenu />
-          <Appointments />
-          <AppointmentTooltip showOpenButton showCloseButton showDeleteButton />
-          <Toolbar />
-          <DateNavigator />
-          <TodayButton />
-          <ViewSwitcher />
-          <AppointmentForm
-            overlayComponent={this.appointmentForm}
-            visible={editingFormVisible}
-            onVisibilityChange={this.toggleEditingFormVisibility}
-          />
-          <DragDropProvider />
-        </Scheduler>
+      <>
+        <Paper>
+          <Scheduler data={data} locale={locale}>
+            <ViewState
+              currentDate={currentDate}
+              onCurrentDateChange={this.currentDateChange}
+            />
+            <EditingState
+              onCommitChanges={this.commitChanges}
+              onEditingAppointmentChange={this.onEditingAppointmentChange}
+              onAddedAppointmentChange={this.onAddedAppointmentChange}
+            />
+            <MonthView />
+            <WeekView startDayHour={startDayHour} endDayHour={endDayHour} />
+            <AllDayPanel messages={getAllDayMessages(locale)} />
+            <EditRecurrenceMenu />
+            <Appointments />
+            <AppointmentTooltip showOpenButton showCloseButton showDeleteButton />
+            <Toolbar />
+            <DateNavigator />
+            <TodayButton />
+            <ViewSwitcher />
+            <DragDropProvider />
+            <AppointmentForm
+              overlayComponent={this.appointmentForm}
+              visible={editingFormVisible}
+              onVisibilityChange={this.toggleEditingFormVisibility}
+            />
+          </Scheduler>
+          <Dialog open={confirmationVisible} onClose={this.cancelDelete}>
+            <DialogTitle>Delete Appointment</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Are you sure you want to delete this appointment?
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button
+                onClick={this.toggleConfirmationVisible}
+                color="primary"
+                variant="outlined"
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={this.commitDeletedAppointment}
+                color="secondary"
+                variant="outlined"
+              >
+                Delete
+              </Button>
+            </DialogActions>
+          </Dialog>
 
-        <Dialog open={confirmationVisible} onClose={this.cancelDelete}>
-          <DialogTitle>Delete Appointment</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Are you sure you want to delete this appointment?
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button
-              onClick={this.toggleConfirmationVisible}
-              color="primary"
-              variant="outlined"
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={this.commitDeletedAppointment}
-              color="secondary"
-              variant="outlined"
-            >
-              Delete
-            </Button>
-          </DialogActions>
-        </Dialog>
-
-        <StyledFab
-          color="secondary"
-          className={classes.addButton}
-          onClick={() => {
-            this.setState({ editingFormVisible: true });
-            this.onEditingAppointmentChange(undefined);
-            this.onAddedAppointmentChange({
-              startDate: new Date(currentDate).setHours(startDayHour),
-              endDate: new Date(currentDate).setHours(startDayHour + 1),
-            });
-          }}
-        >
-          +
-        </StyledFab>
-      </Paper>
+          <StyledFab
+            color="secondary"
+            className={classes.addButton}
+            onClick={() => {
+              this.setState({ editingFormVisible: true });
+              this.onEditingAppointmentChange(undefined);
+              this.onAddedAppointmentChange({
+                startDate: new Date(currentDate).setHours(startDayHour),
+                endDate: new Date(currentDate).setHours(startDayHour + 1),
+              });
+            }}
+          >
+            +
+          </StyledFab>
+        </Paper>
+        {/* <div className="classes.addButton" onClick={() => {
+          this.setState({ editingFormVisible: true });
+          this.onEditingAppointmentChange(undefined);
+          this.onAddedAppointmentChange({
+            startDate: new Date(currentDate).setHours(startDayHour),
+            endDate: new Date(currentDate).setHours(startDayHour + 1),
+          });
+        }}>This is second button</div> */}
+      </>
     );
   }
 }

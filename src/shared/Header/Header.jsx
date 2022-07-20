@@ -1,25 +1,54 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./style.css";
 import { useLocation, useNavigate } from "react-router-dom";
+import LockIcon from '@mui/icons-material/Lock';
 const Header = (props) => {
   const [openDropdrown, setOpenDropdrown] = useState(false);
   const [standorte, setStandorte] = useState(false);
   const [addModule, setAddModule] = useState(false);
   const [fixBoard, setFixBoard] = useState(false);
-  const [networdDrop, setNetwordDrop] = useState(false);
   const location = useLocation();
+  const dropDownCont = useRef(null);
+
   let pathArr = location.pathname.split("/");
   pathArr.shift();
   let user = JSON.parse(localStorage.getItem("user-info"));
   const navigate = useNavigate();
   const logoutFunc = () => {
-    localStorage.clear();
+    localStorage.removeItem("user-info");
     navigate("/login");
   };
+  const handleClickOutside = event => {
+    if (dropDownCont.current && !dropDownCont.current.contains(event.target)) {
+      setFixBoard(false);
+      setAddModule(false);
+      setStandorte(false);
+    }
+  };
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
 
+    return () => {
+      // clean up
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  });
+  const removeNote = () => {
+    props.isTaskModule(true)
+    setAddModule(false);
+  }
+  const removeCalender = () => {
+    props.isEventModule(true)
+    setAddModule(false);
+  }
+  const removeBothCalender = () => {
+    props.isEventModule(true)
+    props.isTaskModule(true)
+    setAddModule(false);
+  }
   return (
     <>
-      {!["login", "register", "packages", "thank-you"].includes(
+      {!["login", "register", "packages", "thank-you", "forget-password", "reset-password"].includes(
         pathArr[0].toLowerCase()
       ) && (
           <header className="main-header">
@@ -43,145 +72,120 @@ const Header = (props) => {
                   ></use>
                 </svg>
               </div>
-              <div className="dropdown">
-                <button
-                  className={`btn dropdown-toggle ${standorte ? "show" : ""}`}
-                  type="button"
-                  id="dropdownMenuButton1"
-                  data-bs-toggle="dropdown"
-                  aria-expanded={`${standorte ? "true" : "false"}`}
-                  onClick={() => setStandorte(!standorte)}
-                >
-                  Standorte
-                </button>
-                <ul className={`dropdown-menu ${standorte ? "show" : ""}`} aria-labelledby="dropdownMenuButton1">
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      City / Street Nr
-                    </a>
-                  </li>
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      City / Street Nr
-                    </a>
-                  </li>
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      City / Street Nr
-                    </a>
-                  </li>
-                  <li><hr className="dropdown-divider" /></li>
-                  <li><a className="dropdown-item" href="#">Standorte anlegen</a></li>
-                </ul>
-              </div>
-              <div className="dropdown">
-                <button
-                  className={`btn dropdown-toggle ${addModule ? "show" : ""}`}
-                  type="button"
-                  id="dropdownMenuButton1"
-                  data-bs-toggle="dropdown"
-                  aria-expanded={`${addModule ? "true" : "false"}`}
-                  onClick={() => setAddModule(!addModule)}
-                >
-                  Modul hinzufugen
-                </button>
-                <ul className={`dropdown-menu ${addModule ? "show" : ""}`} aria-labelledby="dropdownMenuButton1">
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      City / Street Nr
-                    </a>
-                  </li>
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      City / Street Nr
-                    </a>
-                  </li>
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      City / Street Nr
-                    </a>
-                  </li>
-                  <li><hr className="dropdown-divider" /></li>
-                  <li><a className="dropdown-item" href="#">Standorte anlegen</a></li>
-                </ul>
-              </div>
-              <div className="dropdown">
-                <button
-                  className={`btn dropdown-toggle ${fixBoard ? "show" : ""}`}
-                  type="button"
-                  id="dropdownMenuButton1"
-                  data-bs-toggle="dropdown"
-                  aria-expanded={`${fixBoard ? "true" : "false"}`}
-                  onClick={() => setFixBoard(!fixBoard)}
-                >
-                  Board Fixieren
-                </button>
-                <ul className={`dropdown-menu ${fixBoard ? "show" : ""}`} aria-labelledby="dropdownMenuButton1">
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      City / Street Nr
-                    </a>
-                  </li>
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      City / Street Nr
-                    </a>
-                  </li>
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      City / Street Nr
-                    </a>
-                  </li>
-                  <li><hr className="dropdown-divider" /></li>
-                  <li><a className="dropdown-item" href="#">Standorte anlegen</a></li>
-                </ul>
-              </div>
-              {/* <div className="colorTheme cmn_change-hover cmn-style">
-              <div className="colorThemeImages">
-                <img
-                  src="/assets/images/pallete.png"
-                  alt="pallete"
-                  className="main-img"
-                />
-                <img
-                  src="/assets/images/pallete-color-change.png"
-                  alt="pallete color"
-                  className="hover-img"
-                />
-              </div>
-              <p>Change Theme Color</p>
-            </div> */}
+              {
+                ["standorte"].includes(
+                  pathArr[0].toLowerCase()
+                ) && (
+                  <>
+                    <div className="dropdown" >
+                      <button
+                        className={`btn dropdown-toggle ${standorte ? "show" : ""}`}
+                        type="button"
+                        id="dropdownMenuButton1"
+                        data-bs-toggle="dropdown"
+                        aria-expanded={`${standorte ? "true" : "false"}`}
+                        onClick={() => {
+                          setStandorte(!standorte)
+                        }}
+                      >
+                        Standorte
+                      </button>
+                      <ul className={`dropdown-menu ${standorte ? "show" : ""}`} aria-labelledby="dropdownMenuButton1">
+                        <li>
+                          <a className="dropdown-item" href="#">
+                            City / Street Nr
+                          </a>
+                        </li>
+                        <li>
+                          <a className="dropdown-item" href="#">
+                            City / Street Nr
+                          </a>
+                        </li>
+                        <li>
+                          <a className="dropdown-item" href="#">
+                            City / Street Nr
+                          </a>
+                        </li>
+                        <li><hr className="dropdown-divider" /></li>
+                        <li><a className="dropdown-item" href="#">Standorte anlegen</a></li>
+                      </ul>
+                    </div>
+                    <div className="dropdown" ref={dropDownCont}>
+                      <button
+                        className={`btn dropdown-toggle ${addModule ? "show" : ""}`}
+                        type="button"
+                        id="dropdownMenuButton1"
+                        data-bs-toggle="dropdown"
+                        aria-expanded={`${addModule ? "true" : "false"}`}
+                        onClick={() => {
+                          setAddModule(!addModule)
+                        }}
+                      >
+                        Modul hinzufügen
+                      </button>
+                      <ul className={`dropdown-menu ${addModule ? "show" : ""}`} aria-labelledby="dropdownMenuButton1">
+                        {props.taskModule ?
+                          ""
+                          : (<li>
+                            <button className="dropdown-item" href="#" onClick={() => removeNote()}>
+                              Aufgaben
+                            </button>
+                          </li>
+                          )
+                        }
+                        {props.eventCalenderModule ?
+                          ""
+                          : (<li>
+                            <button className="dropdown-item" onClick={() => removeCalender()}>
+                              Kalender
+                            </button>
+                          </li>
+                          )
+                        }
+                        <li><hr className="dropdown-divider" /></li>
+                        <li>
+                          <button className="dropdown-item" onClick={() => removeBothCalender()}>
+                            alle Module öffnen
+                          </button>
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="dropdown">
+                      <button
+                        className={`btn `}
+                        onClick={() => { props.isModulefixed(!props.modulefixed) }}
+                      >
+                        Board Fixieren
+                        {
+                          props.modulefixed ?
+                            (<LockIcon className="board-fixed" color="action" />) : ""
+                        }
+                      </button>
+                      {/* <ul className={`dropdown-menu ${fixBoard ? "show" : ""}`} aria-labelledby="dropdownMenuButton1">
+                        <li>
+                          <a className="dropdown-item" href="#">
+                            City / Street Nr
+                          </a>
+                        </li>
+                        <li>
+                          <a className="dropdown-item" href="#">
+                            City / Street Nr
+                          </a>
+                        </li>
+                        <li>
+                          <a className="dropdown-item" href="#">
+                            City / Street Nr
+                          </a>
+                        </li>
+                        <li><hr className="dropdown-divider" /></li>
+                        <li><a className="dropdown-item" href="#">Standorte anlegen</a></li>
+                      </ul> */}
+                    </div>
+                  </>
+                )
+              }
             </div>
             <div className="header-right">
-              <div className="dropdown networkImages cmn_change-hover cmn-style">
-                <button
-                  className={`btn dropdown-toggle ${networdDrop ? "show" : ""}`}
-                  type="button"
-                  id="dropdownMenuButton1"
-                  data-bs-toggle="dropdown"
-                  aria-expanded={`${networdDrop ? "true" : "false"}`}
-                  onClick={() => setNetwordDrop(!networdDrop)}
-                >
-                  <img
-                    src="/assets/images/network.png"
-                    alt="network"
-                    className="main-img"
-                  />
-                  <img
-                    src="/assets/images/network-color-change.png"
-                    alt="network color"
-                    className="hover-img"
-                  />
-                </button>
-                <ul className={`dropdown-menu ${networdDrop ? "show" : ""}`} aria-labelledby="dropdownMenuButton1">
-                  <li>
-                    <button onClick={props.cickGe} className={`${props.cickGe ? "test" : ""}`}>GE</button>
-                  </li>
-                  <li>
-                    <button onClick={props.cickEn}>en</button>
-                  </li>
-                </ul>
-              </div>
               <div className="searchIcon cmn-style">
                 <svg className="icon" aria-labelledby="Search Icon">
                   <title id="search">Search Icon</title>
@@ -191,27 +195,15 @@ const Header = (props) => {
                   ></use>
                 </svg>
               </div>
-              {/* <div className="emailImages cmn_change-hover cmn-style">
-              <img
-                src="/assets/images/mail.png"
-                alt="mail"
-                className="main-img"
-              />
-              <img
-                src="/assets/images/mail-color-change.png"
-                alt="mail color"
-                className="hover-img"
-              />
-            </div> */}
-              {/* <div className="bellIcom cmn-style">
-              <svg className="icon" aria-labelledby="Bell Icon">
-                <title id="bell">Bell Icon</title>
-                <use
-                  xlinkHref="/assets/svg-icons/icons.svg#bell"
-                  xlinkTitle="Bell Icon"
-                ></use>
-              </svg>
-            </div> */}
+              <div className="bellIcom cmn-style">
+                <svg className="icon" aria-labelledby="Bell Icon">
+                  <title id="bell">Bell Icon</title>
+                  <use
+                    xlinkHref="/assets/svg-icons/icons.svg#bell"
+                    xlinkTitle="Bell Icon"
+                  ></use>
+                </svg>
+              </div>
               <div
                 className="profileDropdown cmn-style"
                 onClick={() => setOpenDropdrown(!openDropdrown)}
@@ -263,7 +255,8 @@ const Header = (props) => {
               </div>
             </div>
           </header>
-        )}
+        )
+      }
     </>
   );
 };

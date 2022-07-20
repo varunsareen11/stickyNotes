@@ -19,10 +19,22 @@ ul {
   padding: 0%;
   margin: 0%;
 }
+body .cmn_red_bg {
+  background-color: #ec1c24;
+  color: #fff;
+}
+body .cmn_yellow_bg {
+  background-color: #ffa500;
+  color: #fff;
+}
 button {
   cursor: pointer;
 }
-
+p.error {
+  color: red;
+  font-size: 12px;
+  margin: 3px 0 0;
+}
 .wrapper {
   padding: 70px 0;
 }
@@ -117,6 +129,9 @@ textarea:focus {
 .search input:focus {
   outline: none;
 }
+input:focus {
+  border: 1px solid #ec1c24 !important;
+}
 .card-note {
   position: absolute;
   top: 100px;
@@ -135,8 +150,8 @@ button.addBtn {
 }
 .notesList .MuiButtonBase-root.Demo-addButton {
   position: absolute;
-  top: -17px;
-  right: -15px;
+  top: -16px;
+  right: 32px;
   background: #fff;
   color: #ffac14;
   box-shadow: none;
@@ -188,7 +203,6 @@ ul.tackListUl {
 }
 ul.tackListUl li.tackListTask {
   display: flex;
-  align-items: center;
   font-size: 14px;
 }
 ul.tackListUl li.tackListTask input[type="text"] {
@@ -198,6 +212,9 @@ ul.tackListUl li.tackListTask input[type="text"] {
 }
 ul.tackListUl li.tackListTask svg {
   cursor: pointer;
+}
+.taskList .react-draggable li.tackListTask .checkIcon {
+  margin-right: 10px;
 }
 ul.tackListUl li.tackListTask:not(:last-child) {
   border-bottom: 1px solid #eee;
@@ -211,13 +228,25 @@ ul.tackListUl li.tackListTask:not(:last-child) {
 
 .dragable-header {
   text-align: center;
-  padding: 12px;
+  padding: 7px 12px;
   background: #ec1f27;
   color: #fff;
   font-size: 16px;
   letter-spacing: 2px;
   cursor: move;
   margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.dragable-header select {
+  border: 5px solid #fff;
+  width: 36px;
+  height: 36px;
+  outline: none;
+}
+.notesList .dragable-header select {
+  margin-right: 50px;
 }
 
 .dragable-header .listMove {
@@ -231,19 +260,6 @@ ul.tackListUl li.tackListTask:not(:last-child) {
 
 .main-wrapper {
   display: flex;
-}
-
-.main-wrapper .main-aside {
-  flex: 0 0 20%;
-  background: #ffffff;
-  border: 1px solid #f0f0f0;
-  padding: 25px;
-  min-height: 100vh;
-}
-
-.main-wrapper .main-aside.main-aside-active {
-  padding: 20px;
-  flex: 0 0 20px;
 }
 .main-wrapper .main-content {
   flex-grow: 1;
@@ -356,6 +372,11 @@ ul.tackListUl li.tackListTask:not(:last-child) {
 ul.tackListUl li.tackListTask .ctm-checkbox-tasklist {
   position: relative;
   flex-grow: 1;
+  padding-right: 10px;
+  line-break: anywhere;
+}
+.taskbar_icons {
+  flex: 0 0 auto;
 }
 .ctm-checkbox-tasklist .ctm-checkbox-cont {
   padding-left: 10px;
@@ -419,4 +440,23 @@ ul.tackListUl.taskCompleted li:not(:first-child) {
 .dragable-header h4 {
   font-size: 15px;
   margin: 0;
+  font-weight: 800;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+.card {
+  padding: 40px;
+  box-shadow: 3px 2px 10px rgb(0 0 0 / 25%);
+  border: none;
+}
+.card:not(:last-child) {
+  margin-bottom: 30px;
 }

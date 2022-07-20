@@ -561,46 +561,58 @@
 // }
 
 // export default ManagementSystem;
-import React, { useState } from "react";
-import { Rnd } from "react-rnd";
+import React from "react";
 
-const style = {
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  border: "solid 1px #ddd",
-  background: "#f0f0f0",
-};
-const Demo2 = () => {
-  const [size, setSize] = useState({
-    width: "",
-    height: "",
-  });
-  const [position, setPosition] = useState({
-    x: "",
-    y: "",
-  });
-  return (
-    <div>
-      <Rnd
-        style={style}
-        size={{ width: size.width, height: size.height }}
-        position={{ x: position.x, y: position.y }}
-        onDragStop={(e, d) => {
-          setPosition({ x: d.x, y: d.y });
-        }}
-        onResizeStop={(e, direction, ref, delta, position) => {
-          setSize({
-            width: ref.style.width,
-            height: ref.style.height,
-            ...position,
-          });
-        }}
-      >
-        <TaskList />
-      </Rnd>
-    </div>
-  );
-};
+import Scheduler from "devextreme-react/scheduler";
+import SpeedDialAction from "devextreme-react/speed-dial-action";
+
+import { data } from "../demo-data/task";
+import "devextreme/dist/css/dx.light.css";
+
+const views = ["week", "month"];
+
+class Demo2 extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentDate: new Date(2021, 2, 25),
+      cellDuration: 30,
+    };
+    this.showAppointmentPopup = this.showAppointmentPopup.bind(this);
+    this.onOptionChanged = this.onOptionChanged.bind(this);
+
+    this.schedulerRef = React.createRef();
+  }
+
+  render() {
+    return (
+      <React.Fragment>
+        <Scheduler
+          ref={this.schedulerRef}
+          dataSource={data}
+          views={views}
+          // adaptivityEnabled={true}
+          onOptionChanged={this.onOptionChanged}
+          defaultCurrentView="month"
+          currentDate={this.state.currentDate}
+          cellDuration={this.state.cellDuration}
+          height={590}
+          startDayHour={9}
+        ></Scheduler>
+        <SpeedDialAction icon="plus" onClick={this.showAppointmentPopup} />
+      </React.Fragment>
+    );
+  }
+
+  onOptionChanged(e) {
+    if (e.name === "currentDate") {
+      this.setState({ currentDate: e.value });
+    }
+  }
+
+  showAppointmentPopup() {
+    this.schedulerRef.current.instance.showAppointmentPopup();
+  }
+}
 
 export default Demo2;

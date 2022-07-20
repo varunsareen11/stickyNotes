@@ -188,3 +188,9 @@ header.main-header .menu-icon.remove-icon svg.icon.icon-left {
   text-transform: uppercase;
   padding-bottom: 6px;
 }
+.main-header .board-fixed {
+  width: 13px;
+  height: 13px;
+  color: #000;
+  margin-left: 7px;
+}

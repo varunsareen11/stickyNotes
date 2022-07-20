@@ -2,17 +2,19 @@ import React, { useState, useEffect } from "react";
 import DeleteIcon from '@mui/icons-material/Delete';
 import CheckIcon from '@mui/icons-material/Check';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { useTranslation, Trans } from "react-i18next";
+import "./style.css";
 const API = "http://54.87.14.216";
 
-function TaskList() {
+function TaskList({ setFormState }) {
   const { t, i18n } = useTranslation();
   const user = JSON.parse(localStorage.getItem("user-info"));
   const token = user?.token;
   const [inputVal, setinputVal] = useState("");
   const [taskListInput, setTaskListInput] = useState("");
   const [Items, setItems] = useState([]);
-  const [compList, setCompList] = useState([]);
+  const [checkedSidebar, setCheckedSidebar] = useState([]);
   // for edit todo
   const [todoEditing, setTodoEditing] = React.useState(null);
   const [editingText, setEditingText] = React.useState("");
@@ -37,6 +39,7 @@ function TaskList() {
 
   useEffect(() => {
     getSidebar();
+    getCheckedSidebar();
   }, [])
   // Post Slidebar
   const createSlidebar = (data) => {
@@ -51,7 +54,7 @@ function TaskList() {
     })
       .then((res) => res.json())
       .then((json) => {
-        console.log("json", json);
+        // console.log("json", json);
       })
       .catch((err) => {
         console.log(err);
@@ -88,8 +91,8 @@ function TaskList() {
       .then((res) => res.json())
       .then((json) => {
         let reverseTaskList = json?.reverse();
-        console.log(reverseTaskList);
         setItems(reverseTaskList);
+        console.log("reverseTaskList", Items);
       })
       .catch((err) => {
         console.log(err);
@@ -115,6 +118,26 @@ function TaskList() {
         console.log(err);
       });
   }
+  // Update Taskbar data
+  const getCheckedSidebar = (data) => {
+    return fetch(`${API}/api/get-checked-sidebar`, {
+      method: "POST",
+      headers: {
+        "x-access-token": token,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        let reverseTaskList = json?.reverse();
+        setCheckedSidebar(reverseTaskList);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 
   const submitEdits = (id, e) => {
     const getTaskVal = { title: editingText };
@@ -130,19 +153,22 @@ function TaskList() {
     // setItems(updatedTodos);
     setTodoEditing(null);
   }
-  const completedTask = (taskData, e) => {
-    setCompList(Items)
-    if (e) {
-      setCompList((oldarray) => {
-        return [taskData];
+  const completedTask = (taskCheck, e) => {
+    console.log(e);
+    if (e.target.checked === true) {
+      updateSidebar(taskCheck._id, {
+        checked: true,
+        title: taskCheck.title
       });
-      setItems((oldItems) => {
-        return oldItems.filter((arrayElemNew) => {
-          return arrayElemNew._id !== taskData._id;
-        })
-      })
+      console.log("it is working")
     }
-    console.log(compList);
+    setTimeout(() => {
+      e.target.checked = false;
+      console.log(e);
+    }, 1500);
+    // chekedStatus = false;
+    getSidebar();
+    getCheckedSidebar();
   }
   return (
     <div className="taskListWrap">
@@ -165,7 +191,7 @@ function TaskList() {
                   (<input type="text" value={editingText} onChange={(e) => setEditingText(e.target.value)} placeholder="Edit task list" />)
                   :
                   (<div className="ctm-checkbox-tasklist">
-                    <label className="ctm-checkbox-cont" onClick={(e) => completedTask(curelem, e.target.checked)}>
+                    <label className="ctm-checkbox-cont" onClick={(e) => completedTask(curelem, e)}>
                       <input type="checkbox" />
                       <span className="checkmark"></span>
                     </label>
@@ -175,7 +201,7 @@ function TaskList() {
               {
                 curelem._id === todoEditing ?
                   (<CheckIcon className="checkIcon" color="action" onClick={() => submitEdits(curelem._id)} />) :
-                  (<DeleteIcon className="deleteIcon" color="action" onClick={(e) => { deleteList(curelem._id) }} />)
+                  (<div className="taskbar_icons"><AccessTimeIcon className="access-timeIcon" color="action" onClick={() => setFormState(true)} /> <DeleteIcon className="deleteIcon" color="action" onClick={(e) => { deleteList(curelem._id) }} /> </div>)
               }
             </li>
           );
@@ -183,9 +209,9 @@ function TaskList() {
       </ul>
       <ul className="tackListUl taskCompleted">
         <li className="listCompleted"><Trans>completedTask</Trans></li>
-        {compList.map((getMap) => {
+        {checkedSidebar.map((getMap) => {
           return (
-            <li className="tackListTask">
+            <li className="tackListTask" key={getMap._id}>
               <CheckCircleOutlineIcon className="checkIcon" color="action" /> {getMap.title}
             </li>
           )

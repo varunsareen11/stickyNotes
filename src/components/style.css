@@ -1,0 +1,84 @@
+/* Event Calender */
+
+.css-99cbwm.MainLayout-container::-webkit-scrollbar {
+  width: 5px;
+}
+
+.css-99cbwm.MainLayout-container::-webkit-scrollbar-track {
+  background-color: #ebebeb;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+}
+
+.css-99cbwm::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  background: #f04724;
+}
+/* loader css */
+
+.loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+  width: 165px;
+  height: 165px;
+  border: 10px solid #4e2008;
+}
+
+.loader span {
+  width: 50px;
+  height: 50px;
+  display: block;
+  float: left;
+  background: #a23607;
+  animation: animate 2s ease-in infinite;
+  border: 2px solid #efeacc;
+}
+
+.loader span:nth-child(3) {
+  animation-delay: 0.8s;
+}
+
+.loader span:nth-child(2),
+.loader span:nth-child(6) {
+  animation-delay: 0.6s;
+}
+
+.loader span:nth-child(1),
+.loader span:nth-child(5),
+.loader span:nth-child(9) {
+  animation-delay: 0.4s;
+}
+
+.loader span:nth-child(4),
+.loader span:nth-child(8) {
+  animation-delay: 0.2s;
+}
+
+.loader span:nth-child(7) {
+  animation-delay: 0s;
+}
+
+@keyframes animate {
+  0% {
+    transform: scale(1);
+  }
+
+  25% {
+    transform: scale(0);
+  }
+
+  50% {
+    transform: scale(0);
+  }
+
+  75% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
