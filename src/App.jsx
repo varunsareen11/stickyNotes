@@ -62,7 +62,7 @@ const App = (props) => {
                 <Route path="/thank-you" element={<ThankYou />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/forget-password" element={<ForgetPassword />} />
-                <Route path="/reset-password/:url" element={<ResetPassword />} />
+                <Route path="/reset-password/:token" element={<ResetPassword />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/user" element={<User />} />
                 <Route path="/user/:_id" element={<SingleUser />} />
