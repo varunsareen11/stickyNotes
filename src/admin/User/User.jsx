@@ -8,6 +8,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import { Link } from 'react-router-dom';
 const API = "http://54.87.14.216/api";
 
@@ -36,7 +37,8 @@ function User() {
     const [userinfo, setUserInfo] = useState([]);
     const getToken = JSON.parse(localStorage.getItem("user-info"));
     const [q, setQ] = useState("");
-    const [searchTerm] = useState(["last_name"]);
+    const [firma, setfirma] = useState("");
+    const [searchTerm] = useState(["last_name", "company_name"]);
     const token = getToken?.token;
     useEffect(() => {
         getUserInfo();
@@ -69,6 +71,9 @@ function User() {
                         .toString()
                         .toLowerCase()
                         .indexOf(q.toLowerCase()) > -1
+                            .toString()
+                            .toLowerCase()
+                            .indexOf(firma.toLowerCase()) > -1
                 );
             });
         });
@@ -81,12 +86,44 @@ function User() {
                     <div className='cmn_table'>
                         <div className='tableHeading'>
                             <h3>User Table</h3>
-                            <input
-                                type="text"
-                                placeholder="Search by Nachname"
-                                value={q}
-                                onChange={(e) => setQ(e.target.value)}
-                            />
+                            <div class="filter-box">
+                                <FilterAltIcon className="filterIcon" color="action" />
+                                <div className='filters'>
+                                    <div className='filter'>
+                                        <label htmlFor="search-lastname">Search By Nachname</label>
+                                        <input
+                                            type="text"
+                                            placeholder="Search by Nachname"
+                                            name="search-lastname"
+                                            id='search-lastname'
+                                            value={q}
+                                            onChange={(e) => setQ(e.target.value)}
+                                        />
+                                    </div>
+                                    <div className='filter'>
+                                        <label htmlFor="search-Firma">Search By Firma</label>
+                                        <input
+                                            type="text"
+                                            placeholder="Search by Firma"
+                                            name="search-Firma"
+                                            id='search-Firma'
+                                            value={firma}
+                                            onChange={(e) => setfirma(e.target.value)}
+                                        />
+                                    </div>
+                                    {/* <div className='filter'>
+                                        <label htmlFor="search-Firma">filter By Paket</label>
+                                        <input
+                                            type="text"
+                                            placeholder="Search by Firma"x
+                                            name="search-Firma"
+                                            id='search-Firma'
+                                            value={q}
+                                            onChange={(e) => setQ(e.target.value)}
+                                        />
+                                    </div> */}
+                                </div>
+                            </div>
                         </div>
                         <TableContainer component={Paper}>
                             <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -106,11 +143,11 @@ function User() {
                                     (
                                         <StyledTableRow key={index + 1}>
                                             <StyledTableCell>{index + 1}</StyledTableCell>
-                                            <StyledTableCell >{row.first_name}</StyledTableCell>
+                                            <StyledTableCell >{row.email}</StyledTableCell>
                                             <StyledTableCell >{row.last_name}</StyledTableCell>
                                             <StyledTableCell >{row.company_name}</StyledTableCell>
                                             <StyledTableCell >Started</StyledTableCell>
-                                            <StyledTableCell >inProgress</StyledTableCell>
+                                            <StyledTableCell >{row.status === true ? "Active" : "Deactive"}</StyledTableCell>
                                             <StyledTableCell align="right"> <Link className="btn cmn_red_bg" to={`/user/${row._id}`}>Bearbeiten </Link></StyledTableCell>
                                         </StyledTableRow>
                                     ))}
