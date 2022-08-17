@@ -5,36 +5,45 @@ header.main-header {
   background: hsl(0, 0%, 100%);
   padding: 25px 30px;
 }
+
 header.main-header .header-left,
 header.main-header .header-right,
 header.main-header .cmn_change-hover {
   display: flex;
   align-items: center;
 }
+
 header.main-header svg.icon {
   width: 20px;
   height: 20px;
 }
+
 header.main-header img {
   width: 20px;
 }
+
 header.main-header .cmn-style {
   cursor: pointer;
 }
+
 header.main-header .cmn-style:not(:last-child) {
   margin-right: 50px;
 }
+
 header.main-header .header-left .colorTheme .colorThemeImages {
   margin-right: 14px;
   display: flex;
   align-items: center;
 }
+
 header.main-header img.hover-img {
   display: none;
 }
+
 header.main-header .cmn_change-hover:hover img.hover-img {
   display: inline-block;
 }
+
 header.main-header .cmn_change-hover:hover img.main-img {
   display: none;
 }
@@ -42,26 +51,32 @@ header.main-header .cmn_change-hover:hover img.main-img {
 header.main-header .cmn_change-hover:hover p {
   color: #ffaa10;
 }
+
 header.main-header .menu-icon svg:hover {
   fill: #ffaa10;
 }
+
 header.main-header .searchIcon svg,
 header.main-header .bellIcom svg {
   stroke: #000;
 }
+
 header.main-header .searchIcon svg:hover,
 header.main-header .bellIcom svg:hover {
   stroke: #ffaa10;
 }
+
 header.main-header .profileDropdown {
   display: flex;
   align-items: center;
   position: relative;
 }
+
 header.main-header .profileDropdown img {
   width: 50px;
   margin-right: 14px;
 }
+
 header.main-header .profileDropdown .dropdownBox {
   position: absolute;
   top: 60px;
@@ -94,7 +109,7 @@ header.main-header .profileDropdown .dropdownBox p {
 header.main-header .profileDropdown .dropdownBox .dropProfileInfo {
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin: 12px 0 0;
 }
 
 header.main-header .profileDropdown .dropdownBox .dropProfileCard {
@@ -117,7 +132,8 @@ header.main-header .profileDropdown .dropdownBox .dropProfileInfoCont p {
   margin-bottom: 0;
 }
 
-header.main-header .profileDropdown .dropdownBox .dropProfileInfo button {
+header.main-header .profileDropdown .dropdownBox .dropProfileInfo button,
+header.main-header .profileDropdown .dropdownBox .dropProfileInfo a {
   text-decoration: none;
   margin-bottom: 17px;
   display: block;
@@ -126,15 +142,17 @@ header.main-header .profileDropdown .dropdownBox .dropProfileInfo button {
   font-size: 19px;
   background-color: transparent;
   border: none;
+  text-decoration: none;
 }
-header.main-header
-  .menu-icon.remove-icon
-  svg[aria-labelledby="Hamburger close"] {
+
+header.main-header .menu-icon.remove-icon svg[aria-labelledby="Hamburger close"] {
   display: block;
 }
+
 .profileDropdown svg {
   stroke: #767676;
 }
+
 header.main-header .menu-icon svg.icon {
   background: #ffa500;
   stroke: #fff;
@@ -143,19 +161,24 @@ header.main-header .menu-icon svg.icon {
   width: 30px;
   height: 30px;
 }
+
 header.main-header .menu-icon svg.icon.icon-right {
   transform: rotate(90deg);
 }
+
 header.main-header .menu-icon svg.icon.icon-left {
   transform: rotate(-90deg);
   display: none;
 }
+
 header.main-header .menu-icon.remove-icon svg.icon.icon-right {
   display: none;
 }
+
 header.main-header .menu-icon.remove-icon svg.icon.icon-left {
   display: block;
 }
+
 .main-header .dropdown .btn {
   border: 1px solid#eee;
   border-radius: 0;
@@ -164,11 +187,13 @@ header.main-header .menu-icon.remove-icon svg.icon.icon-left {
   margin-right: 19px;
   box-shadow: none;
 }
+
 .main-header .dropdown ul.dropdown-menu {
   margin-top: 10px;
   font-size: 12px;
   min-width: auto;
 }
+
 .dropdown.networkImages .btn {
   border: 0;
   margin: 0;
@@ -188,6 +213,7 @@ header.main-header .menu-icon.remove-icon svg.icon.icon-left {
   text-transform: uppercase;
   padding-bottom: 6px;
 }
+
 .main-header .board-fixed {
   width: 13px;
   height: 13px;

@@ -8,6 +8,7 @@ import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import EditIcon from '@mui/icons-material/Edit';
 import Modal from "@mui/material/Modal";
 import "./style.css";
 const API = "http://54.87.14.216/api";
@@ -85,6 +86,8 @@ function SingleUser(props) {
     land,
     sales_tax_id,
   } = userinfo;
+
+  // Get user Info
   const getUserInfo = (data) => {
     setLoading(true);
     return fetch(`${API}/get-user-detail/${getParam._id}`, {
@@ -98,7 +101,7 @@ function SingleUser(props) {
     })
       .then((res) => res.json())
       .then((json) => {
-        console.log("user info", json);
+        console.log(json);
         setUserInfo(json);
         setUpdateUser(json);
         setLoading(false);
@@ -108,6 +111,29 @@ function SingleUser(props) {
         setLoading(false);
       });
   };
+
+  // update User 
+  // Update Taskbar data
+  const updateSingleUserProfile = (data) => {
+    return fetch(`${API}/update-user-admin/${getParam._id}`, {
+      method: "PUT",
+      headers: {
+        "x-access-token": token,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        // console.log("json", json);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  // Active User
   const userActivate = (data) => {
     return fetch(`${API}/user-active/${getParam._id}`, {
       method: "POST",
@@ -170,6 +196,7 @@ function SingleUser(props) {
   const submitUpdateUser = (event) => {
     event.preventDefault();
     setUserInfo(updateUser);
+    updateSingleUserProfile(updateUser);
     setUpdateSuccessMessage("Update Successfully");
     setTimeout(() => {
       setUpdateSuccessMessage("");
@@ -229,14 +256,17 @@ function SingleUser(props) {
                   onChange={handleProfileChange}
                 />
                 {profile ? (
-                  <img
-                    src={URL.createObjectURL(profile)}
-                    alt=""
-                    width={190}
-                    height={190}
-                  />
+                  <>
+                    <img
+                      src={URL.createObjectURL(profile)}
+                      alt=""
+                      width={190}
+                      height={190}
+                    />
+                    <EditIcon className="editIcon" color="action" />
+                  </>
                 ) : (
-                  <img src="/assets/images/userimg.png" alt="" />
+                  <><EditIcon className="editIcon" color="action" /><img src="/assets/images/userimg.png" alt="" /></>
                 )}
               </div>
             )}
@@ -426,7 +456,7 @@ function SingleUser(props) {
                 <div className="form-group">
                   <label htmlFor="house_number">Hausnummer</label>
                   <input
-                    type="number"
+                    type="text"
                     name="house_number"
                     id="house_number"
                     className="form-control"

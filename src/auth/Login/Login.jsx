@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import '../style.css';
 import axios from "axios";
 const API = "http://54.87.14.216/api";
@@ -107,12 +107,13 @@ function Login() {
                                         <span className="ctm-checkbox-checkmark"></span>
                                     </label>
                                 </div>
-                                <button onClick={() => navigate("/forget-password")}>Passwort vergessen?</button>
+                                {/* <button onClick={(e) => navigate("/forget-password")}>Passwort vergessen?</button> */}
+                                <Link to="/forget-password">Passwort vergessen?</Link>
                             </div>
                             <button type="submit">Anmelden</button>
                             {errorMessage && <p className='apiError'>{errorMessage}</p>}
                         </form>
-                        <p className='auth-form-text'>Kein Benutzername? <button onClick={() => navigate("/packages")}>Zur Produktübersicht</button></p>
+                        <p className='auth-form-text'>Kein Benutzername? <Link to="/packages">Zur Produktübersicht</Link></p>
                     </div>
                 </div>
             </div>

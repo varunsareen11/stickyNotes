@@ -18,7 +18,8 @@ import Packages from "./pages/Packages/Packages";
 import MakePayment from "./pages/Packages/MakePayment/MakePayment";
 import ThankYou from "./pages/Packages/ThankYou/ThankYou";
 import User from "./admin/User/User";
-import SingleUser from "./pages/SingleUser/SingleUser";
+import SingleUser from "./admin/SingleUser/SingleUser";
+import Profile from "./pages/Profile/Profile";
 const API = "http://54.87.14.216/api";
 
 const App = (props) => {
@@ -66,6 +67,7 @@ const App = (props) => {
                 <Route path="/register" element={<Register />} />
                 <Route path="/user" element={<User />} />
                 <Route path="/user/:_id" element={<SingleUser />} />
+                <Route path="/profile" element={<Profile />} />
               </Routes>
             </div>
           </BrowserRouter>

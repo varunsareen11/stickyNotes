@@ -12,11 +12,13 @@
   text-align: center;
   margin-bottom: 25px;
 }
+
 .big-card {
   padding: 40px;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.1);
   background: #fff;
 }
+
 .auth-page .auth-page-wrap {
   display: flex;
   align-items: center;
@@ -117,17 +119,18 @@
   color: #595959;
 }
 
-.auth-page .auth-form-text button {
+.auth-page .auth-form-text a {
   color: #ec1c24;
   text-decoration: none;
   background-color: transparent;
   border: none;
 }
 
-.auth-page .login-page-forget button {
+.auth-page .login-page-forget a {
   color: #000;
   background-color: transparent;
   border: none;
+  text-decoration: none;
 }
 
 .auth-page .auth-page-form button[type="submit"]:hover {
@@ -164,7 +167,7 @@
   border-radius: 4px;
 }
 
-.auth-page .ctm-checkbox-container input:checked ~ .ctm-checkbox-checkmark {
+.auth-page .ctm-checkbox-container input:checked~.ctm-checkbox-checkmark {
   background-color: #ec1c24;
 }
 
@@ -174,10 +177,7 @@
   display: none;
 }
 
-.auth-page
-  .ctm-checkbox-container
-  input:checked
-  ~ .ctm-checkbox-checkmark:after {
+.auth-page .ctm-checkbox-container input:checked~.ctm-checkbox-checkmark:after {
   display: block;
 }
 
@@ -190,6 +190,7 @@
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
 }
+
 /* register style */
 .register-header img {
   max-width: 70px;
@@ -197,13 +198,16 @@
   display: table;
   /* margin-bottom: 20px; */
 }
+
 .auth-page.register-page .auth-page-wrap {
   align-items: flex-start;
 }
+
 .auth-page.register-page .auth-page-wrap .auth-page-form {
   flex: 0 0 50%;
   padding: 15px;
 }
+
 .form-col {
   display: flex;
 }
@@ -219,12 +223,15 @@
 .form-col .form-group:last-child {
   padding-left: 10px;
 }
+
 .register-page.auth-page .login-page-forget label a {
   color: #ec1c24;
 }
+
 .register-page.auth-page .ctm-container {
   max-width: 1140px;
 }
+
 .login-page .apiError {
   background: #ec1c2424;
   text-align: center;

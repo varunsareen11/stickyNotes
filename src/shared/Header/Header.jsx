@@ -1,7 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./style.css";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 import LockIcon from '@mui/icons-material/Lock';
+import { decodeToken } from "react-jwt";
+const API = "http://54.87.14.216/api";
+
 const Header = (props) => {
   const [openDropdrown, setOpenDropdrown] = useState(false);
   const [standorte, setStandorte] = useState(false);
@@ -46,6 +49,12 @@ const Header = (props) => {
     props.isTaskModule(true)
     setAddModule(false);
   }
+
+
+  // ============================================= get user Data ======================================================
+  const getToken = JSON.parse(localStorage.getItem("user-info"));
+  const userName = getToken?.user?.user_name;
+  const userEmail = getToken?.user?.user_email;
   return (
     <>
       {!["login", "register", "packages", "thank-you", "forget-password", "reset-password"].includes(
@@ -224,26 +233,25 @@ const Header = (props) => {
                   <div className="dropProfileCard">
                     <img src="/assets/images/user.png" alt="User" />
                     <div className="dropProfileInfoCont">
-                      <h4>Nick</h4>
+                      <h4>{userName}</h4>
                       <p>Personal</p>
-                      <p>contact@mstflotfy.com</p>
+                      <p>{userEmail}</p>
                     </div>
                   </div>
-                  <p>Profile</p>
                   <ul className="dropProfileInfo">
                     <li>
                       <button>Settings</button>
                     </li>
                     <li>
-                      <button>Profile</button>
+                      <Link to="/profile">Profile</Link>
                     </li>
                     <li>
                       <button>Terms and privacy</button>
                     </li>
                     <li>
-                      <button onClick={() => navigate("/packages")}>
+                      <Link to="/packages" >
                         Packages
-                      </button>
+                      </Link>
                     </li>
                     {localStorage.getItem("user-info") ? (
                       <li onClick={logoutFunc}>Logout</li>

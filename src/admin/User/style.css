@@ -55,7 +55,49 @@
   font-size: 14px;
   padding: 10px;
   outline: none;
+  flex: 0 0 63%;
 }
 .tableHeading input:focus {
   border: 1px solid #ec1c24;
+}
+.filter-box .filters {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: #fff;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  min-width: 520px;
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.2s;
+}
+
+.filter-box:hover .filters {
+  opacity: 1;
+  visibility: visible;
+  transition: 0.2s;
+}
+
+.filter-box {
+  position: relative;
+}
+
+.filter-box .filters .filter {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 15px;
+}
+.filter-box .filters .filter label {
+  font-size: 14px;
+  flex: 0 0 30%;
+}
+
+.filter-box .filters .filter select {
+  border: 1px solid #eee;
+  font-size: 14px;
+  padding: 10px;
+  outline: none;
+  flex: 0 0 63%;
 }

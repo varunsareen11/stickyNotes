@@ -69,6 +69,18 @@ const Sidebar = (props) => {
                       <span className="removeOnActive">TicketSystem</span>
                     </NavLink>
                   </li>
+                  <li>
+                    <NavLink to="locations">
+                      <svg className="icon" aria-labelledby="User Icon">
+                        <title id="location">Location Icons</title>
+                        <use
+                          xlinkHref="/assets/svg-icons/icons.svg#location"
+                          xlinkTitle="User Icon"
+                        ></use>
+                      </svg>
+                      <span className="removeOnActive">Locations</span>
+                    </NavLink>
+                  </li>
                 </ul>
 
                 {/* pages dropdown */}
