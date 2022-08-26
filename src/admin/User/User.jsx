@@ -123,7 +123,6 @@ function User() {
                                         >
                                             <option value="">Select an options</option>
                                             {plans.map((item, index) => {
-                                                console.log(item);
                                                 return (
                                                     <option key={index} value={item}>
                                                         {item}
@@ -137,7 +136,6 @@ function User() {
                                             className="btn cmn_yellow_bg"
                                             disabled={search(userinfo).length === 0}
                                             onClick={() => {
-                                                console.log(search(userinfo));
                                                 saveAsCsv({ data: search(userinfo), fields, filename });
                                             }}
                                         >

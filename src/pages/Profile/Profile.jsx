@@ -10,19 +10,23 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import EditIcon from '@mui/icons-material/Edit';
 import Modal from "@mui/material/Modal";
+import { getUser } from "../../Redux/Action/Action";
 import "./style.css";
+import { useDispatch, useSelector } from "react-redux";
 const API = "http://54.87.14.216/api";
 
 function Profile() {
     const navigate = useNavigate();
     const profileRef = useRef();
-    const [userinfo, setUserInfo] = useState([]);
+    const singleUserDetail = useSelector((state) => state?.userReducer?.user);
+    const dispatch = useDispatch();
     const [updateSuccessMessage, setUpdateSuccessMessage] = useState("");
     const [accountDeleteMsg, setAccountDeleteMsg] = useState("");
     const [loading, setLoading] = useState(false);
     const getToken = JSON.parse(localStorage.getItem("user-info"));
     const token = getToken?.token;
     const [profile, setProfile] = useState("");
+    console.log("profile", profile);
     const style = {
         position: "absolute",
         top: "50%",
@@ -32,9 +36,6 @@ function Profile() {
         bgcolor: "background.paper",
         boxShadow: 24,
         p: 4,
-    };
-    const handleProfileChange = (event) => {
-        setProfile(event.target.files[0]);
     };
     const [updateUser, setUpdateUser] = useState({
         email: "",
@@ -50,6 +51,8 @@ function Profile() {
         land: "",
         sales_tax_id: "",
         about: "",
+        avtar: "",
+        company_logo: ""
     });
     const {
         _id,
@@ -64,7 +67,9 @@ function Profile() {
         city,
         land,
         sales_tax_id,
-    } = userinfo;
+        company_logo,
+        avtar
+    } = singleUserDetail;
     const getUserInfo = (data) => {
         setLoading(true);
         return fetch(`${API}/get-profile`, {
@@ -78,8 +83,8 @@ function Profile() {
         })
             .then((res) => res.json())
             .then((json) => {
-                setUserInfo(json);
                 setUpdateUser(json);
+                dispatch(getUser(json));
                 setLoading(false);
             })
             .catch((err) => {
@@ -89,15 +94,17 @@ function Profile() {
     };
     // Delete TaskBar using API
     const updateProfleChange = (e) => {
-        console.log("onchange Working");
         const name = e.target.name;
         const value = e.target.value;
         setUpdateUser({ ...updateUser, [name]: value });
     };
+    const handleProfileChange = (event) => {
+        const file = event.target.files[0];
+        setUpdateUser({ ...updateUser, "avtar": file });
+        setProfile(event.target.files[0]);
+    };
     const submitUpdateUser = (event) => {
         event.preventDefault();
-        setUserInfo(updateUser);
-        console.log(updateUser);
         updateUserProfile(updateUser);
         setUpdateSuccessMessage("Update Successfully");
         setTimeout(() => {
@@ -121,7 +128,7 @@ function Profile() {
         })
             .then((res) => res.json())
             .then((json) => {
-                console.log("json", json);
+                dispatch(getUser(json));
             })
             .catch((err) => {
                 console.log(err);
@@ -129,18 +136,18 @@ function Profile() {
     }
     return (
         <div className="main-body">
-            {userinfo ? (
+            {singleUserDetail ? (
                 <div>
                     <div className="headingCard">
                         <h2 className="dasshboard_heading">Profile</h2>
                     </div>
                     <div className="card profileInfoCard">
-                        {userinfo.profile ? (
+                        {singleUserDetail.profile ? (
                             <div
                                 className="userImage"
                                 onClick={() => profileRef.current.click()}
                             >
-                                <img src={userinfo.profile} alt="" />
+                                <img src={singleUserDetail.profile} alt="" />
                             </div>
                         ) : (
                             <div
@@ -367,7 +374,7 @@ function Profile() {
                                 <div className="form-group">
                                     <label htmlFor="postal_code">Postleitzahl</label>
                                     <input
-                                        type="number"
+                                        type="text"
                                         name="postal_code"
                                         id="postal_code"
                                         className="form-control"
@@ -400,7 +407,7 @@ function Profile() {
                                 <div className="form-group">
                                     <label htmlFor="sales_tax_id">Umsatzsteuer ID</label>
                                     <input
-                                        type="number"
+                                        type="text"
                                         name="sales_tax_id"
                                         id="sales_tax_id"
                                         className="form-control"

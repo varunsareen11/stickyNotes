@@ -1,8 +1,15 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./style.css";
 import { useLocation, useNavigate, Link } from "react-router-dom";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 import LockIcon from '@mui/icons-material/Lock';
 import { decodeToken } from "react-jwt";
+import { useSelector, useDispatch } from "react-redux";
+import { getUser } from "../../Redux/Action/Action";
+import { getLocation } from "../../Redux/Action/Action";
+import { getSelectedLocationId } from "../../Redux/Action/Action";
 const API = "http://54.87.14.216/api";
 
 const Header = (props) => {
@@ -10,12 +17,16 @@ const Header = (props) => {
   const [standorte, setStandorte] = useState(false);
   const [addModule, setAddModule] = useState(false);
   const [fixBoard, setFixBoard] = useState(false);
+  const selectedLocationId = useSelector((state) => state.locationIdReducer);
   const location = useLocation();
   const dropDownCont = useRef(null);
-
+  const singleUserDetail = useSelector((state) => state?.userReducer?.user);
+  const locations = useSelector((state) => state.locationReducer.locations);
+  const dispatch = useDispatch();
   let pathArr = location.pathname.split("/");
   pathArr.shift();
   let user = JSON.parse(localStorage.getItem("user-info"));
+  const token = user?.token;
   const navigate = useNavigate();
   const logoutFunc = () => {
     localStorage.removeItem("user-info");
@@ -50,11 +61,55 @@ const Header = (props) => {
     setAddModule(false);
   }
 
+  const handleStandorteDrop = (e) => {
+    dispatch(getSelectedLocationId(e.target.value));
+  }
 
   // ============================================= get user Data ======================================================
-  const getToken = JSON.parse(localStorage.getItem("user-info"));
-  const userName = getToken?.user?.user_name;
-  const userEmail = getToken?.user?.user_email;
+  const [locationData, setLocationData] = useState([]);
+  // getUserInfo
+  const getUserInfo = (data) => {
+    return fetch(`${API}/get-profile`, {
+      method: "POST",
+      headers: {
+        "x-access-token": token,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => res?.json())
+      .then((json) => {
+        dispatch(getUser(json));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  // get location
+  const getLocationData = (data) => {
+    return fetch(`${API}/get-location-data`, {
+      method: "GET",
+      headers: {
+        "x-access-token": token,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => res?.json())
+      .then((json) => {
+        dispatch(getLocation(json));
+      })
+      .catch((err) => {
+        console.log("getLocationData", err);
+      });
+  };
+  useEffect(() => {
+    getUserInfo();
+    getLocationData();
+  }, [])
   return (
     <>
       {!["login", "register", "packages", "thank-you", "forget-password", "reset-password"].includes(
@@ -86,39 +141,29 @@ const Header = (props) => {
                   pathArr[0].toLowerCase()
                 ) && (
                   <>
-                    <div className="dropdown" >
-                      <button
-                        className={`btn dropdown-toggle ${standorte ? "show" : ""}`}
-                        type="button"
-                        id="dropdownMenuButton1"
-                        data-bs-toggle="dropdown"
-                        aria-expanded={`${standorte ? "true" : "false"}`}
-                        onClick={() => {
-                          setStandorte(!standorte)
-                        }}
+                    <FormControl sx={{ m: 1, minWidth: 120 }} className="ctm-selectDrop">
+                      <Select
+                        value={selectedLocationId}
+                        onChange={(e) => { handleStandorteDrop(e) }}
+                        displayEmpty
+                        inputProps={{ "aria-label": "Without label" }}
                       >
-                        Standorte
-                      </button>
-                      <ul className={`dropdown-menu ${standorte ? "show" : ""}`} aria-labelledby="dropdownMenuButton1">
-                        <li>
-                          <a className="dropdown-item" href="#">
-                            City / Street Nr
-                          </a>
-                        </li>
-                        <li>
-                          <a className="dropdown-item" href="#">
-                            City / Street Nr
-                          </a>
-                        </li>
-                        <li>
-                          <a className="dropdown-item" href="#">
-                            City / Street Nr
-                          </a>
-                        </li>
-                        <li><hr className="dropdown-divider" /></li>
-                        <li><a className="dropdown-item" href="#">Standorte anlegen</a></li>
-                      </ul>
-                    </div>
+                        <MenuItem value="">
+                          Standorte
+                        </MenuItem>
+                        {
+                          locations.length > 0 && locations.map((curelem, index) => {
+                            return (
+                              <MenuItem key={index} value={curelem?._id}>
+                                {curelem?.city}
+                              </MenuItem>
+                            )
+                          })
+                        }
+                        <Link to={"/locations"} className="itemLink">Standortverwaltung</Link>
+                      </Select>
+                    </FormControl>
+
                     <div className="dropdown" ref={dropDownCont}>
                       <button
                         className={`btn dropdown-toggle ${addModule ? "show" : ""}`}
@@ -213,34 +258,34 @@ const Header = (props) => {
                   ></use>
                 </svg>
               </div>
+
               <div
-                className="profileDropdown cmn-style"
-                onClick={() => setOpenDropdrown(!openDropdrown)}
+                className="profileDropdown dropdown cmn-style"
+              // onClick={() => { setOpenDropdrown(!openDropdrown) }}
               >
-                <img src="/assets/images/user.png" alt="User" />
-                <svg className="icon" aria-labelledby="Dropdown Icon">
-                  <title id="dropdownButton">Dropdown Icon</title>
-                  <use
-                    xlinkHref="/assets/svg-icons/icons.svg#dropdownButton"
-                    xlinkTitle="Dropdown Icon"
-                  ></use>
-                </svg>
-                <div
-                  className={`dropdownBox ${openDropdrown ? "dropdownActive" : ""
-                    }`}
-                >
+                <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                  <img src="/assets/images/user.png" alt="User" />
+                  <svg className="icon" aria-labelledby="Dropdown Icon">
+                    <title id="dropdownButton">Dropdown Icon</title>
+                    <use
+                      xlinkHref="/assets/svg-icons/icons.svg#dropdownButton"
+                      xlinkTitle="Dropdown Icon"
+                    ></use>
+                  </svg>
+                </button>
+                <div className="dropdown-menu dropdownBox" aria-labelledby="dropdownMenuButton1">
                   <p>Currently in</p>
                   <div className="dropProfileCard">
                     <img src="/assets/images/user.png" alt="User" />
                     <div className="dropProfileInfoCont">
-                      <h4>{userName}</h4>
+                      <h4>{singleUserDetail?.first_name} {singleUserDetail?.last_name}</h4>
                       <p>Personal</p>
-                      <p>{userEmail}</p>
+                      <p>{singleUserDetail?.email}</p>
                     </div>
                   </div>
                   <ul className="dropProfileInfo">
                     <li>
-                      <button>Settings</button>
+                      <Link to="/settings">Settings</Link>
                     </li>
                     <li>
                       <Link to="/profile">Profile</Link>

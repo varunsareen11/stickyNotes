@@ -101,7 +101,6 @@ function SingleUser(props) {
     })
       .then((res) => res.json())
       .then((json) => {
-        console.log(json);
         setUserInfo(json);
         setUpdateUser(json);
         setLoading(false);
@@ -188,7 +187,6 @@ function SingleUser(props) {
     }, 3000);
   }
   const updateProfleChange = (e) => {
-    console.log("onchange Working");
     const name = e.target.name;
     const value = e.target.value;
     setUpdateUser({ ...updateUser, [name]: value });

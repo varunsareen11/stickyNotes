@@ -6,7 +6,6 @@ const API = "http://54.87.14.216/api";
 function ResetPassword() {
   const navigate = useNavigate();
   const { token } = useParams();
-  console.log("token", token);
   const [resetPass, setResetPass] = useState({
     password: "",
     repeatPassword: "",
@@ -48,7 +47,7 @@ function ResetPassword() {
         },
         body: JSON.stringify({ password: resetPass.password }),
       });
-      console.log("resp", resp);
+
       navigate("/login");
     } catch (error) {
       console.log("error", error);

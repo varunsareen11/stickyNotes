@@ -70,7 +70,6 @@ function Login() {
                 if (!userError) {
                     navigate("/");
                     if (rememberPass === true) {
-                        console.log("pass saved")
                         localStorage.setItem("rememberPass", JSON.stringify(userLogin));
                     }
                 } else {

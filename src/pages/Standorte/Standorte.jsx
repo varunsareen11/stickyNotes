@@ -10,6 +10,8 @@ import ColorLensIcon from '@mui/icons-material/ColorLens';
 import CancelPresentationIcon from '@mui/icons-material/CancelPresentation';
 import colors from "../../demo-data/ChangeColor";
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import { useSelector, useDispatch } from "react-redux";
+import { getLocation } from "../../Redux/Action/Action";
 
 const API = "http://54.87.14.216";
 
@@ -30,7 +32,8 @@ function ManagementSystem({ isTaskModule, taskModule, isEventModule, eventCalend
   const token = user?.token;
   const [loading, setLoading] = useState(false);
   const [dragItem, setDragItem] = useState();
-
+  const selectedLocationId = useSelector((state) => state.locationIdReducer);
+  const dispatch = useDispatch();
   const [ctmStyle, setCtmStyle] = useState({
     display: "flex",
     alignItems: "center",
@@ -64,7 +67,7 @@ function ManagementSystem({ isTaskModule, taskModule, isEventModule, eventCalend
 
   const getDrag = (data) => {
     setLoading(true);
-    return fetch(`${API}/api/get-drag`, {
+    return fetch(`${API}/api/get-drag/${selectedLocationId}`, {
       method: "POST",
       headers: {
         "x-access-token": token,
@@ -120,6 +123,7 @@ function ManagementSystem({ isTaskModule, taskModule, isEventModule, eventCalend
   }, []);
 
   const createUpdateDrag = (data) => {
+    console.log("data", data);
     if (dragItem?._id) {
       return fetch(`${API}/api/update-drag/${dragItem?._id}`, {
         method: "PUT",
@@ -218,6 +222,27 @@ function ManagementSystem({ isTaskModule, taskModule, isEventModule, eventCalend
   const hideModuleBox = (e) => {
     isTaskModule(false);
   }
+
+  // Get locaiton API
+  // get location
+  const getLocationData = (data) => {
+    return fetch(`${API}/get-location-data`, {
+      method: "GET",
+      headers: {
+        "x-access-token": token,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => res?.json())
+      .then((json) => {
+        dispatch(getLocation(json));
+      })
+      .catch((err) => {
+        console.log("getLocationData", err);
+      });
+  };
   return (
     <>
       <div className="main-body">
@@ -254,6 +279,7 @@ function ManagementSystem({ isTaskModule, taskModule, isEventModule, eventCalend
                         top: taskPosition.x.toString(),
                         left: taskPosition.y.toString(),
                       },
+                      location: selectedLocationId,
                     });
                   }
                 }}
@@ -285,6 +311,7 @@ function ManagementSystem({ isTaskModule, taskModule, isEventModule, eventCalend
                         top: taskPosition.x.toString(),
                         left: taskPosition.y.toString(),
                       },
+                      location: selectedLocationId
                     });
                   }
                 }}
@@ -345,6 +372,7 @@ function ManagementSystem({ isTaskModule, taskModule, isEventModule, eventCalend
                         top: d.x.toString(),
                         left: d.y.toString(),
                       },
+                      location: selectedLocationId
                     });
                   }
                 }}
@@ -369,6 +397,7 @@ function ManagementSystem({ isTaskModule, taskModule, isEventModule, eventCalend
                         top: taskPosition.x.toString(),
                         left: taskPosition.y.toString(),
                       },
+                      location: selectedLocationId
                     });
                   }
                 }}

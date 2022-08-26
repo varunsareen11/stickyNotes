@@ -11,7 +11,6 @@ function ForgetPassword() {
         email: ""
     });
     const [resData, setResData] = useState({});
-    console.log(resData?.url);
     const [error, setError] = useState('');
     const [isSubmit, setIsSubmit] = useState(false);
     const forgetPassHandleInput = (e) => {

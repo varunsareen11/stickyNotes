@@ -87,7 +87,7 @@ const Sidebar = (props) => {
                 <h6 className="removeOnActive">Pages</h6>
                 <ul className="navbar-menu">
                   <li>
-                    <a href="/#">
+                    <NavLink to="settings">
                       <svg className="icon" aria-labelledby="Setting Icon">
                         <title id="settings">Setting Icon</title>
                         <use
@@ -96,7 +96,7 @@ const Sidebar = (props) => {
                         ></use>
                       </svg>
                       <span className="removeOnActive">Settings</span>
-                    </a>
+                    </NavLink>
                   </li>
                   {userEmail === "admin@yopmail.com" ? (
                     <li>

@@ -22,6 +22,8 @@ function Register() {
     });
     const [error, setError] = useState({});
     const [isSubmit, setIsSubmit] = useState(false);
+    const [agreePolicy, setAgreePolicy] = useState(false);
+    const [policyError, setPolicyError] = useState("");
 
     // On value change
     const registerHandleInput = (e) => {
@@ -35,13 +37,17 @@ function Register() {
         e.preventDefault();
         setError(registerValidation(userRegister));
         setIsSubmit(true);
+        if (agreePolicy === false) {
+            setPolicyError("please agree terms of services");
+        } else {
+            setPolicyError("");
+        }
     }
 
     // register api
     async function registerApi() {
         const item = userRegister;
         delete item.repeatPassword;
-        console.log(item)
         let result = await fetch(`${API}/sign-up`, {
             method: "POST",
             headers: {
@@ -51,12 +57,11 @@ function Register() {
             body: JSON.stringify(item),
         })
         result = await result.JSON();
-        console.log(result);
     }
 
     useEffect(() => {
         console.log(error);
-        if (Object.keys(error).length === 0 && isSubmit) {
+        if (Object.keys(error).length === 0 && agreePolicy === true && isSubmit) {
             registerApi();
             setTimeout(() => {
                 navigate("/packages/payment");
@@ -149,10 +154,11 @@ function Register() {
                             </div>
                             <div className='login-page-forget'>
                                 <div className='ctm-checkbox'>
-                                    <label className="ctm-checkbox-container">I agree to the <a href="/#">terms of services</a> of this website.
+                                    <label className="ctm-checkbox-container" onClick={(e) => setAgreePolicy(e.target.checked)}>I agree to the <a href="/#">terms of services</a> of this website.
                                         <input type="checkbox" />
                                         <span className="ctm-checkbox-checkmark"></span>
                                     </label>
+                                    {policyError && <p className='error'>{policyError}</p>}
                                 </div>
                             </div>
                         </div>

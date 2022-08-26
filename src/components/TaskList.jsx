@@ -4,6 +4,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { useTranslation, Trans } from "react-i18next";
+import { useSelector } from "react-redux";
 import "./style.css";
 const API = "http://54.87.14.216";
 
@@ -18,6 +19,7 @@ function TaskList({ setFormState }) {
   // for edit todo
   const [todoEditing, setTodoEditing] = React.useState(null);
   const [editingText, setEditingText] = React.useState("");
+  const selectedLocationId = useSelector((state) => state.locationIdReducer);
 
   const ListWrap = (e) => {
     setinputVal(e.target.value);
@@ -29,10 +31,8 @@ function TaskList({ setFormState }) {
       // setItems((oldItems) => {
       //   return [...oldItems, taskListInput];
       // });
-      getSidebar();
-      const getTaskVal = { title: taskListInput };
+      const getTaskVal = { title: taskListInput, location: selectedLocationId };
       createSlidebar(getTaskVal);
-      getSidebar();
     }
     setinputVal("");
   };
@@ -40,7 +40,7 @@ function TaskList({ setFormState }) {
   useEffect(() => {
     getSidebar();
     getCheckedSidebar();
-  }, [])
+  }, [selectedLocationId])
   // Post Slidebar
   const createSlidebar = (data) => {
     return fetch(`${API}/api/create-sidebar`, {
@@ -55,6 +55,8 @@ function TaskList({ setFormState }) {
       .then((res) => res.json())
       .then((json) => {
         // console.log("json", json);
+        getSidebar();
+        getCheckedSidebar();
       })
       .catch((err) => {
         console.log(err);
@@ -74,12 +76,13 @@ function TaskList({ setFormState }) {
     });
     result = await result.json();
     getSidebar();
+    getCheckedSidebar();
   }
 
 
   //   get Slidebar
   const getSidebar = (data) => {
-    return fetch(`${API}/api/get-sidebar`, {
+    return fetch(`${API}/api/get-sidebar/${selectedLocationId}`, {
       method: "POST",
       headers: {
         "x-access-token": token,
@@ -92,7 +95,6 @@ function TaskList({ setFormState }) {
       .then((json) => {
         let reverseTaskList = json?.reverse();
         setItems(reverseTaskList);
-        console.log("reverseTaskList", Items);
       })
       .catch((err) => {
         console.log(err);
@@ -113,6 +115,8 @@ function TaskList({ setFormState }) {
       .then((res) => res.json())
       .then((json) => {
         // console.log("json", json);
+        getSidebar();
+        getCheckedSidebar();
       })
       .catch((err) => {
         console.log(err);
@@ -120,7 +124,7 @@ function TaskList({ setFormState }) {
   }
   // Update Taskbar data
   const getCheckedSidebar = (data) => {
-    return fetch(`${API}/api/get-checked-sidebar`, {
+    return fetch(`${API}/api/get-checked-sidebar/${selectedLocationId}`, {
       method: "POST",
       headers: {
         "x-access-token": token,

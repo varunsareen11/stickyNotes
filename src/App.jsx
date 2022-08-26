@@ -2,7 +2,8 @@
 // use baseurl : 54.87.14.216
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
-import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
 import Header from "./shared/Header/Header";
 import Sidebar from "./shared/Sidebar/Sidebar";
 import Standorte from "./pages/Standorte/Standorte";
@@ -20,6 +21,7 @@ import ThankYou from "./pages/Packages/ThankYou/ThankYou";
 import User from "./admin/User/User";
 import SingleUser from "./admin/SingleUser/SingleUser";
 import Profile from "./pages/Profile/Profile";
+import Settings from "./pages/Settings/Settings";
 const API = "http://54.87.14.216/api";
 
 const App = (props) => {
@@ -27,9 +29,7 @@ const App = (props) => {
   const [isActiveModule, setIsActiveModule] = useState(true);
   const [isActiveEventModule, setIsActiveEventModule] = useState(true);
   const [isBoarFixed, setIsBoarFixed] = useState(false);
-  console.log(isBoarFixed);
-  console.log(isActiveEventModule);
-  console.log(isActiveModule);
+ 
   const user = JSON.parse(localStorage.getItem("user-info"));
   const userError = user?.error;
   const token = user?.token;
@@ -38,7 +38,7 @@ const App = (props) => {
     note: 1,
     board_fixed: 0,
   });
-  console.log("standoteDrop", standoteDrop);
+
   useEffect(() => {
     if (userError) {
       localStorage.clear();
@@ -68,6 +68,7 @@ const App = (props) => {
                 <Route path="/user" element={<User />} />
                 <Route path="/user/:_id" element={<SingleUser />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/settings" element={<Settings />} />
               </Routes>
             </div>
           </BrowserRouter>

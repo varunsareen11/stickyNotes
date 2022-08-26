@@ -35,12 +35,15 @@ import Notes from "@mui/icons-material/Notes";
 import Close from "@mui/icons-material/Close";
 import CalendarToday from "@mui/icons-material/CalendarToday";
 import Create from "@mui/icons-material/Create";
+import { connect } from "react-redux";
+// import { getUsers, deleteUserById } from "./../actions/user";
 import "./style.css";
 
 const API = "http://54.87.14.216";
 
 const user = JSON.parse(localStorage.getItem("user-info"));
 const token = user?.token;
+
 
 const PREFIX = "Demo";
 const allDayLocalizationMessages = {
@@ -154,7 +157,7 @@ class AppointmentFormContainerBasic extends React.PureComponent {
     })
       .then((res) => res.json())
       .then((json) => {
-        console.log("json", json);
+        // console.log("json", json);
       })
       .catch((err) => {
         console.log(err);
@@ -181,6 +184,7 @@ class AppointmentFormContainerBasic extends React.PureComponent {
   }
 
   commitAppointment(type) {
+    console.log("props", this.props);
     const { commitChanges } = this.props;
     const appointment = {
       ...this.getAppointmentData(),
@@ -207,6 +211,7 @@ class AppointmentFormContainerBasic extends React.PureComponent {
       visibleChange,
       appointmentData,
       cancelAppointment,
+      locationId,
       target,
       onHide,
     } = this.props;
@@ -338,7 +343,7 @@ class AppointmentFormContainerBasic extends React.PureComponent {
 }
 
 /* eslint-disable-next-line react/no-multi-comp */
-export default class Demo extends React.PureComponent {
+class Demo extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -347,6 +352,7 @@ export default class Demo extends React.PureComponent {
       currentViewName: "Day",
       confirmationVisible: false,
       editingFormVisible: false,
+      standorteSelectedId: "",
       deletedAppointmentId: undefined,
       editingAppointment: undefined,
       previousAppointment: undefined,
@@ -356,7 +362,6 @@ export default class Demo extends React.PureComponent {
       isNewAppointment: false,
       locale: "de-GR",
     };
-    console.log("propsDemo", props);
     this.currentDateChange = (currentDate) => {
       this.setState({ currentDate });
     };
@@ -377,6 +382,7 @@ export default class Demo extends React.PureComponent {
         addedAppointment,
         isNewAppointment,
         previousAppointment,
+        standorteSelectedId,
       } = this.state;
 
       const currentAppointment =
@@ -399,6 +405,7 @@ export default class Demo extends React.PureComponent {
       };
 
       return {
+        locationId: standorteSelectedId,
         visible: editingFormVisible,
         appointmentData: currentAppointment,
         commitChanges: this.commitChanges,
@@ -417,12 +424,14 @@ export default class Demo extends React.PureComponent {
     // console.log("this.props.formOpen", this.props.formOpen);
   };
   componentDidUpdate() {
+    this.setState({ standorteSelectedId: this.props.location });
     this.appointmentForm.update();
     if (this.props.formOpen) {
       let OverlayForm = document.querySelector("#notesListId");
       OverlayForm.classList.add("test");
       this.setState({ editingFormVisible: true });
       this.onEditingAppointmentChange(undefined);
+
       // this.onAddedAppointmentChange({
       //   startDate: new Date(currentDate).setHours(startDayHour),
       //   endDate: new Date(currentDate).setHours(startDayHour + 1),
@@ -558,6 +567,7 @@ export default class Demo extends React.PureComponent {
       confirmationVisible,
       locale,
       editingFormVisible,
+      standorteSelectedId,
       startDayHour,
       endDayHour,
     } = this.state;
@@ -644,3 +654,12 @@ export default class Demo extends React.PureComponent {
     );
   }
 }
+
+
+function mapState(state) {
+  const location = state.locationIdReducer;
+  return { location };
+}
+
+const connected = connect(mapState)(Demo);
+export default connected;

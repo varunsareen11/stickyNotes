@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './style.css';
 import { useNavigate } from "react-router-dom";
 import { styled } from '@mui/material/styles';
@@ -8,16 +8,45 @@ import Grid from '@mui/material/Grid';
 import Chart from 'chart.js/auto';
 import { Bar } from 'react-chartjs-2';
 import { Line } from 'react-chartjs-2';
+import { useSelector, useDispatch } from "react-redux";
+import { getUser } from "../../Redux/Action/Action";
+const API = "http://54.87.14.216/api";
 
 function Dashboard() {
     const navigate = useNavigate();
+    const singleUserDetail = useSelector((state) => state?.userReducer?.user);
+    const dispatch = useDispatch();
+    const getToken = JSON.parse(localStorage.getItem("user-info"));
+    const token = getToken?.token;
     setTimeout(() => {
         if (!localStorage.getItem("user-info")) {
             navigate("/login");
         }
     }, 500);
-    const getToken = JSON.parse(localStorage.getItem("user-info"));
-    const userName = getToken?.user?.user_name;
+
+    // getUserInfo
+    const getUserInfo = (data) => {
+        return fetch(`${API}/get-profile`, {
+            method: "POST",
+            headers: {
+                "x-access-token": token,
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        })
+            .then((res) => res.json())
+            .then((json) => {
+                dispatch(getUser(json));
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
+    useEffect(() => {
+        getUserInfo();
+    }, [])
     return (
         <div className="main-body">
             <div className='heading_box'>
@@ -28,13 +57,12 @@ function Dashboard() {
                 </ul>
             </div>
             <div className='dashboard_body'>
-                <h2>Hi, Welcome Back <span>{userName}!</span></h2>
+                <h2>Hi, Welcome Back <span>{singleUserDetail?.first_name}!</span></h2>
                 <Box sx={{ flexGrow: 1 }}>
                     <Grid container spacing={2}>
-                        <Grid xs={8}>
+                        <Grid item xs={8}>
                             <Grid container spacing={4}>
-                                <Grid xs={6}>
-
+                                <Grid item xs={6}>
                                     <div className="dashboard-card">
                                         <h4>Teams Strength</h4>
                                         <div className="chart">
@@ -97,7 +125,7 @@ function Dashboard() {
                                         </ul>
                                     </div>
                                 </Grid>
-                                <Grid xs={6}>
+                                <Grid item xs={6}>
                                     <div className="dashboard-card">
                                         <h4>Employees <span>Aug 25-Sept 25</span></h4>
 
@@ -119,7 +147,7 @@ function Dashboard() {
                                         </div>
                                     </div>
                                 </Grid>
-                                <Grid xs={12}>
+                                <Grid item xs={12}>
                                     <div className="dashboard-card">
                                         <h4>Project Deliveries</h4>
                                         <div className="chart">
@@ -169,7 +197,7 @@ function Dashboard() {
                                 </Grid>
                             </Grid>
                         </Grid>
-                        <Grid xs={4}>
+                        <Grid item xs={4}>
                             <div className="dashboard-grid-box">
                                 <div className="dash-grid-box-item">
                                     <h4>Top 10</h4>
