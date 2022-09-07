@@ -29,7 +29,7 @@ const App = (props) => {
   const [isActiveModule, setIsActiveModule] = useState(true);
   const [isActiveEventModule, setIsActiveEventModule] = useState(true);
   const [isBoarFixed, setIsBoarFixed] = useState(false);
- 
+
   const user = JSON.parse(localStorage.getItem("user-info"));
   const userError = user?.error;
   const token = user?.token;
@@ -63,7 +63,7 @@ const App = (props) => {
                 <Route path="/thank-you" element={<ThankYou />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/forget-password" element={<ForgetPassword />} />
-                <Route path="/reset-password/:token" element={<ResetPassword />} />
+                <Route path="/reset-password" element={<ResetPassword />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/user" element={<User />} />
                 <Route path="/user/:_id" element={<SingleUser />} />

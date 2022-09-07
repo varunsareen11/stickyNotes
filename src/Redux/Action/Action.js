@@ -18,3 +18,9 @@ export const getSelectedLocationId = (locationId) => {
         payload: locationId
     }
 };
+export const getCategory = (category) => {
+    return {
+        type: ActionTypes.GET_CATEGORY,
+        payload: category
+    }
+};

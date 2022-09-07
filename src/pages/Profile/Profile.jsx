@@ -18,6 +18,7 @@ const API = "http://54.87.14.216/api";
 function Profile() {
     const navigate = useNavigate();
     const profileRef = useRef();
+    const companyRef = useRef();
     const singleUserDetail = useSelector((state) => state?.userReducer?.user);
     const dispatch = useDispatch();
     const [updateSuccessMessage, setUpdateSuccessMessage] = useState("");
@@ -26,7 +27,7 @@ function Profile() {
     const getToken = JSON.parse(localStorage.getItem("user-info"));
     const token = getToken?.token;
     const [profile, setProfile] = useState("");
-    console.log("profile", profile);
+    const [companyLogo, setCompanyLogo] = useState("");
     const style = {
         position: "absolute",
         top: "50%",
@@ -51,7 +52,7 @@ function Profile() {
         land: "",
         sales_tax_id: "",
         about: "",
-        avtar: "",
+        avatar: "",
         company_logo: ""
     });
     const {
@@ -68,7 +69,7 @@ function Profile() {
         land,
         sales_tax_id,
         company_logo,
-        avtar
+        avatar
     } = singleUserDetail;
     const getUserInfo = (data) => {
         setLoading(true);
@@ -100,8 +101,13 @@ function Profile() {
     };
     const handleProfileChange = (event) => {
         const file = event.target.files[0];
-        setUpdateUser({ ...updateUser, "avtar": file });
-        setProfile(event.target.files[0]);
+        setUpdateUser({ ...updateUser, "avatar": file });
+        setProfile(file);
+    };
+    const handleCompanyLogoChange = (event) => {
+        const file = event.target.files[0];
+        setUpdateUser({ ...updateUser, "company_logo": file });
+        setCompanyLogo(file);
     };
     const submitUpdateUser = (event) => {
         event.preventDefault();
@@ -117,14 +123,26 @@ function Profile() {
     }, []);
 
     const updateUserProfile = (data) => {
+        var formdata = new FormData();
+        formdata.append("company_name", data.company_name);
+        formdata.append("first_name", data.first_name);
+        formdata.append("last_name", data.last_name);
+        formdata.append("phone_number", data.phone_number);
+        formdata.append("street", data.street);
+        formdata.append("house_number", data.house_number);
+        formdata.append("postal_code", data.postal_code);
+        formdata.append("city", data.city);
+        formdata.append("land", data.land);
+        formdata.append("sales_tax_id", sales_tax_id.location);
+        formdata.append("about", data.about);
+        formdata.append("avatar", data.avatar);
+        formdata.append("company_logo", data.company_logo);
         return fetch(`${API}/update-profile`, {
             method: "PUT",
             headers: {
                 "x-access-token": token,
-                Accept: "application/json",
-                "Content-Type": "application/json",
             },
-            body: JSON.stringify(data),
+            body: formdata,
         })
             .then((res) => res.json())
             .then((json) => {
@@ -142,12 +160,22 @@ function Profile() {
                         <h2 className="dasshboard_heading">Profile</h2>
                     </div>
                     <div className="card profileInfoCard">
-                        {singleUserDetail.profile ? (
+                        {profile ? (
                             <div
                                 className="userImage"
                                 onClick={() => profileRef.current.click()}
                             >
-                                <img src={singleUserDetail.profile} alt="" />
+                                <input
+                                    ref={profileRef}
+                                    type="file"
+                                    style={{ display: "none" }}
+                                    accept="image/*"
+                                    onChange={handleProfileChange}
+                                />
+                                <div>
+                                    <img src={URL.createObjectURL(profile)} alt="" />
+                                    <EditIcon className="editIcon" color="action" />
+                                </div>
                             </div>
                         ) : (
                             <div
@@ -161,10 +189,10 @@ function Profile() {
                                     accept="image/*"
                                     onChange={handleProfileChange}
                                 />
-                                {profile ? (
+                                {singleUserDetail.avatar ? (
                                     <>
                                         <img
-                                            src={URL.createObjectURL(profile)}
+                                            src={`http://54.87.14.216/${singleUserDetail.avatar}`}
                                             alt=""
                                             width={190}
                                             height={190}
@@ -172,7 +200,7 @@ function Profile() {
                                         <EditIcon className="editIcon" color="action" />
                                     </>
                                 ) : (
-                                    <><EditIcon className="editIcon" color="action" /><img src="/assets/images/userimg.png" alt="" /></>
+                                    <><EditIcon className="editIcon" color="action" /><img src="/assets/images/userimg.jpg" alt="" /></>
                                 )}
                             </div>
                         )}
@@ -248,6 +276,51 @@ function Profile() {
                                 )}
                             </p>
                         </div>
+
+                        {companyLogo ? (
+                            <div
+                                className="userImage"
+                                onClick={() => companyRef.current.click()}
+                            >
+                                <input
+                                    ref={companyRef}
+                                    type="file"
+                                    style={{ display: "none" }}
+                                    accept="image/*"
+                                    onChange={handleCompanyLogoChange}
+                                />
+                                <div>
+                                    <img src={URL.createObjectURL(companyLogo)} alt="" />
+                                    <EditIcon className="editIcon" color="action" />
+                                </div>
+                            </div>
+                        ) : (
+                            <div
+                                className="userImage"
+                                onClick={() => companyRef.current.click()}
+                            >
+                                <input
+                                    ref={companyRef}
+                                    type="file"
+                                    style={{ display: "none" }}
+                                    accept="image/*"
+                                    onChange={handleCompanyLogoChange}
+                                />
+                                {singleUserDetail.company_logo ? (
+                                    <>
+                                        <img
+                                            src={`http://54.87.14.216/${singleUserDetail.company_logo}`}
+                                            alt=""
+                                            width={190}
+                                            height={190}
+                                        />
+                                        <EditIcon className="editIcon" color="action" />
+                                    </>
+                                ) : (
+                                    <><EditIcon className="editIcon" color="action" /><img src="/assets/images/userimg.jpg" alt="" /></>
+                                )}
+                            </div>
+                        )}
                         {/* <div className="userinfoButtons">
                             <div className="lockuser">
                                 <div className="ctm-checkbox">

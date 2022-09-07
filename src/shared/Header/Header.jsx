@@ -202,6 +202,12 @@ const Header = (props) => {
                             alle Module öffnen
                           </button>
                         </li>
+                        <li><hr className="dropdown-divider" /></li>
+                        <li>
+                          <button className="dropdown-item" onClick={() => removeBothCalender()}>
+                            Position Reset
+                          </button>
+                        </li>
                       </ul>
                     </div>
                     <div className="dropdown">

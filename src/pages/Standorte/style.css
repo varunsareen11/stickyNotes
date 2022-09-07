@@ -10,7 +10,8 @@
 .App {
   margin: 50px;
 }
-#ex1 > .box,
+
+#ex1>.box,
 #ex2 {
   width: 100px;
   height: 100px;
@@ -48,14 +49,18 @@ label.xy {
 #notesListId .Cell-cell.MuiTableCell-body {
   height: auto;
 }
+
 #notesListId .Appointment-appointment {
   min-height: 21px;
 }
+
 /* package css */
 .taskListWrap {
   flex-grow: 1;
 }
-.taskList .react-draggable {
+
+.taskList .react-draggable,
+.documentUploadList .react-draggable {
   display: block !important;
   min-width: 280px;
   min-height: 150px;
@@ -63,6 +68,7 @@ label.xy {
   overflow-x: hidden;
   background-color: #fff !important;
 }
+
 .notesList .react-draggable {
   display: block !important;
   background-color: #fff !important;
@@ -74,18 +80,23 @@ label.xy {
 .notesList.test .react-draggable {
   transform: revert !important;
 }
+
 .taskList .react-draggable li.tackListTask {
   padding: 0 20px;
 }
+
 ul.tackListUl li.tackListTask .ctm-checkbox-tasklist span {
   cursor: pointer;
 }
+
 .taskList {
   z-index: 2;
 }
+
 .moduleDropown {
   position: relative;
 }
+
 .moduleDropown .dropIcon {
   background: #fff;
   color: #000;
@@ -93,6 +104,7 @@ ul.tackListUl li.tackListTask .ctm-checkbox-tasklist span {
   height: 30px;
   padding: 4px;
 }
+
 .moduleDropown .openDrop {
   display: none;
   position: absolute;
@@ -118,6 +130,7 @@ ul.tackListUl li.tackListTask .ctm-checkbox-tasklist span {
   display: flex;
   align-items: center;
 }
+
 .moduleDropown .openDrop ul li .drop-text {
   flex-grow: 1;
 }
@@ -130,6 +143,7 @@ ul.tackListUl li.tackListTask .ctm-checkbox-tasklist span {
   margin-right: 10px;
   color: #ffa500;
 }
+
 .moduleDropown .openDrop .colorList {
   position: absolute;
   right: 0px;
@@ -140,12 +154,15 @@ ul.tackListUl li.tackListTask .ctm-checkbox-tasklist span {
   display: none;
   top: 50%;
 }
+
 .moduleDropown .openDrop .colorList.show {
   display: block;
 }
+
 .moduleDropown .openDrop .colorList .tab-title.tab-title--active {
   background: rgba(0, 0, 0, 0.2);
 }
+
 .moduleDropown .openDrop .colorList .tab-title {
   position: relative;
   padding-left: 30px;
@@ -163,29 +180,104 @@ ul.tackListUl li.tackListTask .ctm-checkbox-tasklist span {
   border-radius: 50px;
   border: 1px solid #000;
 }
+
 .dragable-header.White {
   background: #fff;
   color: #ec1f27;
   border-bottom: 1px solid #eee;
 }
+
 .dragable-header.Black {
   background: #000;
   color: #fff;
 }
+
 .dragable-header.Red {
   background: #ec1f27;
   color: #fff;
 }
+
 .moduleDropown .openDrop .colorList .tab-title.Red::before {
   background: #ec1f27;
 }
+
 .moduleDropown .openDrop .colorList .tab-title.White::before {
   background: #fff;
 }
+
 .moduleDropown .openDrop .colorList .tab-title.Black::before {
   background: #000;
 }
+
 .taskList.moduleRemove,
 .notesList.moduleRemove {
   display: none;
+}
+
+.moduleDropown .openDrop ul li button {
+  background: none;
+  border: none;
+  display: block;
+}
+
+.moduleHeaderOption .cmn_document-icons {
+  display: inline-block;
+  background: #fff;
+  padding: 3px;
+  margin-right: 10px;
+  width: 30px;
+}
+
+.moduleHeaderOption .cmn_document-icons svg {
+  width: 20px;
+  height: 20px;
+  fill: #000;
+}
+
+.moduleHeaderOption button.btn svg {
+  width: 25px;
+  height: 25px;
+}
+
+.moduleHeaderOption button.btn {
+  padding: 2px 3px;
+  margin-right: 10px;
+  border-radius: 0;
+  border: none;
+}
+
+.moduleHeaderOption {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.documentUploadList.docUploadReset .react-draggable {
+  transform: revert !important;
+}
+
+.documentUploadList.increase-zindex {
+  z-index: 5;
+}
+
+.moduleHeaderOption .search-btn input[type="text"] {
+  display: none;
+}
+
+.moduleHeaderOption .active-search input[type="text"] {
+  display: block;
+  position: absolute;
+  top: 110%;
+  right: 0;
+  border: 1px solid #eee;
+  outline: none;
+  height: 38px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  padding: 10px;
+}
+
+.moduleHeaderOption .search-btn svg {
+  stroke: #000;
+  width: 20px;
+  height: 20px;
 }

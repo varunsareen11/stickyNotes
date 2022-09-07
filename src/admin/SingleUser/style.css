@@ -2,7 +2,10 @@
   flex: 0 0 190px;
   border-radius: 50%;
   object-fit: cover;
+  height: 190px;
+  width: 190px;
 }
+
 .profileInfoCard {
   display: flex;
   flex-direction: revert;
@@ -38,11 +41,13 @@
 .userInfoCard p {
   margin-bottom: 8px;
 }
+
 .userInfoCard p svg {
   width: 20px;
   height: 20px;
   margin-right: 7px;
 }
+
 .tableHeading input:focus {
   border: 1px solid #ec1c24;
 }
@@ -95,15 +100,18 @@
   display: table;
   margin-left: auto;
 }
+
 .headingCard {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 30px;
 }
+
 .headingCard h2.dasshboard_heading {
   margin: 0;
 }
+
 .headingCard {
   display: flex;
   align-items: center;
@@ -128,6 +136,7 @@
   background: #fff;
   padding: 10px;
 }
+
 .profileInfoCard .userGereralInfo p:nth-child(2) {
   margin-left: 30px;
 }
@@ -149,10 +158,12 @@
   flex: 0 0 45%;
   border-radius: 4px !important;
 }
+
 .accountDelete {
   font-size: 40px;
   text-align: center;
 }
+
 .profileInfoCard .userImage .editIcon {
   position: absolute;
   top: 50%;

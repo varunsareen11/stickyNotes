@@ -4,6 +4,7 @@ ul.navbar-menu a svg.icon {
   width: 22px;
   height: 22px;
 }
+
 ul.navbar-menu a svg.icon[aria-labelledby="Standorte Icon"] {
   fill: #878787;
   stroke: transparent;
@@ -14,8 +15,9 @@ ul.navbar-menu a.active svg.icon[aria-labelledby="Standorte Icon"] {
   fill: #ec1f27;
   stroke: transparent;
 }
+
 ul.navbar-menu a span {
-  margin-left: 20px;
+  margin-left: 15px;
 }
 
 ul.navbar-menu {
@@ -37,9 +39,11 @@ ul.navbar-menu a {
   color: #878787;
   padding: 7px 0;
 }
+
 .main-aside-active .logo {
   margin-bottom: 15px;
 }
+
 .main-aside-active ul.navbar-menu a {
   padding: 17px 0;
 }
@@ -54,9 +58,11 @@ ul.navbar-menu a:hover svg.icon,
 ul.navbar-menu a.active svg.icon {
   stroke: #ec1c24;
 }
+
 .copyright {
   margin-top: 20px;
 }
+
 .sidebarCont .copyright p {
   background: #fff;
   padding: 10px;
@@ -123,12 +129,15 @@ ul.navbar-menu a.active svg.icon {
 .main-wrapper .main-aside.main-aside-active .removeOnActive {
   display: none;
 }
+
 .main-wrapper .main-aside.main-aside-active ul.navbar-menu a {
   justify-content: center;
 }
+
 .main-wrapper .main-aside {
   flex: 0 0 20%;
 }
+
 .main-wrapper .main-aside.main-aside-active,
 .main-wrapper .main-aside.main-aside-active .sidebarCont {
   flex: 0 0 96px;

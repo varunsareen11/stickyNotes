@@ -7,6 +7,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useDispatch, useSelector } from "react-redux";
 import { getLocation } from "../../Redux/Action/Action";
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
+import { Link } from 'react-router-dom';
 const API = "http://54.87.14.216/api";
 
 const containerStyle = {
@@ -61,6 +62,7 @@ function Locations() {
         postal_code: "",
         city: "",
         location_image: "",
+        company_logo: "",
         location: "",
     });
     const [updateLocationData, setUpdateLocationData] = useState({
@@ -70,6 +72,7 @@ function Locations() {
         postal_code: "",
         city: "",
         location_image: "",
+        company_logo: "",
         location: "",
     });
     const [addLocation, setAddLocation] = useState("");
@@ -80,7 +83,9 @@ function Locations() {
     }
     const locationFileHandle = (e) => {
         const file = e.target.files[0];
-        setCreateLocationData({ ...createLocationData, "location_image": file });
+        const name = e.target.name;
+        console.log(e);
+        setCreateLocationData({ ...createLocationData, [name]: file });
     }
     // update handle
     const updateLocationHandle = (e) => {
@@ -90,7 +95,8 @@ function Locations() {
     }
     const updateFileLocationHandle = (e) => {
         const file = e.target.files[0];
-        setUpdateLocationData({ ...updateLocationData, "location_image": file });
+        const name = e.target.name;
+        setUpdateLocationData({ ...updateLocationData, [name]: file });
     }
     const updateLocation = (e, id) => {
         e.preventDefault();
@@ -138,6 +144,7 @@ function Locations() {
         formdata.append("postal_code", data.postal_code);
         formdata.append("city", data.city);
         formdata.append("location_image", data.location_image);
+        formdata.append("company_logo", data.company_logo);
         formdata.append("location", data.location);
         return fetch(`${API}/create-location`, {
             method: "POST",
@@ -165,6 +172,7 @@ function Locations() {
         formdata.append("postal_code", data.postal_code);
         formdata.append("city", data.city);
         formdata.append("location_image", data.location_image);
+        formdata.append("company_logo", data.company_logo);
         formdata.append("location", data.location);
         return fetch(`${API}/update-location/${apiId}`, {
             method: "PUT",
@@ -247,7 +255,6 @@ function Locations() {
     }, []);
 
     function search(items) {
-        console.log(items)
         return items?.filter((item) =>
             Object.values(item).some((val) =>
                 String(val).toLowerCase().includes(searchLocation.toLowerCase())
@@ -310,13 +317,14 @@ function Locations() {
                         <div>Sno:</div>
                         <div>Location Name</div>
                         <div>Firma</div>
+                        <div>FirmaLogo</div>
                         <div>Straße Nr</div>
                         <div>Ort</div>
                         <div>Actions</div>
                     </li>
                     {
                         search(locationData).map((curelem, index) => {
-                            const { company_name, house_number, street, postal_code, city, location_image, location } = curelem;
+                            const { company_name, house_number, street, postal_code, city, location_image, company_logo, location } = curelem;
                             return (
                                 <li className='locationTableItem' key={index}>
                                     <div className="location-checkbox">
@@ -336,6 +344,16 @@ function Locations() {
                                         </div> */}
                                     </div>
                                     <div>{company_name && company_name}</div>
+                                    <div className='locationName'>
+                                        {company_logo ? (
+                                            <img src={`http://54.87.14.216/${company_logo}`} alt="Company Logo" />
+                                        ) : ("Company logo not defined")}
+
+                                        {/* <div className='locationNameCont'>
+                                            <h6>{company_name && company_name}</h6>
+                                            <p>{house_number && house_number} {street && street}</p>
+                                        </div> */}
+                                    </div>
                                     <div>{house_number && house_number} {street && street}</div>
                                     <div>{city && city}</div>
                                     <div className='btn-group'>
@@ -346,13 +364,13 @@ function Locations() {
                                                 xlinkTitle="Edit Item"
                                             ></use>
                                         </svg> ändern</button>
-                                        <button className='btn cmn_red_bg' onClick={(e) => { getSingleLocationData(curelem._id); setSubmitId(curelem._id); setViewLocationModal(true) }}> <svg className="icon" aria-labelledby="View Item">
+                                        <Link to="/standorte" className='btn cmn_red_bg'> <svg className="icon" aria-labelledby="View Item">
                                             <title id="viewIem">View Item</title>
                                             <use
                                                 xlinkHref="/assets/svg-icons/icons.svg#viewItem"
                                                 xlinkTitle="View Item"
                                             ></use>
-                                        </svg> öffnen</button>
+                                        </svg> öffnen</Link>
                                     </div>
                                 </li>
                             )
@@ -417,6 +435,10 @@ function Locations() {
                                             <label htmlFor="location">Location</label>
                                             <input type="text" name='location' id='location' className='form-control' placeholder='Location' onChange={locationHandleInput} value={createLocationData.location} />
                                         </div>
+                                        <div className='form-group'>
+                                            <label htmlFor="company_logo">Firmenlogo</label>
+                                            <input type="file" name='company_logo' id='company_logo' className='form-control' placeholder='Firmenlogo' onChange={(e) => { locationFileHandle(e) }} />
+                                        </div>
                                         <div className="modal-btn-group">
                                             <button type="submit" className="btn cmn_yellow_bg">Add</button>
                                         </div>
@@ -448,28 +470,32 @@ function Locations() {
                                         (
                                             <form className={isLoading === true && "mdoal-opacity"}>
                                                 <div className='form-group'>
-                                                    <label htmlFor="company_name">Company Name</label>
-                                                    <input type="text" name='company_name' id='company_name' className='form-control' placeholder='Company Name' onChange={(e) => { updateLocationHandle(e) }} value={updateLocationData.company_name} />
+                                                    <label htmlFor="company_name">Firma</label>
+                                                    <input type="text" name='company_name' id='company_name' className='form-control' placeholder='Firma' onChange={(e) => { updateLocationHandle(e) }} value={updateLocationData.company_name} />
                                                 </div>
                                                 <div className='form-group'>
                                                     <label htmlFor="house_number">House Number</label>
                                                     <input type="text" name='house_number' id='house_number' className='form-control' placeholder='#House no' onChange={(e) => { updateLocationHandle(e) }} value={updateLocationData.house_number} />
                                                 </div>
                                                 <div className='form-group'>
-                                                    <label htmlFor="street">Street</label>
-                                                    <input type="text" name='street' id='street' className='form-control' placeholder='Street Name' onChange={(e) => { updateLocationHandle(e) }} value={updateLocationData.street} />
+                                                    <label htmlFor="street">Straße Nr</label>
+                                                    <input type="text" name='street' id='street' className='form-control' placeholder='Straße Nr' onChange={(e) => { updateLocationHandle(e) }} value={updateLocationData.street} />
                                                 </div>
                                                 <div className='form-group'>
-                                                    <label htmlFor="postal_code">Postal Code</label>
-                                                    <input type="text" name='postal_code' id='postal_code' className='form-control' placeholder='Postal Code' onChange={(e) => { updateLocationHandle(e) }} value={updateLocationData.postal_code} />
+                                                    <label htmlFor="postal_code">Postleitzahl</label>
+                                                    <input type="text" name='postal_code' id='postal_code' className='form-control' placeholder='Postleitzahl' onChange={(e) => { updateLocationHandle(e) }} value={updateLocationData.postal_code} />
                                                 </div>
                                                 <div className='form-group'>
-                                                    <label htmlFor="city">City</label>
-                                                    <input type="text" name='city' id='city' className='form-control' placeholder='City' onChange={(e) => { updateLocationHandle(e) }} value={updateLocationData.city} />
+                                                    <label htmlFor="city">Ort</label>
+                                                    <input type="text" name='city' id='city' className='form-control' placeholder='Ort' onChange={(e) => { updateLocationHandle(e) }} value={updateLocationData.city} />
                                                 </div>
                                                 <div className='form-group'>
-                                                    <label htmlFor="location_image">Location Image</label>
+                                                    <label htmlFor="location_image">Standortbild</label>
                                                     <input type="file" name='location_image' id='location_image' className='form-control' placeholder='Company Name' onChange={(e) => { updateFileLocationHandle(e) }} />
+                                                </div>
+                                                <div className='form-group'>
+                                                    <label htmlFor="company_logo">Firmenlogo</label>
+                                                    <input type="file" name='company_logo' id='company_logo' className='form-control' placeholder='Firmenlogo' onChange={(e) => { updateFileLocationHandle(e) }} />
                                                 </div>
                                                 <div className='form-group'>
                                                     <label htmlFor="location">Location</label>
@@ -546,6 +572,14 @@ function Locations() {
                                                         <li>
                                                             <h6>Location Image</h6>
                                                             <span>{updateLocationData.location_image}</span>
+                                                        </li>
+                                                    )
+                                                }
+                                                {
+                                                    updateLocationData.company_logo && (
+                                                        <li>
+                                                            <h6>Company Logo</h6>
+                                                            <span>{updateLocationData.company_logo}</span>
                                                         </li>
                                                     )
                                                 }

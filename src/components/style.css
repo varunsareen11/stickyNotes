@@ -15,6 +15,7 @@
   border-radius: 10px;
   background: #f04724;
 }
+
 /* loader css */
 
 .loader {
@@ -81,4 +82,17 @@
   100% {
     transform: scale(1);
   }
+}
+
+.Demo-wrapper .MuiFormControl-root {
+  flex-grow: 1;
+}
+
+.Toolbar-toolbar .TodayButton-button::before {
+  content: 'Heute';
+  font-size: 14px;
+}
+
+.Toolbar-toolbar .TodayButton-button {
+  font-size: 0;
 }

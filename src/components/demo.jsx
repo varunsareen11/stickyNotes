@@ -19,9 +19,9 @@ import {
 } from "@devexpress/dx-react-scheduler-material-ui";
 
 import { connectProps } from "@devexpress/dx-react-core";
-import DateTimePicker from "@mui/lab/DateTimePicker";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import AdapterMoment from "@mui/lab/AdapterMoment";
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -176,25 +176,24 @@ class AppointmentFormContainerBasic extends React.PureComponent {
     })
       .then((res) => res.json())
       .then((json) => {
-        console.log("json", json);
+        // console.log("json", json);
       })
       .catch((err) => {
         console.log(err);
       });
   }
 
-  commitAppointment(type) {
-    console.log("props", this.props);
+  commitAppointment(type, locId) {
     const { commitChanges } = this.props;
     const appointment = {
       ...this.getAppointmentData(),
       ...this.getAppointmentChanges(),
+      "location": locId,
     };
     if (type === "deleted") {
       commitChanges({ [type]: appointment.id });
     } else if (type === "changed") {
       commitChanges({ [type]: { [appointment.id]: appointment } });
-      console.log("appointment", this.appointment);
       this.updateCalender(appointment.id, appointment);
     } else {
       commitChanges({ [type]: appointment });
@@ -224,7 +223,7 @@ class AppointmentFormContainerBasic extends React.PureComponent {
 
     const isNewAppointment = appointmentData.id === undefined;
     const applyChanges = isNewAppointment
-      ? () => this.commitAppointment("added")
+      ? () => this.commitAppointment("added", locationId)
       : () => this.commitAppointment("changed");
 
     const textEditorProps = (field) => ({
@@ -290,14 +289,14 @@ class AppointmentFormContainerBasic extends React.PureComponent {
               <LocalizationProvider dateAdapter={AdapterMoment}>
                 <DateTimePicker
                   label="Start Date"
-                  renderInput={(props) => (
+                  renderInput={props => (
                     <TextField className={classes.picker} {...props} />
                   )}
                   {...startDatePickerProps}
                 />
                 <DateTimePicker
                   label="End Date"
-                  renderInput={(props) => (
+                  renderInput={props => (
                     <TextField className={classes.picker} {...props} />
                   )}
                   {...endDatePickerProps}
@@ -330,7 +329,7 @@ class AppointmentFormContainerBasic extends React.PureComponent {
               onClick={() => {
                 visibleChange();
                 applyChanges();
-                console.log(this.appointmentChanges);
+                // console.log(this.appointmentChanges);
               }}
             >
               {isNewAppointment ? "Create" : "Save"}
@@ -420,10 +419,11 @@ class Demo extends React.PureComponent {
 
   componentDidMount() {
     this.getCalender();
-    // console.log("this.props", this.props)
-    // console.log("this.props.formOpen", this.props.formOpen);
   };
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
+    if (prevProps.location !== this.props.location) {
+      this.getCalender();
+    }
     this.setState({ standorteSelectedId: this.props.location });
     this.appointmentForm.update();
     if (this.props.formOpen) {
@@ -442,7 +442,7 @@ class Demo extends React.PureComponent {
   // api functions
 
   getCalender = () => {
-    return fetch(`${API}/api/get-calender`, {
+    return fetch(`${API}/api/get-calender/${this.props.location}`, {
       method: "POST",
       headers: {
         "x-access-token": token,
@@ -518,7 +518,7 @@ class Demo extends React.PureComponent {
     })
       .then((res) => res.json())
       .then((json) => {
-        console.log("json", json);
+        // console.log("json", json);
       })
       .catch((err) => {
         console.log(err);

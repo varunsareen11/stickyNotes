@@ -29,7 +29,7 @@ function User() {
     const [firma, setfirma] = useState("");
     const [packages, setPackages] = useState("");
     const [searchTerm] = useState(["last_name", "company_name"]);
-    const [plans, setPlans] = useState(["All", "Basic", "Started"]);
+    const [plans, setPlans] = useState(["All", "Starter", "Professional", "Expert", "Business "]);
     const token = getToken?.token;
 
     const fields = {
