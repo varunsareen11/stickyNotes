@@ -209,8 +209,7 @@ ul.tackListUl li.tackListTask .ctm-checkbox-tasklist span {
   background: #000;
 }
 
-.taskList.moduleRemove,
-.notesList.moduleRemove {
+.moduleRemove {
   display: none;
 }
 

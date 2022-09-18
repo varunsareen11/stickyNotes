@@ -2,7 +2,7 @@ const packagesData = [
   {
     id: 1,
     heading: "Starter",
-    note: "<span>*</span> 14 Days in the test version after That",
+    note: ` 14 Days in the test version after That`,
     price: "€ 3.99",
     points: {
       point1:
@@ -20,7 +20,7 @@ const packagesData = [
   {
     id: 2,
     heading: "Professional",
-    note: "<span>*</span> 14 Days in the test version after That",
+    note: " 14 Days in the test version after That",
     price: "€ 9.99",
     points: {
       point1:
@@ -38,7 +38,7 @@ const packagesData = [
   {
     id: 3,
     heading: "Expert",
-    note: "<span>*</span> 14 Days in the test version after That",
+    note: " 14 Days in the test version after That",
     price: "€ 25.99",
     points: {
       point1:
@@ -56,7 +56,7 @@ const packagesData = [
   {
     id: 4,
     heading: "Business",
-    note: "<span>*</span> 14 Days in the test version after That",
+    note: " 14 Days in the test version after That",
     price: "€ 39.99",
     points: {
       point1:

@@ -22,11 +22,14 @@ import User from "./admin/User/User";
 import SingleUser from "./admin/SingleUser/SingleUser";
 import Profile from "./pages/Profile/Profile";
 import Settings from "./pages/Settings/Settings";
+import TermCondition from "./pages/TermCondition/TermCondition"
 const API = "http://54.87.14.216/api";
 
 const App = (props) => {
   const [isActive, setIsActive] = useState(false);
   const [isActiveModule, setIsActiveModule] = useState(true);
+  const [isActiveModuleDocument, setIsActiveModuleDocument] = useState(true);
+  const [isActiveModulePlan, setIsActiveModulePlan] = useState(true);
   const [isActiveEventModule, setIsActiveEventModule] = useState(true);
   const [isBoarFixed, setIsBoarFixed] = useState(false);
 
@@ -51,13 +54,13 @@ const App = (props) => {
           <BrowserRouter>
             <Sidebar sideClass={`main-aside ${isActive ? "main-aside-active" : ""}`} />
             <div className="main-content">
-              <Header clickfunc={() => setIsActive(!isActive)} addClass={isActive ? "remove-icon" : ""} isTaskModule={setIsActiveModule} taskModule={isActiveModule} isEventModule={setIsActiveEventModule} eventCalenderModule={isActiveEventModule} isModulefixed={setIsBoarFixed} modulefixed={isBoarFixed} />
+              <Header clickfunc={() => setIsActive(!isActive)} addClass={isActive ? "remove-icon" : ""} isTaskModule={setIsActiveModule} taskModule={isActiveModule} isEventModule={setIsActiveEventModule} eventCalenderModule={isActiveEventModule} isModulefixed={setIsBoarFixed} modulefixed={isBoarFixed} isDocumentModule={setIsActiveModuleDocument} isPlanModule={setIsActiveModulePlan} eventDocumentModule={isActiveModuleDocument} eventPlanModule={isActiveModulePlan} />
               <Routes>
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/locations" element={<Locations />} />
                 <Route path="/ticket-system" element={<TicketSystem />} />
                 <Route path="/support" element={<Support />} />
-                <Route path="/standorte" element={<Standorte isTaskModule={setIsActiveModule} taskModule={isActiveModule} isEventModule={setIsActiveEventModule} eventCalenderModule={isActiveEventModule} modulefixed={isBoarFixed} />} />
+                <Route path="/standorte" element={<Standorte isTaskModule={setIsActiveModule} taskModule={isActiveModule} isDocumentModule={setIsActiveModuleDocument} isPlanModule={setIsActiveModulePlan} isEventModule={setIsActiveEventModule} eventCalenderModule={isActiveEventModule} eventDocumentModule={isActiveModuleDocument} eventPlanModule={isActiveModulePlan} modulefixed={isBoarFixed} />} />
                 <Route path="/packages" element={<Packages />} />
                 <Route path="/packages/payment" element={<MakePayment />} />
                 <Route path="/thank-you" element={<ThankYou />} />
@@ -69,6 +72,7 @@ const App = (props) => {
                 <Route path="/user/:_id" element={<SingleUser />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/settings" element={<Settings />} />
+                <Route path="/term-conditions" element={<TermCondition />} />
               </Routes>
             </div>
           </BrowserRouter>

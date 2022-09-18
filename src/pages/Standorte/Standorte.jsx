@@ -32,7 +32,7 @@ const style = {
   left: 0
 };
 
-function ManagementSystem({ isTaskModule, taskModule, isEventModule, eventCalenderModule, modulefixed }) {
+function ManagementSystem({ isTaskModule, taskModule, isEventModule, eventCalenderModule, isPlanModule, isDocumentModule, eventDocumentModule, eventPlanModule, modulefixed }) {
   const user = JSON.parse(localStorage.getItem("user-info"));
   const parent = document.querySelector('body');
   const parentRect = parent.getBoundingClientRect();
@@ -105,6 +105,8 @@ function ManagementSystem({ isTaskModule, taskModule, isEventModule, eventCalend
   useEffect(() => {
     getDrag();
     getLocationData();
+    categoryPlanListAPI();
+    categoryListAPI();
   }, [selectedLocationId]);
 
   // get Category
@@ -198,8 +200,8 @@ function ManagementSystem({ isTaskModule, taskModule, isEventModule, eventCalend
   const dropDownCont = useRef(null);
   const handleClickOutside = event => {
     if (dropDownCont.current && !dropDownCont.current.contains(event.target)) {
-      setModuleBox(false);
-      setColorBox(false)
+      // setModuleBox(false);
+      // setColorBox(false)
       setDocumentUploadModuleBox(false)
       setColorDocumentUploadBox(false);
       // setPlanModuleBox(false)
@@ -221,19 +223,9 @@ function ManagementSystem({ isTaskModule, taskModule, isEventModule, eventCalend
     setColorCalenderBox(!colorCalenderBox);
   }
 
-  // hideModuleBox
-  const hideCalenderModuleBox = (e) => {
-    isEventModule(false);
-  }
-
   // openColorBox
   const openColorBox = (e) => {
     setColorBox(!colorBox);
-  }
-
-  // hideModuleBox
-  const hideModuleBox = (e) => {
-    isTaskModule(false);
   }
 
   // ================================================= API's =========================================================
@@ -475,7 +467,7 @@ function ManagementSystem({ isTaskModule, taskModule, isEventModule, eventCalend
                             {listCalenderTitles}
                           </div>
                         </li>
-                        <li onClick={(e) => hideCalenderModuleBox(e)}>
+                        <li onClick={(e) => { isEventModule(false) }}>
                           <CancelPresentationIcon className="cancel-board" color="action" />
                           <span className="drop-text">Auf Bord schließen</span>
                         </li>
@@ -580,7 +572,7 @@ function ManagementSystem({ isTaskModule, taskModule, isEventModule, eventCalend
                             {listTitles}
                           </div>
                         </li>
-                        <li onClick={(e) => hideModuleBox(e)}>
+                        <li onClick={(e) => { isTaskModule(false) }}>
                           <CancelPresentationIcon className="cancel-board" color="action" />
                           <span className="drop-text">Auf Bord schließen</span>
                         </li>
@@ -595,7 +587,7 @@ function ManagementSystem({ isTaskModule, taskModule, isEventModule, eventCalend
             </div>
 
             {/* Plan Module */}
-            <div className={`documentUploadList ${editPlanDocumentBox ? "docUploadReset" : ""} ${categoryPlanList ? "docUploadReset" : ""} ${addPlanDocument ? "docUploadReset" : ""}`}>
+            <div className={`documentUploadList ${eventPlanModule === false ? "moduleRemove" : ""} ${editPlanDocumentBox ? "docUploadReset" : ""} ${categoryPlanList ? "docUploadReset" : ""} ${addPlanDocument ? "docUploadReset" : ""}`}>
               <Rnd
                 style={style}
                 size={{
@@ -683,7 +675,13 @@ function ManagementSystem({ isTaskModule, taskModule, isEventModule, eventCalend
                   </h4>
                   <div className="moduleHeaderOption">
                     <button className='btn cmn_yellow_bg'
-                      onClick={(e) => { categoryPlanListAPI(); setAddPlanDocument(true); setCategoryPlanList(false) }}
+                      onClick={(e) => {
+                        setTimeout(() => {
+                          categoryPlanListAPI();
+                        }, 500);
+                        setAddPlanDocument(true);
+                        setCategoryPlanList(false)
+                      }}
                     >
                       <svg className="icon" aria-labelledby="Add Item">
                         <title id="addItem">Add Item</title>
@@ -728,7 +726,7 @@ function ManagementSystem({ isTaskModule, taskModule, isEventModule, eventCalend
                             <button onClick={(e) => { setPlanModuleBox(false); setCategoryPlanList(true); setAddPlanDocument(false) }}><FormatListBulletedIcon className="listIcon" color="action" /> Plan Category</button>
                           </li>
                           <li
-                          // onClick={(e) => hideModuleBox(e)}
+                            onClick={(e) => { isPlanModule(false) }}
                           >
                             <CancelPresentationIcon className="cancel-board" color="action" />
                             <span className="drop-text">Auf Bord schließen</span>
@@ -750,7 +748,7 @@ function ManagementSystem({ isTaskModule, taskModule, isEventModule, eventCalend
             </div>
 
             {/* Document Module */}
-            <div className={`documentUploadList ${editDocumentBox ? "docUploadReset" : ""} ${categoryList ? "docUploadReset" : ""} ${addDocument ? "docUploadReset" : ""}`}>
+            <div className={`documentUploadList ${eventDocumentModule === false ? "moduleRemove" : ""} ${editDocumentBox ? "docUploadReset" : ""} ${categoryList ? "docUploadReset" : ""} ${addDocument ? "docUploadReset" : ""}`}>
               <Rnd
                 style={style}
                 size={{
@@ -883,7 +881,7 @@ function ManagementSystem({ isTaskModule, taskModule, isEventModule, eventCalend
                             <button onClick={(e) => { setCategoryList(true); setAddDocument(false) }}><FormatListBulletedIcon className="listIcon" color="action" /> Category</button>
                           </li>
                           <li
-                          // onClick={(e) => hideModuleBox(e)}
+                            onClick={(e) => { isDocumentModule(false) }}
                           >
                             <CancelPresentationIcon className="cancel-board" color="action" />
                             <span className="drop-text">Auf Bord schließen</span>

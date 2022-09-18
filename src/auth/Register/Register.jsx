@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../style.css';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 const API = "http://54.87.14.216/api"
 
 function Register() {
@@ -154,7 +154,7 @@ function Register() {
                             </div>
                             <div className='login-page-forget'>
                                 <div className='ctm-checkbox'>
-                                    <label className="ctm-checkbox-container" onClick={(e) => setAgreePolicy(e.target.checked)}>I agree to the <a href="/#">terms of services</a> of this website.
+                                    <label className="ctm-checkbox-container" onClick={(e) => setAgreePolicy(e.target.checked)}>I agree to the <Link to="/term-conditions">terms of services</Link> of this website.
                                         <input type="checkbox" />
                                         <span className="ctm-checkbox-checkmark"></span>
                                     </label>
@@ -192,7 +192,7 @@ function Register() {
                             </div>
                             <div className='form-group'>
                                 <label htmlFor="postal_code">Postleitzahl</label>
-                                <input type="number" name='postal_code' id='postal_code' className='form-control' placeholder='Postleitzahl' onChange={registerHandleInput} value={userRegister.postal_code} />
+                                <input type="text" name='postal_code' id='postal_code' className='form-control' placeholder='Postleitzahl' onChange={registerHandleInput} value={userRegister.postal_code} />
                                 {error.postal_code && <p className='error'>{error.postal_code}</p>}
                             </div>
                             <div className='form-group'>

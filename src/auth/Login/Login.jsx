@@ -94,10 +94,12 @@ function Login() {
                             <div className='form-group'>
                                 <label htmlFor="email">Benutzername</label>
                                 <input type="email" name='email' id='email' className='form-control' placeholder='E-Mailadresse' onChange={loginHandleInput} value={userLogin.email} />
+                                {error.email && <p className='error'>{error.email}</p>}
                             </div>
                             <div className='form-group'>
                                 <label htmlFor="password">Passwort</label>
                                 <input type="password" name='password' id='password' className='form-control' placeholder='Passwort' onChange={loginHandleInput} value={userLogin.password} />
+                                {error.password && <p className='error'>{error.password}</p>}
                             </div>
                             <div className='login-page-forget'>
                                 <div className='ctm-checkbox'>

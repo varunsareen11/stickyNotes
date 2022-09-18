@@ -17,7 +17,8 @@ const Sidebar = (props) => {
         "packages",
         "thank-you",
         "forget-password",
-        "reset-password"
+        "reset-password",
+        "term-conditions"
       ].includes(pathArr[0].toLowerCase()) && (
           <div className={props.sideClass}>
             <div className="sidebarCont">

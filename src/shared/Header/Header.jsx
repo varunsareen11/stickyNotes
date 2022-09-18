@@ -58,6 +58,8 @@ const Header = (props) => {
   const removeBothCalender = () => {
     props.isEventModule(true)
     props.isTaskModule(true)
+    props.isDocumentModule(true)
+    props.isPlanModule(true)
     setAddModule(false);
   }
 
@@ -112,7 +114,7 @@ const Header = (props) => {
   }, [])
   return (
     <>
-      {!["login", "register", "packages", "thank-you", "forget-password", "reset-password"].includes(
+      {!["login", "register", "packages", "thank-you", "forget-password", "reset-password", "term-conditions"].includes(
         pathArr[0].toLowerCase()
       ) && (
           <header className="main-header">
@@ -192,6 +194,24 @@ const Header = (props) => {
                           : (<li>
                             <button className="dropdown-item" onClick={() => removeCalender()}>
                               Kalender
+                            </button>
+                          </li>
+                          )
+                        }
+                        {props.eventDocumentModule ?
+                          ""
+                          : (<li>
+                            <button className="dropdown-item" onClick={() => { props.isDocumentModule(true); setAddModule(false); }}>
+                              Document
+                            </button>
+                          </li>
+                          )
+                        }
+                        {props.eventPlanModule ?
+                          ""
+                          : (<li>
+                            <button className="dropdown-item" onClick={() => { props.isPlanModule(true); setAddModule(false); }}>
+                              Plan
                             </button>
                           </li>
                           )

@@ -17,14 +17,14 @@ const Plans = (props) => {
     const [getDocument, SetGetDocument] = useState({});
     const [searchTerm] = useState(["file_name"]);
     const selectedLocationId = useSelector((state) => state.locationIdReducer);
-    const getCurrentDate = (separator = '/') => {
+    const getCurrentDate = (separator = '-') => {
 
         let newDate = new Date()
         let date = newDate.getDate();
         let month = newDate.getMonth() + 1;
         let year = newDate.getFullYear();
 
-        return `${date}${separator}${month < 10 ? `0${month}` : `${month}`}${separator}${year}`
+        return `${year}${separator}${month < 10 ? `0${month}` : `${month}`}${separator}${date}`
     }
     const [editSingleDocument, setEditSingleDocument] = useState({
         file_name: "",
@@ -166,6 +166,7 @@ const Plans = (props) => {
         const name = e.target.name;
         const value = e.target.value;
         setUploadDoc({ ...uploadDoc, [name]: value });
+        console.log("uploadDoc", uploadDoc);
     }
     const handleUploadFileChange = (e) => {
         const file = e.target.files[0];
@@ -197,7 +198,7 @@ const Plans = (props) => {
             createSlidebar({ title: uploadDoc.note_item, location: selectedLocationId })
         }
         setUploadDoc("");
-        props.setAddDoc(false);
+        props.setAddPlanDoc(false);
     }
 
     // Edit Category Points
@@ -432,12 +433,16 @@ const Plans = (props) => {
                                                     <div className='row'>
                                                         <div className='col-md-6'>
                                                             <div className='form-group'>
+                                                                <label htmlFor="document_name">Document Name</label>
+                                                                <input type="text" name='document_name' id='document_name' className='form-control' placeholder='Document name here' value={uploadDoc.upload_document.name} readonly />
+                                                            </div>
+                                                            <div className='form-group'>
                                                                 <label htmlFor="file_name">File Name</label>
-                                                                <input type="text" name='file_name' id='file_name' className='form-control' placeholder='Document name here' onChange={(e) => { handleUploadChange(e) }} value={uploadDoc.file_name} />
+                                                                <input type="text" name='file_name' id='file_name' className='form-control' placeholder='File name here' onChange={(e) => { handleUploadChange(e) }} value={uploadDoc.file_name} />
                                                             </div>
                                                             <div className='form-group'>
                                                                 <label htmlFor="category">Select Category</label>
-                                                                <select name="category" id="category" className='form-control' onChange={(e) => { handleUploadChange(e) }} value={uploadDoc.category}>
+                                                                <select name="category" id="category" className='form-control' onChange={(e) => { categoryListAPI(); handleUploadChange(e) }} value={uploadDoc.category}>
                                                                     <option value="">Please Select Category</option>
                                                                     {
                                                                         category.length > 0 && category?.map((curelem, index) => {
@@ -465,7 +470,13 @@ const Plans = (props) => {
                                                                         <div className="col">
                                                                             <div className='form-group'>
                                                                                 <label htmlFor="calendar_reminder_interval">Interval</label>
-                                                                                <input type="text" className="form-control" name="calendar_reminder_interval" id="calendar_reminder_interval" onChange={(e) => { handleUploadChange(e) }} value={uploadDoc.calendar_reminder_interval} />
+                                                                                <select name="calendar_reminder_interval" id="calendar_reminder_interval" className='form-control' onChange={(e) => { handleUploadChange(e) }} value={uploadDoc.calendar_reminder_interval}>
+                                                                                    <option value="">Please Select Interval</option>
+                                                                                    <option value="Monatlich">Monatlich</option>
+                                                                                    <option value="Quartalsweise">Quartalsweise</option>
+                                                                                    <option value="Halbjährig">Halbjährig</option>
+                                                                                    <option value="Einjährig">Einjährig</option>
+                                                                                </select>
                                                                             </div>
                                                                         </div>
                                                                         <div className="col">
@@ -478,6 +489,7 @@ const Plans = (props) => {
                                                                                         className="form-control"
                                                                                         value={value}
                                                                                         onChange={(newValue) => {
+                                                                                            console.log(newValue);
                                                                                             setValue(newValue);
                                                                                         }}
                                                                                         renderInput={(params) => <TextField {...params} />}
@@ -594,6 +606,10 @@ const Plans = (props) => {
                                                 <div className='row'>
                                                     <div className='col-md-6'>
                                                         <div className='form-group'>
+                                                            <label htmlFor="document_name">Document Name</label>
+                                                            <input type="text" name='document_name' id='document_name' className='form-control' placeholder='Document name here' value={editSingleDocument?.upload_document?.name ? editSingleDocument.upload_document.name : editSingleDocument.upload_document} readonly />
+                                                        </div>
+                                                        <div className='form-group'>
                                                             <label htmlFor="file_name">File Name</label>
                                                             <input type="text" name='file_name' id='file_name' className='form-control' placeholder='Document name here' onChange={(e) => { handleEditUploadChange(e) }} value={editSingleDocument.file_name} />
                                                         </div>
@@ -627,7 +643,13 @@ const Plans = (props) => {
                                                                     <div className="col">
                                                                         <div className='form-group'>
                                                                             <label htmlFor="calendar_reminder_interval">Interval</label>
-                                                                            <input type="text" className="form-control" name="calendar_reminder_interval" id="calendar_reminder_interval" onChange={(e) => { handleEditUploadChange(e) }} value={editSingleDocument.calendar_reminder_interval} />
+                                                                            <select name="calendar_reminder_interval" id="calendar_reminder_interval" className='form-control' onChange={(e) => { handleEditUploadChange(e) }} value={editSingleDocument.calendar_reminder_interval}>
+                                                                                <option value="">Please Select Interval</option>
+                                                                                <option value="Monatlich">Monatlich</option>
+                                                                                <option value="Quartalsweise">Quartalsweise</option>
+                                                                                <option value="Halbjährig">Halbjährig</option>
+                                                                                <option value="Einjährig">Einjährig</option>
+                                                                            </select>
                                                                         </div>
                                                                     </div>
                                                                     <div className="col">
@@ -681,15 +703,7 @@ const Plans = (props) => {
                                                                 <input type="file" name="upload_document" id="upload_document" onChange={(e) => { handleEditUploadFileChange(e) }} accept=".pdf,.doc" />
                                                                 <div class="file-dummy">
                                                                     <div className="indiebloc">
-                                                                        <svg className="icon" aria-labelledby="Drag Drop Icon">
-                                                                            <title id="dragDrop">Drag Drop Icon</title>
-                                                                            <use
-                                                                                xlinkHref="/assets/svg-icons/icons.svg#dragDrop"
-                                                                                xlinkTitle="Drag Drop Icon"
-                                                                            ></use>
-                                                                        </svg>
-                                                                        <p>Drag & Drop to Upload File</p>
-                                                                        <button className='btn cmn_red_bg'>Browse File</button>
+                                                                        {editSingleDocument?.upload_document?.name ? editSingleDocument.upload_document.name : editSingleDocument.upload_document}
                                                                     </div>
                                                                     <div className='upload-file-icons'>
                                                                         <img src="/assets/images/icon01.png" alt="Icon 01" />

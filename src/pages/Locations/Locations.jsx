@@ -64,6 +64,9 @@ function Locations() {
         location_image: "",
         company_logo: "",
         location: "",
+        no_of_members: "",
+        percentage: "",
+        note: ""
     });
     const [updateLocationData, setUpdateLocationData] = useState({
         company_name: "",
@@ -74,6 +77,9 @@ function Locations() {
         location_image: "",
         company_logo: "",
         location: "",
+        no_of_members: "",
+        percentage: "",
+        note: ""
     });
     const [addLocation, setAddLocation] = useState("");
     const locationHandleInput = (e) => {
@@ -146,6 +152,9 @@ function Locations() {
         formdata.append("location_image", data.location_image);
         formdata.append("company_logo", data.company_logo);
         formdata.append("location", data.location);
+        formdata.append("no_of_members", data.no_of_members);
+        formdata.append("percentage", data.percentage);
+        formdata.append("note", data.note);
         return fetch(`${API}/create-location`, {
             method: "POST",
             headers: {
@@ -174,6 +183,9 @@ function Locations() {
         formdata.append("location_image", data.location_image);
         formdata.append("company_logo", data.company_logo);
         formdata.append("location", data.location);
+        formdata.append("no_of_members", data.no_of_members);
+        formdata.append("percentage", data.percentage);
+        formdata.append("note", data.note);
         return fetch(`${API}/update-location/${apiId}`, {
             method: "PUT",
             headers: {
@@ -395,49 +407,67 @@ function Locations() {
                                 </div>
                                 <div className="location-dialog-body">
                                     <form onSubmit={addLocationSubmit}>
-                                        <div className='form-group'>
-                                            <label htmlFor="company_name">Firma*</label>
-                                            <input type="text" name='company_name' id='company_name' className='form-control' placeholder='Firma*' onChange={locationHandleInput} value={createLocationData.company_name} />
-                                        </div>
-                                        <div className='form-group'>
-                                            <label htmlFor="house_number">House Number</label>
-                                            <input type="text" name='house_number' id='house_number' className='form-control' placeholder='#House no' onChange={locationHandleInput} value={createLocationData.house_number} />
-                                        </div>
-                                        <div className='form-group'>
-                                            <label htmlFor="street">Street</label>
-                                            <input type="text" name='street' id='street' className='form-control' placeholder='Street Name' onChange={locationHandleInput} value={createLocationData.street} />
-                                        </div>
-                                        <div className='form-group'>
-                                            <label htmlFor="postal_code">Postleitzahl*</label>
-                                            <input type="text" name='postal_code' id='postal_code' className='form-control' placeholder='Postleitzahl*' onChange={locationHandleInput} value={createLocationData.postal_code} />
-                                        </div>
-                                        <div className='form-group'>
-                                            <label htmlFor="city">Ort</label>
-                                            <input type="text" name='city' id='city' className='form-control' placeholder='Ort*' onChange={locationHandleInput} value={createLocationData.city} />
-                                        </div>
-                                        <div className='form-group'>
-                                            <label htmlFor="location_image">Standortbild</label>
-                                            <input type="file" name='location_image' id='location_image' className='form-control' placeholder='Company Name' onChange={locationFileHandle} accept="image/*" />
-                                        </div>
-                                        <div style={{ width: "100%", height: "300px" }}>
-                                            <GoogleMap
-                                                mapContainerStyle={containerStyle}
-                                                center={center}
-                                                zoom={8}
-                                                onLoad={onLoad}
-                                                onUnmount={onUnmount}
-                                            >
-                                                { /* Child components, such as markers, info windows, etc. */}
-                                                <></>
-                                            </GoogleMap>
-                                        </div>
-                                        <div className='form-group'>
-                                            <label htmlFor="location">Location</label>
-                                            <input type="text" name='location' id='location' className='form-control' placeholder='Location' onChange={locationHandleInput} value={createLocationData.location} />
-                                        </div>
-                                        <div className='form-group'>
-                                            <label htmlFor="company_logo">Firmenlogo</label>
-                                            <input type="file" name='company_logo' id='company_logo' className='form-control' placeholder='Firmenlogo' onChange={(e) => { locationFileHandle(e) }} />
+                                        <div className="row">
+                                            <div className="col-lg-6">
+                                                <div className='form-group'>
+                                                    <label htmlFor="company_name">Firma*</label>
+                                                    <input type="text" name='company_name' id='company_name' className='form-control' placeholder='Firma*' onChange={locationHandleInput} value={createLocationData.company_name} />
+                                                </div>
+                                                <div className='form-group'>
+                                                    <label htmlFor="house_number">House Number</label>
+                                                    <input type="text" name='house_number' id='house_number' className='form-control' placeholder='#House no' onChange={locationHandleInput} value={createLocationData.house_number} />
+                                                </div>
+                                                <div className='form-group'>
+                                                    <label htmlFor="street">Street</label>
+                                                    <input type="text" name='street' id='street' className='form-control' placeholder='Street Name' onChange={locationHandleInput} value={createLocationData.street} />
+                                                </div>
+                                                <div className='form-group'>
+                                                    <label htmlFor="postal_code">Postleitzahl*</label>
+                                                    <input type="text" name='postal_code' id='postal_code' className='form-control' placeholder='Postleitzahl*' onChange={locationHandleInput} value={createLocationData.postal_code} />
+                                                </div>
+                                                <div className='form-group'>
+                                                    <label htmlFor="city">Ort</label>
+                                                    <input type="text" name='city' id='city' className='form-control' placeholder='Ort*' onChange={locationHandleInput} value={createLocationData.city} />
+                                                </div>
+                                                <div className='form-group'>
+                                                    <label htmlFor="location_image">Standortbild</label>
+                                                    <input type="file" name='location_image' id='location_image' className='form-control' placeholder='Company Name' onChange={locationFileHandle} accept="image/*" />
+                                                </div>
+                                                <div style={{ width: "100%", height: "300px" }}>
+                                                    <GoogleMap
+                                                        mapContainerStyle={containerStyle}
+                                                        center={center}
+                                                        zoom={8}
+                                                        onLoad={onLoad}
+                                                        onUnmount={onUnmount}
+                                                    >
+                                                        { /* Child components, such as markers, info windows, etc. */}
+                                                        <></>
+                                                    </GoogleMap>
+                                                </div>
+                                            </div>
+                                            <div className="col-lg-6">
+                                                <div className='form-group'>
+                                                    <label htmlFor="location">Location</label>
+                                                    <input type="text" name='location' id='location' className='form-control' placeholder='Location' onChange={locationHandleInput} value={createLocationData.location} />
+                                                </div>
+                                                <div className='form-group'>
+                                                    <label htmlFor="no_of_members">Anzahl der Mitarbeiter:</label>
+                                                    <input type="text" name='no_of_members' id='no_of_members' className='form-control' placeholder='Anzahl der Mitarbeiter' onChange={locationHandleInput} value={createLocationData.no_of_members} />
+                                                </div>
+                                                <div className='form-group'>
+                                                    <label htmlFor="percentage">Wieviel % BSH nach GB:</label>
+                                                    <input type="text" name='percentage' id='percentage' className='form-control' placeholder='Wieviel % BSH nach GB' onChange={locationHandleInput} value={createLocationData.percentage} />
+                                                </div>
+                                                <div className='form-group'>
+                                                    <label htmlFor="note">Notrufnummer:</label>
+                                                    <input type="text" name='note' id='note' className='form-control' placeholder='Notrufnummer' onChange={locationHandleInput} value={createLocationData.note} />
+                                                </div>
+                                                <div className='form-group'>
+                                                    <label htmlFor="company_logo">Firmenlogo</label>
+                                                    <input type="file" name='company_logo' id='company_logo' className='form-control' placeholder='Firmenlogo' onChange={(e) => { locationFileHandle(e) }} />
+                                                </div>
+                                            </div>
                                         </div>
                                         <div className="modal-btn-group">
                                             <button type="submit" className="btn cmn_yellow_bg">Add</button>
@@ -469,38 +499,58 @@ function Locations() {
                                         updateLocationData &&
                                         (
                                             <form className={isLoading === true && "mdoal-opacity"}>
-                                                <div className='form-group'>
-                                                    <label htmlFor="company_name">Firma</label>
-                                                    <input type="text" name='company_name' id='company_name' className='form-control' placeholder='Firma' onChange={(e) => { updateLocationHandle(e) }} value={updateLocationData.company_name} />
+                                                <div className="row">
+                                                    <div className="col-lg-6">
+                                                        <div className='form-group'>
+                                                            <label htmlFor="company_name">Firma</label>
+                                                            <input type="text" name='company_name' id='company_name' className='form-control' placeholder='Firma' onChange={(e) => { updateLocationHandle(e) }} value={updateLocationData.company_name} />
+                                                        </div>
+                                                        <div className='form-group'>
+                                                            <label htmlFor="house_number">House Number</label>
+                                                            <input type="text" name='house_number' id='house_number' className='form-control' placeholder='#House no' onChange={(e) => { updateLocationHandle(e) }} value={updateLocationData.house_number} />
+                                                        </div>
+                                                        <div className='form-group'>
+                                                            <label htmlFor="street">Straße Nr</label>
+                                                            <input type="text" name='street' id='street' className='form-control' placeholder='Straße Nr' onChange={(e) => { updateLocationHandle(e) }} value={updateLocationData.street} />
+                                                        </div>
+                                                        <div className='form-group'>
+                                                            <label htmlFor="postal_code">Postleitzahl</label>
+                                                            <input type="text" name='postal_code' id='postal_code' className='form-control' placeholder='Postleitzahl' onChange={(e) => { updateLocationHandle(e) }} value={updateLocationData.postal_code} />
+                                                        </div>
+                                                        <div className='form-group'>
+                                                            <label htmlFor="city">Ort</label>
+                                                            <input type="text" name='city' id='city' className='form-control' placeholder='Ort' onChange={(e) => { updateLocationHandle(e) }} value={updateLocationData.city} />
+                                                        </div>
+                                                        <div className='form-group'>
+                                                            <label htmlFor="location_image">Standortbild</label>
+                                                            <input type="file" name='location_image' id='location_image' className='form-control' placeholder='Company Name' onChange={(e) => { updateFileLocationHandle(e) }} />
+                                                        </div>
+                                                    </div>
+                                                    <div className="col-lg-6">
+                                                        <div className='form-group'>
+                                                            <label htmlFor="location">Location</label>
+                                                            <input type="text" name='location' id='location' className='form-control' placeholder='Location' onChange={(e) => { updateLocationHandle(e) }} value={updateLocationData.location} />
+                                                        </div>
+                                                        <div className='form-group'>
+                                                            <label htmlFor="no_of_members">Anzahl der Mitarbeiter:</label>
+                                                            <input type="text" name='no_of_members' id='no_of_members' className='form-control' placeholder='Anzahl der Mitarbeiter' onChange={(e) => { updateFileLocationHandle(e) }} value={updateLocationData.no_of_members} />
+                                                        </div>
+                                                        <div className='form-group'>
+                                                            <label htmlFor="percentage">Wieviel % BSH nach GB:</label>
+                                                            <input type="text" name='percentage' id='percentage' className='form-control' placeholder='Wieviel % BSH nach GB' onChange={(e) => { updateFileLocationHandle(e) }} value={updateLocationData.percentage} />
+                                                        </div>
+                                                        <div className='form-group'>
+                                                            <label htmlFor="note">Notrufnummer:</label>
+                                                            <input type="text" name='note' id='note' className='form-control' placeholder='Notrufnummer' onChange={(e) => { updateFileLocationHandle(e) }} value={updateLocationData.note} />
+                                                        </div>
+                                                        <div className='form-group'>
+                                                            <label htmlFor="company_logo">Firmenlogo</label>
+                                                            <input type="file" name='company_logo' id='company_logo' className='form-control' placeholder='Firmenlogo' onChange={(e) => { updateFileLocationHandle(e) }} />
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div className='form-group'>
-                                                    <label htmlFor="house_number">House Number</label>
-                                                    <input type="text" name='house_number' id='house_number' className='form-control' placeholder='#House no' onChange={(e) => { updateLocationHandle(e) }} value={updateLocationData.house_number} />
-                                                </div>
-                                                <div className='form-group'>
-                                                    <label htmlFor="street">Straße Nr</label>
-                                                    <input type="text" name='street' id='street' className='form-control' placeholder='Straße Nr' onChange={(e) => { updateLocationHandle(e) }} value={updateLocationData.street} />
-                                                </div>
-                                                <div className='form-group'>
-                                                    <label htmlFor="postal_code">Postleitzahl</label>
-                                                    <input type="text" name='postal_code' id='postal_code' className='form-control' placeholder='Postleitzahl' onChange={(e) => { updateLocationHandle(e) }} value={updateLocationData.postal_code} />
-                                                </div>
-                                                <div className='form-group'>
-                                                    <label htmlFor="city">Ort</label>
-                                                    <input type="text" name='city' id='city' className='form-control' placeholder='Ort' onChange={(e) => { updateLocationHandle(e) }} value={updateLocationData.city} />
-                                                </div>
-                                                <div className='form-group'>
-                                                    <label htmlFor="location_image">Standortbild</label>
-                                                    <input type="file" name='location_image' id='location_image' className='form-control' placeholder='Company Name' onChange={(e) => { updateFileLocationHandle(e) }} />
-                                                </div>
-                                                <div className='form-group'>
-                                                    <label htmlFor="company_logo">Firmenlogo</label>
-                                                    <input type="file" name='company_logo' id='company_logo' className='form-control' placeholder='Firmenlogo' onChange={(e) => { updateFileLocationHandle(e) }} />
-                                                </div>
-                                                <div className='form-group'>
-                                                    <label htmlFor="location">Location</label>
-                                                    <input type="text" name='location' id='location' className='form-control' placeholder='Location' onChange={(e) => { updateLocationHandle(e) }} value={updateLocationData.location} />
-                                                </div>
+
+
                                                 <div className="modal-btn-group">
                                                     <button type="submit" onClick={(e) => { updateLocation(e, updateLocationData._id) }} className="btn cmn_yellow_bg">Update</button>
                                                 </div>

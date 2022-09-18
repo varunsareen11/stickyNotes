@@ -196,7 +196,7 @@ const AddPlanCategory = (props) => {
                         !editCategoryBox && (
                             <ul className='management-cate-list'>
                                 {
-                                    category.map((curelem, index) => {
+                                    category.length > 0 && category.map((curelem, index) => {
                                         return (
                                             <li key={index}>
                                                 <span className='list-item'>{curelem.title}</span>

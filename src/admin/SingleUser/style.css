@@ -6,6 +6,10 @@
   width: 190px;
 }
 
+.profileInfoCard .companyLogo {
+  flex-grow: 1;
+}
+
 .profileInfoCard {
   display: flex;
   flex-direction: revert;
@@ -15,6 +19,7 @@
   margin-right: 20px;
   align-self: center;
   position: relative;
+  display: inline-block;
 }
 
 .profileInfoCard .userName {

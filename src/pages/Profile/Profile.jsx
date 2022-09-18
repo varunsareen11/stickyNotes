@@ -133,7 +133,7 @@ function Profile() {
         formdata.append("postal_code", data.postal_code);
         formdata.append("city", data.city);
         formdata.append("land", data.land);
-        formdata.append("sales_tax_id", sales_tax_id.location);
+        formdata.append("sales_tax_id", data.sales_tax_id);
         formdata.append("about", data.about);
         formdata.append("avatar", data.avatar);
         formdata.append("company_logo", data.company_logo);
@@ -276,51 +276,53 @@ function Profile() {
                                 )}
                             </p>
                         </div>
-
-                        {companyLogo ? (
-                            <div
-                                className="userImage"
-                                onClick={() => companyRef.current.click()}
-                            >
-                                <input
-                                    ref={companyRef}
-                                    type="file"
-                                    style={{ display: "none" }}
-                                    accept="image/*"
-                                    onChange={handleCompanyLogoChange}
-                                />
-                                <div>
-                                    <img src={URL.createObjectURL(companyLogo)} alt="" />
-                                    <EditIcon className="editIcon" color="action" />
-                                </div>
-                            </div>
-                        ) : (
-                            <div
-                                className="userImage"
-                                onClick={() => companyRef.current.click()}
-                            >
-                                <input
-                                    ref={companyRef}
-                                    type="file"
-                                    style={{ display: "none" }}
-                                    accept="image/*"
-                                    onChange={handleCompanyLogoChange}
-                                />
-                                {singleUserDetail.company_logo ? (
-                                    <>
-                                        <img
-                                            src={`http://54.87.14.216/${singleUserDetail.company_logo}`}
-                                            alt=""
-                                            width={190}
-                                            height={190}
-                                        />
+                        <div className="companyLogo">
+                            <p>Firmenlogo auswählen</p>
+                            {companyLogo ? (
+                                <div
+                                    className="userImage"
+                                    onClick={() => companyRef.current.click()}
+                                >
+                                    <input
+                                        ref={companyRef}
+                                        type="file"
+                                        style={{ display: "none" }}
+                                        accept="image/*"
+                                        onChange={handleCompanyLogoChange}
+                                    />
+                                    <div>
+                                        <img src={URL.createObjectURL(companyLogo)} alt="" />
                                         <EditIcon className="editIcon" color="action" />
-                                    </>
-                                ) : (
-                                    <><EditIcon className="editIcon" color="action" /><img src="/assets/images/userimg.jpg" alt="" /></>
-                                )}
-                            </div>
-                        )}
+                                    </div>
+                                </div>
+                            ) : (
+                                <div
+                                    className="userImage"
+                                    onClick={() => companyRef.current.click()}
+                                >
+                                    <input
+                                        ref={companyRef}
+                                        type="file"
+                                        style={{ display: "none" }}
+                                        accept="image/*"
+                                        onChange={handleCompanyLogoChange}
+                                    />
+                                    {singleUserDetail.company_logo ? (
+                                        <>
+                                            <img
+                                                src={`http://54.87.14.216/${singleUserDetail.company_logo}`}
+                                                alt=""
+                                                width={190}
+                                                height={190}
+                                            />
+                                            <EditIcon className="editIcon" color="action" />
+                                        </>
+                                    ) : (
+                                        <><EditIcon className="editIcon" color="action" /><img src="/assets/images/userimg.jpg" alt="" /></>
+                                    )}
+                                </div>
+                            )}
+                        </div>
                         {/* <div className="userinfoButtons">
                             <div className="lockuser">
                                 <div className="ctm-checkbox">

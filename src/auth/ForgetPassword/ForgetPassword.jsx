@@ -11,6 +11,7 @@ function ForgetPassword() {
         email: ""
     });
     const [resData, setResData] = useState({});
+    console.log(resData.error);
     const [error, setError] = useState('');
     const [isSubmit, setIsSubmit] = useState(false);
     const forgetPassHandleInput = (e) => {
@@ -45,6 +46,7 @@ function ForgetPassword() {
         });
         result = await result.json();
         setResData(result);
+        console.log("result", result)
     }
     useEffect(() => {
         if (Object.keys(error).length === 0 && isSubmit) {
@@ -66,6 +68,8 @@ function ForgetPassword() {
                                 <div className='form-group'>
                                     <label htmlFor="email">Benutzername</label>
                                     <input type="email" name='email' id='email' className='form-control' placeholder='E-Mailadresse' onChange={forgetPassHandleInput} value={forgetPass.email} />
+                                    {resData?.error && <p className='error'>{resData.error}</p>}
+                                    {error.email && <p className='error'>{error.email}</p>}
                                 </div>
                                 <button type="submit" onClick={submitForgetform}>Passwort Vergessen</button>
                                 {resData.message && (<>

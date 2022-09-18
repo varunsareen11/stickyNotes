@@ -20,6 +20,7 @@ function TaskList({ setFormState }) {
   const [todoEditing, setTodoEditing] = React.useState(null);
   const [editingText, setEditingText] = React.useState("");
   const selectedLocationId = useSelector((state) => state.locationIdReducer);
+  const [error, setError] = useState({});
 
   const ListWrap = (e) => {
     setinputVal(e.target.value);
@@ -28,18 +29,29 @@ function TaskList({ setFormState }) {
   const listofItems = (e) => {
     if (inputVal !== "") {
       e.preventDefault();
-      // setItems((oldItems) => {
-      //   return [...oldItems, taskListInput];
-      // });
       const getTaskVal = { title: taskListInput, location: selectedLocationId };
       createSlidebar(getTaskVal);
+      setError("");
+    } else {
+      setError(taskValidate(taskListInput));
     }
     setinputVal("");
   };
 
+  function taskValidate(values) {
+    let errors = {};
+    if (!values.taskListInput) {
+      errors.taskListInput = 'Field is required';
+    }
+    return errors;
+  };
+
   useEffect(() => {
-    getSidebar();
-    getCheckedSidebar();
+    if (Object.keys(error).length === 0) {
+      getSidebar();
+      getCheckedSidebar();
+    }
+
   }, [selectedLocationId])
   // Post Slidebar
   const createSlidebar = (data) => {
@@ -176,15 +188,19 @@ function TaskList({ setFormState }) {
   }
   return (
     <div className="taskListWrap">
-      <div className="tackListInpuArea">
-        <input
-          type="text"
-          placeholder="Aufgabe hinzufügen"
-          onChange={ListWrap}
-          value={inputVal}
-        />
-        <button onClick={listofItems}>+</button>
+      <div className="taskInputBox">
+        <div className="tackListInpuArea">
+          <input
+            type="text"
+            placeholder="Aufgabe hinzufügen"
+            onChange={ListWrap}
+            value={inputVal}
+          />
+          <button onClick={listofItems}>+</button>
+        </div>
+        {error?.taskListInput && <p className='error'>{error.taskListInput}</p>}
       </div>
+
       <ul className="tackListUl">
         {/* <li className="tackListTask">Send Follow up notes for the meeting</li> */}
         {Items.map((curelem, index) => {

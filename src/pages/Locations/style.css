@@ -210,7 +210,7 @@ ul.locationTable li.locationTableItem .location-checkbox .ctm-checkbox-container
 
 /* Location Dialog */
 .location-dialog {
-    width: 527px;
+    width: 50%;
     background: #fff;
     position: absolute;
     top: 50%;
