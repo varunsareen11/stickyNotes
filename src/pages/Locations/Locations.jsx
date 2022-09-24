@@ -223,6 +223,8 @@ function Locations() {
             .catch((err) => {
                 console.log("getLocationData", err);
             });
+        // dispatch(getLocation(data));
+        // setLocationData(data);
     };
 
     // Get Single Location Data

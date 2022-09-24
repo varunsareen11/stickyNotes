@@ -24,3 +24,9 @@ export const getCategory = (category) => {
         payload: category
     }
 };
+export const getSidebar = (sidebar) => {
+    return {
+        type: ActionTypes.GET_SIDEBAR,
+        payload: sidebar
+    }
+};

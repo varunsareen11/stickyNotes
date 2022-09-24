@@ -167,6 +167,7 @@ const Plans = (props) => {
         const value = e.target.value;
         setUploadDoc({ ...uploadDoc, [name]: value });
         console.log("uploadDoc", uploadDoc);
+        categoryListAPI();
     }
     const handleUploadFileChange = (e) => {
         const file = e.target.files[0];

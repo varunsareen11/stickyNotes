@@ -127,6 +127,7 @@ const DocumentManagentment = (props) => {
             .then((json) => {
                 getDocumentAPI();
                 singleDocumentAPI();
+                getSidebar();
             })
     }
     // Delete Document 
@@ -166,6 +167,7 @@ const DocumentManagentment = (props) => {
         const name = e.target.name;
         const value = e.target.value;
         setUploadDoc({ ...uploadDoc, [name]: value });
+        categoryListAPI();
     }
     const handleUploadFileChange = (e) => {
         const file = e.target.files[0];
@@ -288,6 +290,7 @@ const DocumentManagentment = (props) => {
             .then((json) => {
                 // console.log("create-document", json);
                 getDocumentAPI();
+                getSidebar();
             })
             .catch((err) => {
                 console.log("create-document", err);
@@ -343,11 +346,11 @@ const DocumentManagentment = (props) => {
                             <div class="getDocumentDataTable">
                                 <ul>
                                     <li className='documentTableHeading'>
-                                        <div>Document Name</div>
-                                        <div>Load Data</div>
-                                        <div>Notice</div>
-                                        <div>Remember</div>
-                                        <div>Task</div>
+                                        <div>Dokument </div>
+                                        <div>Kategorie</div>
+                                        <div>Datum </div>
+                                        <div>Erinnerung</div>
+                                        <div>Aufgabe </div>
                                     </li>
                                     {
                                         getDocument.length > 0 && search(getDocument).map((curElem, index) => {
@@ -374,7 +377,7 @@ const DocumentManagentment = (props) => {
                                                                                             <div>{curElem.date}</div>
                                                                                             <div>{curElem.calendar_reminder_interval ? curElem.calendar_reminder_interval : "-"}</div>
                                                                                             <div className='btn-group'>
-                                                                                                <button className='btn cmn_yellow_bg' onClick={(e) => { singleDocumentAPI(curElem._id); props.setEditCat(true) }}> <svg className="icon" aria-labelledby="Edit Item">
+                                                                                                <button className='btn cmn_yellow_bg' onClick={(e) => { categoryListAPI(); singleDocumentAPI(curElem._id); props.setEditCat(true) }}> <svg className="icon" aria-labelledby="Edit Item">
                                                                                                     <title id="editItem">Edit Item</title>
                                                                                                     <use
                                                                                                         xlinkHref="/assets/svg-icons/icons.svg#editItem"
@@ -453,7 +456,7 @@ const DocumentManagentment = (props) => {
                                                                 xlinkTitle="Add Item"
                                                             ></use>
                                                         </svg>
-                                                        Save on Computer
+                                                        Speichern
                                                     </button>
                                                 </div>
                                             </div>

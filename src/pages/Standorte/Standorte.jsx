@@ -836,7 +836,13 @@ function ManagementSystem({ isTaskModule, taskModule, isEventModule, eventCalend
                   </h4>
                   <div className="moduleHeaderOption">
                     <button className='btn cmn_yellow_bg'
-                      onClick={(e) => { categoryListAPI(); setAddDocument(true); setCategoryList(false) }}
+                      onClick={(e) => {
+                        setTimeout(() => {
+                          categoryListAPI();
+                        }, 1000);
+                        setAddDocument(true);
+                        setCategoryList(false)
+                      }}
                     >
                       <svg className="icon" aria-labelledby="Add Item">
                         <title id="addItem">Add Item</title>
