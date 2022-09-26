@@ -218,15 +218,6 @@ function ManagementSystem({ isTaskModule, taskModule, isEventModule, eventCalend
     };
   });
 
-  // openColorBox
-  const openCalenderColorBox = (e) => {
-    setColorCalenderBox(!colorCalenderBox);
-  }
-
-  // openColorBox
-  const openColorBox = (e) => {
-    setColorBox(!colorBox);
-  }
 
   // ================================================= API's =========================================================
 
@@ -458,7 +449,7 @@ function ManagementSystem({ isTaskModule, taskModule, isEventModule, eventCalend
                     <ListIcon className="dropIcon" color="action" onClick={() => setCalenderModuleBox(!calenderModuleBox)} />
                     <div className={`openDrop ${calenderModuleBox ? "show" : ""}`}>
                       <ul className="openDropList">
-                        <li onClick={(e) => openCalenderColorBox()} ref={dropDownCont}>
+                        <li onClick={(e) => {setColorCalenderBox(!colorCalenderBox)}} ref={dropDownCont}>
                           <ColorLensIcon className="color-lens" color="action" />
                           <span className="drop-text">Farbe andern</span>
                           <ChevronRightIcon className="angle-right" color="action" />
@@ -563,7 +554,7 @@ function ManagementSystem({ isTaskModule, taskModule, isEventModule, eventCalend
                     <ListIcon className="dropIcon" color="action" onClick={() => setModuleBox(!moduleBox)} />
                     <div className={`openDrop ${moduleBox ? "show" : ""}`}>
                       <ul className="openDropList">
-                        <li onClick={(e) => openColorBox()} ref={dropDownCont}>
+                        <li onClick={(e) => {setColorBox(!colorBox)}} ref={dropDownCont}>
                           <ColorLensIcon className="color-lens" color="action" />
                           <span className="drop-text">Farbe andern</span>
                           <ChevronRightIcon className="angle-right" color="action" />
@@ -669,7 +660,7 @@ function ManagementSystem({ isTaskModule, taskModule, isEventModule, eventCalend
                   }
                 }}
               >
-                <div className={`dragable-header ${colorName}`}>
+                <div className={`dragable-header ${colorPlanName}`}>
                   <h4>
                     Plans
                   </h4>
@@ -830,7 +821,7 @@ function ManagementSystem({ isTaskModule, taskModule, isEventModule, eventCalend
                   }
                 }}
               >
-                <div className={`dragable-header ${colorName}`}>
+                <div className={`dragable-header ${colorDocumentUploadName}`}>
                   <h4>
                     Dokumentenverwaltung
                   </h4>

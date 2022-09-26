@@ -215,7 +215,6 @@ class AppointmentFormContainerBasic extends React.PureComponent {
       onHide,
     } = this.props;
     const { appointmentChanges } = this.state;
-
     const displayAppointmentData = {
       ...appointmentData,
       ...appointmentChanges,
@@ -251,7 +250,7 @@ class AppointmentFormContainerBasic extends React.PureComponent {
       ampm: false,
       inputFormat: "DD/MM/YYYY HH:mm",
       onError: () => null,
-    });
+    });;
     const startDatePickerProps = pickerEditorProps("startDate");
     const endDatePickerProps = pickerEditorProps("endDate");
     const cancelChanges = () => {

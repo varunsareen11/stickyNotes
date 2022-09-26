@@ -162,12 +162,17 @@ const Plans = (props) => {
         note_item: "",
         note_create_task: ""
     })
+    console.log(uploadDoc);
     const handleUploadChange = (e) => {
         const name = e.target.name;
         const value = e.target.value;
         setUploadDoc({ ...uploadDoc, [name]: value });
-        console.log("uploadDoc", uploadDoc);
         categoryListAPI();
+    }
+    const handleCalanderChooseDate = (e) => {
+        setUploadDoc({ ...uploadDoc, "calendar_reminder_choose_date" : e });
+
+        console.log("uploadDoc", uploadDoc);
     }
     const handleUploadFileChange = (e) => {
         const file = e.target.files[0];
@@ -194,6 +199,15 @@ const Plans = (props) => {
         e.preventDefault();
         createDocument(uploadDoc);
         console.log("uploadDoc", uploadDoc);
+        if(uploadDoc.calendar_reminder_interval && uploadDoc.calendar_reminder_choose_date){
+            createCalender({
+                startDate : uploadDoc?.calendar_reminder_choose_date,
+                endDate : uploadDoc?.calendar_reminder_choose_date,
+                title : uploadDoc?.file_name,
+                notes : uploadDoc?.upload_document,
+                location : selectedLocationId
+            })
+        }
         if (uploadDoc.note_item && uploadDoc.note_create_task == true) {
             console.log("test working")
             createSlidebar({ title: uploadDoc.note_item, location: selectedLocationId })
@@ -251,7 +265,27 @@ const Plans = (props) => {
             .then((json) => {
                 setCategory(json);
             })
-    }
+    };
+
+    //create calander 
+    const createCalender = (data) => {
+        return fetch(`${API}/create-calender`, {
+          method: "POST",
+          headers: {
+            "x-access-token": token,
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        })
+          .then((res) => res.json())
+          .then((json) => {
+            // console.log("json", json);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
 
     // Create Document API
     const createDocument = (data) => {
@@ -488,11 +522,8 @@ const Plans = (props) => {
                                                                                         name="calendar_reminder_choose_date"
                                                                                         id="date"
                                                                                         className="form-control"
-                                                                                        value={value}
-                                                                                        onChange={(newValue) => {
-                                                                                            console.log(newValue);
-                                                                                            setValue(newValue);
-                                                                                        }}
+                                                                                        value={uploadDoc.calendar_reminder_choose_date}
+                                                                                        onChange={(e) => {handleCalanderChooseDate(e)}}
                                                                                         renderInput={(params) => <TextField {...params} />}
                                                                                     />
                                                                                 </LocalizationProvider>
